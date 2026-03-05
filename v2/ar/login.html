@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول — حياة صحية</title>
+  <link rel="stylesheet" href="style-rtl.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .auth-wrap {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg,
+        rgba(17,24,39,0.85) 0%,
+        rgba(16,185,129,0.80) 50%,
+        rgba(17,24,39,0.85) 100%),
+        url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1600&q=80&fit=crop')
+        center/cover no-repeat;
+      padding: 3rem 1rem;
+    }
+    .auth-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+      width: 100%;
+      max-width: 520px;
+      overflow: hidden;
+    }
+    .auth-tabs { display: flex; }
+    .auth-tab {
+      flex: 1;
+      padding: 1.1rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background: #f5ede0;
+      color: var(--terra-dark);
+      transition: var(--transition);
+      font-family: 'Tajawal', sans-serif;
+    }
+    .auth-tab.active { background: var(--terra-dark); color: #fff; }
+    .auth-body { padding: 2rem 2.2rem 2.4rem; }
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--terra-dark);
+      margin-bottom: 0.35rem;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.72rem 1rem;
+      border: 2px solid #c9aa82;
+      border-radius: 10px;
+      font-size: 0.97rem;
+      font-family: 'Tajawal', sans-serif;
+      color: var(--gray-dark);
+      background: #fdf8f2;
+      transition: border-color 0.2s;
+      outline: none;
+      text-align: right;
+    }
+    .form-group input:focus,
+    .form-group select:focus { border-color: var(--terra); background: #fff; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .diet-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+    .diet-option {
+      border: 2px solid #c9aa82;
+      border-radius: 12px;
+      padding: 0.65rem 0.4rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: #fdf8f2;
+    }
+    .diet-option .diet-icon { font-size: 1.5rem; display: block; margin-bottom: 0.2rem; }
+    .diet-option .diet-name { font-size: 0.7rem; font-weight: 700; color: var(--terra-dark); font-family: 'Tajawal', sans-serif; }
+    .diet-option:hover { border-color: var(--terra); background: #f5ede0; }
+    .diet-option.selected { border-color: var(--terra-dark); background: var(--terra-dark); }
+    .diet-option.selected .diet-name { color: #fff; }
+    .goal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+    .goal-option {
+      border: 2px solid #c9aa82;
+      border-radius: 12px;
+      padding: 0.7rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      background: #fdf8f2;
+    }
+    .goal-option .goal-icon { font-size: 1.4rem; display: block; margin-bottom: 0.2rem; }
+    .goal-option .goal-name { font-size: 0.72rem; font-weight: 700; color: var(--terra-dark); font-family: 'Tajawal', sans-serif; }
+    .goal-option:hover { border-color: var(--terra); background: #f5ede0; }
+    .goal-option.selected { border-color: var(--terra-dark); background: var(--terra-dark); }
+    .goal-option.selected .goal-name { color: #fff; }
+    .btn-auth {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, var(--terra-dark), var(--terra));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: 'Tajawal', sans-serif;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1.2rem;
+    }
+    .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.35); }
+    .auth-msg {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      display: none;
+    }
+    .auth-msg.success { background: #f5ede0; color: #5c3320; }
+    .auth-msg.error   { background: #ffe0e0; color: #8b0000; }
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--terra);
+      margin: 1.2rem 0 0.4rem;
+      border-bottom: 1px solid #c9aa82;
+      padding-bottom: 0.3rem;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .nav-user { display:flex; align-items:center; gap:0.5rem; }
+    .nav-user-name { color:var(--terra-dark); font-weight:700; font-size:0.9rem; }
+    .nav-logout {
+      background:var(--sand);
+      border:1px solid var(--brown-light);
+      color:var(--terra-dark);
+      padding:0.3rem 0.8rem;
+      border-radius:8px;
+      font-size:0.82rem;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">حياة<span>صحية</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="meal-plans.html">خطط الوجبات</a></li>
+      <li><a href="exercise.html">التمارين</a></li>
+      <li><a href="tips.html">النصائح</a></li>
+      <li><a href="calculator.html">الحاسبة</a></li>
+      <li><a href="articles.html">المقالات</a></li>
+      <li><a href="login.html" class="active">تسجيل الدخول</a></li>
+      <li><a href="../login.html" class="lang-switch">🌐 English</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<!-- AUTH WRAPPER -->
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="showTab('login')">🔑 تسجيل الدخول</button>
+      <button class="auth-tab" id="tab-register" onclick="showTab('register')">✨ إنشاء حساب</button>
+    </div>
+
+    <div class="auth-body">
+
+      <!-- ══ تسجيل الدخول ══ -->
+      <div class="auth-panel active" id="panel-login">
+        <div class="form-group">
+          <label>📧 البريد الإلكتروني</label>
+          <input type="email" id="login-email" placeholder="email@example.com" />
+        </div>
+        <div class="form-group">
+          <label>🔒 كلمة المرور</label>
+          <input type="password" id="login-pw" placeholder="كلمة المرور" />
+        </div>
+        <button class="btn-auth" onclick="doLogin()">← دخول</button>
+        <div class="auth-msg" id="login-msg"></div>
+      </div>
+
+      <!-- ══ إنشاء حساب ══ -->
+      <div class="auth-panel" id="panel-register">
+
+        <div class="section-label">👤 المعلومات الشخصية</div>
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="reg-name" placeholder="مثال: أحمد الرشيد" />
+        </div>
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="reg-email" placeholder="email@example.com" />
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="reg-pw" placeholder="أنشئ كلمة مرور" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>الجنس</label>
+            <select id="reg-gender">
+              <option value="male">ذكر</option>
+              <option value="female">أنثى</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>العمر</label>
+            <input type="number" id="reg-age" placeholder="مثال: 28" min="15" max="90" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>مستوى النشاط</label>
+          <select id="reg-activity">
+            <option value="sedentary">خامل (عمل مكتبي، لا تمرين)</option>
+            <option value="light">خفيف (1–3 أيام/أسبوع)</option>
+            <option value="moderate" selected>متوسط (3–5 أيام/أسبوع)</option>
+            <option value="active">نشيط (6–7 أيام/أسبوع)</option>
+            <option value="very_active">نشيط جداً (رياضي)</option>
+          </select>
+        </div>
+
+        <div class="section-label">🍽️ نوع النظام الغذائي</div>
+        <div class="diet-grid">
+          <div class="diet-option selected" data-diet="balanced" onclick="selectDiet(this)">
+            <span class="diet-icon">⚖️</span>
+            <span class="diet-name">متوازن</span>
+          </div>
+          <div class="diet-option" data-diet="mediterranean" onclick="selectDiet(this)">
+            <span class="diet-icon">🫒</span>
+            <span class="diet-name">متوسطي</span>
+          </div>
+          <div class="diet-option" data-diet="keto" onclick="selectDiet(this)">
+            <span class="diet-icon">🥓</span>
+            <span class="diet-name">كيتو</span>
+          </div>
+          <div class="diet-option" data-diet="low-carb" onclick="selectDiet(this)">
+            <span class="diet-icon">🥦</span>
+            <span class="diet-name">قليل الكارب</span>
+          </div>
+          <div class="diet-option" data-diet="high-protein" onclick="selectDiet(this)">
+            <span class="diet-icon">🥩</span>
+            <span class="diet-name">غني بالبروتين</span>
+          </div>
+          <div class="diet-option" data-diet="vegan" onclick="selectDiet(this)">
+            <span class="diet-icon">🌱</span>
+            <span class="diet-name">نباتي</span>
+          </div>
+          <div class="diet-option" data-diet="paleo" onclick="selectDiet(this)">
+            <span class="diet-icon">🦴</span>
+            <span class="diet-name">باليو</span>
+          </div>
+          <div class="diet-option" data-diet="intermittent" onclick="selectDiet(this)">
+            <span class="diet-icon">⏱️</span>
+            <span class="diet-name">صيام متقطع</span>
+          </div>
+        </div>
+
+        <div class="section-label">🎯 هدفك</div>
+        <div class="goal-grid">
+          <div class="goal-option" data-goal="lose" onclick="selectGoal(this)">
+            <span class="goal-icon">🔥</span>
+            <span class="goal-name">إنقاص الوزن</span>
+          </div>
+          <div class="goal-option selected" data-goal="maintain" onclick="selectGoal(this)">
+            <span class="goal-icon">⚖️</span>
+            <span class="goal-name">المحافظة</span>
+          </div>
+          <div class="goal-option" data-goal="gain" onclick="selectGoal(this)">
+            <span class="goal-icon">💪</span>
+            <span class="goal-name">بناء عضلات</span>
+          </div>
+        </div>
+
+        <button class="btn-auth" onclick="doRegister()">← إنشاء خطتي</button>
+        <div class="auth-msg" id="reg-msg"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'auth-msg ' + type;
+  el.style.display = 'block';
+}
+function showTab(tab) {
+  ['login','register'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t === tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t === tab);
+  });
+}
+let selectedDiet = 'balanced';
+let selectedGoal = 'maintain';
+function selectDiet(el) {
+  document.querySelectorAll('.diet-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDiet = el.dataset.diet;
+}
+function selectGoal(el) {
+  document.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedGoal = el.dataset.goal;
+}
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pw    = document.getElementById('login-pw').value;
+  if (!email || !pw) { showMsg('login-msg','يرجى ملء جميع الحقول.','error'); return; }
+  const stored = localStorage.getItem('hl-user');
+  if (!stored) { showMsg('login-msg','لا يوجد حساب. يرجى التسجيل أولاً.','error'); return; }
+  const user = JSON.parse(stored);
+  if (user.email.toLowerCase() !== email.toLowerCase()) { showMsg('login-msg','البريد الإلكتروني غير موجود.','error'); return; }
+  if (user.pw !== btoa(pw)) { showMsg('login-msg','كلمة المرور غير صحيحة.','error'); return; }
+  localStorage.setItem('hl-session', JSON.stringify({ email: user.email, name: user.name }));
+  showMsg('login-msg','مرحباً، ' + user.name + '! جارٍ التحويل…','success');
+  setTimeout(() => { window.location.href = 'meal-plans.html'; }, 1400);
+}
+function doRegister() {
+  const name     = document.getElementById('reg-name').value.trim();
+  const email    = document.getElementById('reg-email').value.trim();
+  const pw       = document.getElementById('reg-pw').value;
+  const gender   = document.getElementById('reg-gender').value;
+  const age      = document.getElementById('reg-age').value;
+  const activity = document.getElementById('reg-activity').value;
+  if (!name || !email || !pw || !age) { showMsg('reg-msg','يرجى ملء جميع الحقول المطلوبة.','error'); return; }
+  if (pw.length < 6) { showMsg('reg-msg','يجب أن تكون كلمة المرور 6 أحرف على الأقل.','error'); return; }
+  const user = { name, email, pw: btoa(pw), gender, age: parseInt(age), activity, diet: selectedDiet, goal: selectedGoal };
+  localStorage.setItem('hl-user', JSON.stringify(user));
+  localStorage.setItem('hl-session', JSON.stringify({ email: user.email, name: user.name }));
+  showMsg('reg-msg','تم إنشاء الحساب! جارٍ التحويل إلى خطة وجباتك…','success');
+  setTimeout(() => { window.location.href = 'meal-plans.html'; }, 1600);
+}
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--terra-dark);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:var(--sand);border:1px solid var(--brown-light);color:var(--terra-dark);padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:'Tajawal',sans-serif;">خروج</button>
+    </li>`);
+})();
+</script>
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  var d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+</body>
+</html>

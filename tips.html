@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Tips — HealthyLife</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── LOGIN GATE: redirect guests to login ── -->
+<script>
+(function() {
+  if (!localStorage.getItem('hl-session')) {
+    sessionStorage.setItem('hl-redirect', 'tips.html');
+    window.location.replace('login.html?next=tips.html');
+  }
+})();
+</script>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Healthy<span>Life</span></div>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="meal-plans.html">Meal Plans</a></li>
+      <li><a href="exercise.html">Exercise</a></li>
+      <li><a href="tips.html" class="active">Tips</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="ar/tips.html" class="lang-switch">🌐 العربية</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero hero-tips" style="padding: 3.5rem 2rem;">
+  <h1 style="font-size: 2.5rem;">Health &amp; Nutrition Tips</h1>
+  <p>Small daily habits make the biggest long-term difference. Here's everything you need to know to live a healthier life.</p>
+</section>
+
+<!-- WEIGHT LOSS PRINCIPLES -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>Weight Loss Principles That Actually Work</h2>
+      <p>Forget fad diets. These are the fundamentals that science supports.</p>
+    </div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h3>Calorie Deficit is King</h3>
+        <p>To lose weight, you must burn more calories than you consume. A deficit of 500 calories per day leads to roughly 0.5 kg of fat loss per week — sustainable and safe.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Prioritize Protein</h3>
+        <p>Protein keeps you full longer, preserves muscle during weight loss, and requires more energy to digest. Aim for 1.6–2g of protein per kg of body weight daily.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Don't Skip Meals</h3>
+        <p>Skipping meals often leads to overeating later. Instead, eat 3 balanced meals and 1–2 small snacks to keep hunger and blood sugar stable throughout the day.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Eat Slowly &amp; Mindfully</h3>
+        <p>It takes 20 minutes for your brain to register fullness. Put your fork down between bites, chew thoroughly, and eat without screens to naturally eat less.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Limit Ultra-Processed Foods</h3>
+        <p>Chips, fast food, sugary cereals, and packaged snacks are engineered to override your fullness signals. Minimize them — don't eliminate everything, just minimize.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Be Consistent, Not Perfect</h3>
+        <p>One unhealthy meal won't derail your progress. What matters is the pattern over weeks and months. A healthy lifestyle is about balance, not restriction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HEALTHY EATING PHOTO BANNER -->
+<div class="photo-banner" style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=1600&q=80&fit=crop');">
+  <div>
+    <h2>You Are What You Eat</h2>
+    <p>Choose whole, colourful, nutrient-dense foods every single day.</p>
+  </div>
+</div>
+
+<!-- TOP HEALTHY FOODS -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>Top 12 Healthy Foods to Eat Regularly</h2>
+      <p>Build your meals around these nutrient-dense powerhouses.</p>
+    </div>
+    <div class="food-list">
+      <div class="food-item">
+        <div class="food-emoji">🥦</div>
+        <div>
+          <h4>Broccoli</h4>
+          <p>High in fibre, vitamin C, and cancer-fighting antioxidants. Low in calories.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🐟</div>
+        <div>
+          <h4>Salmon</h4>
+          <p>Rich in omega-3 fatty acids, protein, and B vitamins. Supports heart and brain health.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🥑</div>
+        <div>
+          <h4>Avocado</h4>
+          <p>Packed with healthy monounsaturated fats, potassium, and fibre. Keeps you satiated.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🫐</div>
+        <div>
+          <h4>Blueberries</h4>
+          <p>One of the highest antioxidant foods. Supports brain health and reduces inflammation.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🥚</div>
+        <div>
+          <h4>Eggs</h4>
+          <p>Complete protein source with all essential amino acids. Very filling for low calories.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🫘</div>
+        <div>
+          <h4>Lentils &amp; Beans</h4>
+          <p>High in plant-based protein and fibre. Stabilize blood sugar and support gut health.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🌾</div>
+        <div>
+          <h4>Oats</h4>
+          <p>Rich in beta-glucan fibre that lowers cholesterol and keeps you full for hours.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🥜</div>
+        <div>
+          <h4>Almonds &amp; Walnuts</h4>
+          <p>Healthy fats, protein, and magnesium. A handful makes an ideal snack.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🧄</div>
+        <div>
+          <h4>Garlic</h4>
+          <p>Contains allicin, a powerful compound with anti-inflammatory and immune-boosting effects.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🍠</div>
+        <div>
+          <h4>Sweet Potato</h4>
+          <p>Rich in vitamin A, fibre, and complex carbs. A great energy source that won't spike blood sugar as sharply as white potato.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🥬</div>
+        <div>
+          <h4>Leafy Greens</h4>
+          <p>Spinach, kale, and Swiss chard are incredibly nutrient-dense and extremely low in calories.</p>
+        </div>
+      </div>
+      <div class="food-item">
+        <div class="food-emoji">🫚</div>
+        <div>
+          <h4>Olive Oil</h4>
+          <p>The gold standard of cooking oils. Rich in oleic acid and anti-inflammatory polyphenols.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HYDRATION -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>Hydration Guide</h2>
+      <p>Water is the most underrated weight-loss and health tool.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">💧</div>
+        <h3>How Much to Drink</h3>
+        <p>Aim for 2–3 litres (8–12 cups) of water per day. Add an extra 500ml for every hour of exercise or if you are in a hot climate.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⏰</div>
+        <h3>When to Drink</h3>
+        <p>Start your day with a large glass of water. Drink a glass 30 minutes before each meal — it can reduce calorie intake by up to 13%.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h3>What to Avoid</h3>
+        <p>Sugary drinks (sodas, juices, energy drinks) and excessive alcohol add hundreds of empty calories. Replace them with water, herbal tea, or sparkling water.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <h3>Signs of Good Hydration</h3>
+        <p>Pale yellow urine, clear skin, good energy levels, and no afternoon headaches are signs you are drinking enough water daily.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HYDRATION PHOTO BANNER -->
+<div class="photo-banner" style="background-image: url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1600&q=80&fit=crop');">
+  <div>
+    <h2>Stay Hydrated. Stay Sharp.</h2>
+    <p>Drinking enough water is the single easiest thing you can do for your health today.</p>
+  </div>
+</div>
+
+<!-- SLEEP & RECOVERY -->
+<section class="bg-gray">
+  <div class="container">
+    <div class="section-title">
+      <h2>Sleep &amp; Recovery</h2>
+      <p>Poor sleep sabotages even the best diet and exercise plans.</p>
+    </div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h3>Sleep 7–9 Hours</h3>
+        <p>Sleep deprivation increases hunger hormones (ghrelin) and decreases fullness hormones (leptin), making you eat more the next day.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Consistent Sleep Schedule</h3>
+        <p>Going to bed and waking at the same time every day — even on weekends — synchronizes your body clock and improves sleep quality.</p>
+      </div>
+      <div class="tip-card">
+        <h3>No Screens Before Bed</h3>
+        <p>Blue light from phones and screens suppresses melatonin. Avoid screens for at least 30–60 minutes before sleeping.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Keep Your Bedroom Cool &amp; Dark</h3>
+        <p>The ideal sleep temperature is 16–19°C (60–67°F). Block out light with blackout curtains or a sleep mask for deeper sleep.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Limit Caffeine After 2pm</h3>
+        <p>Caffeine has a half-life of 5–6 hours. A coffee at 3pm can still be affecting your sleep at 9pm. Switch to herbal tea in the afternoon.</p>
+      </div>
+      <div class="tip-card">
+        <h3>Manage Stress</h3>
+        <p>High cortisol (the stress hormone) promotes fat storage, especially around the belly. Meditation, deep breathing, and walks in nature all help lower cortisol.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLEEP PHOTO BANNER -->
+<div class="photo-banner" style="background-image: url('https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=1600&q=80&fit=crop');">
+  <div>
+    <h2>Sleep Is Your Superpower</h2>
+    <p>7–9 hours of quality sleep rebuilds muscle, resets hunger hormones, and sharpens your mind.</p>
+  </div>
+</div>
+
+<!-- QUICK DAILY HABITS -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>Daily Healthy Habits Checklist</h2>
+      <p>Try to check off as many of these as possible each day.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🌅</div>
+        <h3>Morning</h3>
+        <ul style="color: var(--gray-mid); font-size: 0.9rem; padding-left: 1.25rem; line-height: 2.2; margin-top: 0.5rem;">
+          <li>Drink a glass of water before coffee</li>
+          <li>Eat a protein-rich breakfast</li>
+          <li>Get 10 min of sunlight</li>
+          <li>Walk or stretch for 5 minutes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">☀️</div>
+        <h3>Afternoon</h3>
+        <ul style="color: var(--gray-mid); font-size: 0.9rem; padding-left: 1.25rem; line-height: 2.2; margin-top: 0.5rem;">
+          <li>Pack a healthy lunch</li>
+          <li>Take a 10-min walk after lunch</li>
+          <li>Drink water (not sugary drinks)</li>
+          <li>Avoid processed snacks</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌙</div>
+        <h3>Evening</h3>
+        <ul style="color: var(--gray-mid); font-size: 0.9rem; padding-left: 1.25rem; line-height: 2.2; margin-top: 0.5rem;">
+          <li>Cook a balanced dinner</li>
+          <li>Do your planned workout</li>
+          <li>No screens 30 min before bed</li>
+          <li>Be in bed by your target time</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>HealthyLife</strong> &mdash; Eat Well, Move More, Live Longer.</p>
+  <p style="margin-top:0.5rem;">For informational purposes only. Consult a healthcare professional before making significant dietary or lifestyle changes.</p>
+</footer>
+
+<script>
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--green-light);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;">Logout</button>
+    </li>`);
+})();
+</script>
+</body>
+</html>

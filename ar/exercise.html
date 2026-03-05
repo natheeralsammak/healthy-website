@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>برامج التمارين — حياة صحية</title>
+  <link rel="stylesheet" href="style-rtl.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>body { font-family: 'Cairo', 'Segoe UI', sans-serif; }</style>
+</head>
+<body>
+
+<!-- التنقل -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">حياة <span>صحية</span></div>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="meal-plans.html">خطط الوجبات</a></li>
+      <li><a href="exercise.html" class="active">التمارين</a></li>
+      <li><a href="tips.html">النصائح</a></li>
+      <li><a href="calculator.html">الحاسبة</a></li>
+      <li><a href="login.html">الدخول</a></li>
+      <li><a href="../exercise.html" class="lang-switch">🌐 English</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- الهيرو مع زر الجنس -->
+<section class="hero hero-exercise" style="padding: 3.5rem 2rem 4.5rem;">
+  <h1 style="font-size: 2.5rem;">برامج التمارين الرياضية</h1>
+  <p>برامج تدريبية مبنية على أسس علمية ومصممة خصيصاً لجسمك وأهدافك.</p>
+  <div class="gender-toggle-wrap">
+    <div class="gender-toggle">
+      <button class="gender-btn active" id="btn-men-exercise" onclick="switchGender('exercise','men')">&#9794; رجال</button>
+      <button class="gender-btn" id="btn-women-exercise" onclick="switchGender('exercise','women')">&#9792; نساء</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== تمارين الرجال ===== -->
+<div class="gender-panel active" id="panel-men-exercise">
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>نظرة عامة على تدريب الرجال</h2>
+        <p>ابنِ القوة، احرق الدهون وعزّز هرمون التستوستيرون بالتمارين المركبة والكارديو عالي الكثافة.</p>
+      </div>
+      <div class="photo-cards">
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">قوة</div>
+            <h3>التمارين المركبة أولاً</h3>
+            <p>القرفصاء والرفعة المميتة وضغط المقعد والسحب — الركيزة الأساسية لكل جلسة لتحقيق أقصى نمو للعضلات.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">كارديو</div>
+            <h3>HIIT لحرق الدهون</h3>
+            <p>2–3 جلسات HIIT أسبوعياً ترفع معدل الحرق لـ24 ساعة بعد انتهاء التمرين.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">تعافي</div>
+            <h3>استرح وانمُ</h3>
+            <p>العضلات تنمو خلال فترة الراحة. نَم 7–9 ساعات وخذ أيام راحة نشطة لتجنب الإفراط في التدريب.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>الجدول الأسبوعي للرجال</h2>
+        <p>4 أيام تدريب واستراحة استراتيجية — مبنية للقوة وحرق الدهون.</p>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-card cardio"><div class="schedule-day">الاثنين</div><div class="schedule-type">قوة الجزء العلوي</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">الثلاثاء</div><div class="schedule-type">HIIT كارديو (30 د)</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">الأربعاء</div><div class="schedule-type">قوة الجزء السفلي</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">الخميس</div><div class="schedule-type">راحة نشطة / مشي</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">الجمعة</div><div class="schedule-type">جسم كامل + كور</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">السبت</div><div class="schedule-type">رياضة / نشاط خارجي</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">الأحد</div><div class="schedule-type">راحة واسترداد</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>برنامج المبتدئين للرجال</h2>
+        <p>أتقن الأساسيات. ابنِ قوة حقيقية من الصفر.</p>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin-bottom:1rem;">🔥 الإحماء (10 دقائق)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">قفز جاك</div><div class="ex-detail">3 × 30 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">دوائر الذراعين + تدوير الورك</div><div class="ex-detail">2 × 20 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">قرفصاء بوزن الجسم</div><div class="ex-detail">2 × 15 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تمرين الدودة</div><div class="ex-detail">2 × 8 تكرار</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">💪 الجزء العلوي (الاثنين)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">ضغط</div><div class="ex-detail">3 × 12–15 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">سحب دمبل</div><div class="ex-detail">3 × 12 تكرار لكل ذراع</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط دمبل فوق الرأس</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تمرين العضلة ذات الرأسين</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">دفع ثلاثي الرؤوس (كرسي)</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">بلانك</div><div class="ex-detail">3 × 30–45 ثانية</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">🦵 الجزء السفلي (الأربعاء)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">قرفصاء كأس (دمبل)</div><div class="ex-detail">4 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">رفعة رومانية (دمبل)</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">طعنات عكسية</div><div class="ex-detail">3 × 10 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">رفعة الكعب</div><div class="ex-detail">3 × 20 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">جسر الأرداف</div><div class="ex-detail">3 × 15 تكرار</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">🏋️ جسم كامل + كور (الجمعة)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">بيربي</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تسلق الجبل</div><div class="ex-detail">3 × 30 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">دفع دمبل (Thrusters)</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">التواء روسي</div><div class="ex-detail">3 × 20 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تمرين Dead Bug</div><div class="ex-detail">3 × 10 لكل جانب</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">⚡ HIIT كارديو (الثلاثاء) — 30 دقيقة</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">فترات سرعة (40 ث تدريب / 20 ث راحة)</div><div class="ex-detail">8 جولات</div></div>
+        <div class="exercise-item"><div class="ex-name">قرفصاء مع قفز</div><div class="ex-detail">3 × 15 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">رفع الركبتين العالي</div><div class="ex-detail">3 × 40 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">القفز على صندوق / صعود درج</div><div class="ex-detail">3 × 10 تكرار</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>برنامج المتوسطين للرجال</h2>
+        <p>تحميل تدريجي وأوزان ثقيلة وتقنيات متقدمة لنتائج جادة.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">قرفصاء بالبار على الظهر</div><div class="ex-detail">4 × 8 تكرار @ 75% من الحد الأقصى</div></div>
+        <div class="exercise-item"><div class="ex-name">رفعة مميتة</div><div class="ex-detail">4 × 6 تكرار @ 80% من الحد الأقصى</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط بار على المقعد</div><div class="ex-detail">4 × 8 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">عقلة بوزن إضافي</div><div class="ex-detail">4 × 6–8 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط أرنولد بالدمبل</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">قرفصاء بلغاري</div><div class="ex-detail">3 × 10 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">سحب كابل</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">حمل المزارع</div><div class="ex-detail">3 × 40 متر</div></div>
+        <div class="exercise-item"><div class="ex-name">عجلة البطن</div><div class="ex-detail">3 × 10 تكرار</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="padding: 0 2rem 1rem;">
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80&fit=crop" alt="تدريب بالأوزان" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80&fit=crop" alt="صالة رياضية" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80&fit=crop" alt="تدريب القوة" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80&fit=crop" alt="جري" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80&fit=crop" alt="ضغط على المقعد" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80&fit=crop" alt="ضغط" loading="lazy"/></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>التهدئة والإطالة (10 دقائق)</h2>
+        <p>أنهِ دائماً بتهدئة صحيحة لتسريع التعافي وتحسين المرونة.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">إطالة عضلة الفخذ الأمامي واقفاً</div><div class="ex-detail">30 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">إطالة الجلوس لأوتار الركبة</div><div class="ex-detail">45 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">فتح الصدر (عند الباب)</div><div class="ex-detail">30 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">وضعية الطفل</div><div class="ex-detail">60 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">التنفس الحجابي</div><div class="ex-detail">5 أنفاس عميقة</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /panel-men-exercise -->
+
+<!-- ===== تمارين النساء ===== -->
+<div class="gender-panel" id="panel-women-exercise">
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>نظرة عامة على تدريب النساء</h2>
+        <p>نبرّم، نشكّل ونقوّي مع برامج مصممة للعمل مع هرموناتك ومستويات طاقتك.</p>
+      </div>
+      <div class="photo-cards">
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">نحت</div>
+            <h3>تركيز على الجزء السفلي والأرداف</h3>
+            <p>دفع الورك والقرفصاء والطعنات تنشّط الأرداف وتبني عضلات نحيلة في المناطق الأكثر تأثيراً للمرأة.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">كارديو</div>
+            <h3>حرق دهون منخفض التأثير</h3>
+            <p>ركوب الدراجة والسباحة وكارديو الرقص تحمي مفاصلك مع حرق السعرات — مثالية لجميع المستويات.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">عقل وجسد</div>
+            <h3>اليوغا والمرونة</h3>
+            <p>اليوغا الأسبوعية تحسن الوضعية، تقلل الكورتيزول، وتكمّل تدريب القوة لجسم متوازن.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>الجدول الأسبوعي للنساء</h2>
+        <p>توازن بين القوة والكارديو والتعافي — مستدام وممتع.</p>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-card strength"><div class="schedule-day">الاثنين</div><div class="schedule-type">الجزء السفلي والأرداف</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">الثلاثاء</div><div class="schedule-type">كارديو منخفض التأثير (35 د)</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">الأربعاء</div><div class="schedule-type">الجزء العلوي والكور</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">الخميس</div><div class="schedule-type">راحة نشطة / مشي لطيف</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">الجمعة</div><div class="schedule-type">دائرة نحت الجسم الكامل</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">السبت</div><div class="schedule-type">يوغا وإطالة</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">الأحد</div><div class="schedule-type">راحة واسترداد</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>برنامج المبتدئات للنساء</h2>
+        <p>ابني الثقة، شكّلي جسمك وطوّري حب الحركة — لا تجربة مطلوبة.</p>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin-bottom:1rem;">🌸 الإحماء (8 دقائق)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">مشي في المكان</div><div class="ex-detail">2 × 60 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">دوائر الورك</div><div class="ex-detail">2 × 10 لكل اتجاه</div></div>
+        <div class="exercise-item"><div class="ex-name">قرفصاء بوزن الجسم</div><div class="ex-detail">2 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">إطالة القطة والبقرة</div><div class="ex-detail">2 × 10 تكرار</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">🍑 الجزء السفلي والأرداف (الاثنين)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">قرفصاء سومو (دمبل)</div><div class="ex-detail">3 × 15 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">جسر الأرداف</div><div class="ex-detail">3 × 20 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تمرين المحار الجانبي</div><div class="ex-detail">3 × 15 لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">ركلات الحمار</div><div class="ex-detail">3 × 15 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">طعنات عكسية</div><div class="ex-detail">3 × 10 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">ركلات واقفة (مطاط)</div><div class="ex-detail">3 × 15 لكل جانب</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">💪 الجزء العلوي والكور (الأربعاء)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">ضغط على الركبتين</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">سحب بمطاط المقاومة</div><div class="ex-detail">3 × 15 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">رفع جانبي بالدمبل</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">مد ثلاثي فوق الرأس</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">تمرين الدراجة للبطن</div><div class="ex-detail">3 × 20 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">بلانك</div><div class="ex-detail">3 × 25–40 ثانية</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">✨ دائرة نحت الجسم الكامل (الجمعة)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">صعود درجات (بدمبل)</div><div class="ex-detail">3 × 12 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">رفعة رومانية بالدمبل</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط صدر بالدمبل على الأرض</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">مشي جانبي بالمطاط</div><div class="ex-detail">3 × 15 خطوة لكل اتجاه</div></div>
+        <div class="exercise-item"><div class="ex-name">رفع الساقين</div><div class="ex-detail">3 × 12 تكرار</div></div>
+      </div>
+
+      <h3 style="color:var(--green-dark); margin:2rem 0 1rem;">🧘 يوغا وإطالة (السبت — 40 دقيقة)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">تحية الشمس</div><div class="ex-detail">5 جولات (تدفق)</div></div>
+        <div class="exercise-item"><div class="ex-name">وضعية المحارب I وII</div><div class="ex-detail">45 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">وضعية الحمامة</div><div class="ex-detail">60 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">الانحناء للأمام جالساً</div><div class="ex-detail">60 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">التواء العمود الفقري مستلقياً</div><div class="ex-detail">45 ث لكل جانب</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>برنامج المتوسطات للنساء</h2>
+        <p>أضيفي مقاومة، زيدي الكثافة واستمري في نحت جسم أقوى ورشاقة.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">دفع الورك بالبار</div><div class="ex-detail">4 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">قرفصاء بلغاري</div><div class="ex-detail">3 × 10 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">ركلات كابل</div><div class="ex-detail">3 × 15 لكل رجل</div></div>
+        <div class="exercise-item"><div class="ex-name">عقلة بمساعدة أو سحب علوي</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط أرنولد بالدمبل</div><div class="ex-detail">3 × 10 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">ضغط دمبل على منحدر</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">رفع الساقين معلقاً</div><div class="ex-detail">3 × 12 تكرار</div></div>
+        <div class="exercise-item"><div class="ex-name">ضرب حبال التدريب</div><div class="ex-detail">3 × 30 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">إنهاء أيضي: دائرة 10-8-6</div><div class="ex-detail">قرفصاء + ضغط + سحب</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container" style="padding: 0 2rem 1rem;">
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&q=80&fit=crop" alt="لياقة نسائية" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400&q=80&fit=crop" alt="يوغا" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=400&q=80&fit=crop" alt="إطالة" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80&fit=crop" alt="كارديو" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80&fit=crop" alt="تمرين" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80&fit=crop" alt="قوة" loading="lazy"/></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>التهدئة والإطالة (10 دقائق)</h2>
+        <p>أعطي جسمك وقت التعافي الذي يستحقه — أنتِ تستحقينه.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">إطالة الردفين بوضعية الرقم 4</div><div class="ex-detail">45 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">إطالة الطعنة المنخفضة لثني الورك</div><div class="ex-detail">45 ث لكل جانب</div></div>
+        <div class="exercise-item"><div class="ex-name">إطالة الفراشة الجالسة</div><div class="ex-detail">60 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">وضعية الطفل</div><div class="ex-detail">60 ثانية</div></div>
+        <div class="exercise-item"><div class="ex-name">الساقين للأعلى على الحائط</div><div class="ex-detail">دقيقتان (تعافي)</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /panel-women-exercise -->
+
+<!-- التذييل -->
+<footer>
+  <p><strong>حياة صحية</strong> — كُل بذكاء، تحرّك أكثر، عِش أطول.</p>
+  <p style="margin-top:0.5rem;">للأغراض التعليمية فقط. استشر أخصائي الرعاية الصحية قبل البدء بأي برنامج تمارين.</p>
+</footer>
+
+<script>
+  function switchGender(page, gender) {
+    localStorage.setItem('hl-gender', gender);
+    if (page === 'exercise') {
+      document.getElementById('panel-men-exercise').classList.toggle('active', gender === 'men');
+      document.getElementById('panel-women-exercise').classList.toggle('active', gender === 'women');
+      document.getElementById('btn-men-exercise').classList.toggle('active', gender === 'men');
+      document.getElementById('btn-women-exercise').classList.toggle('active', gender === 'women');
+    }
+  }
+  (function() {
+    var saved = localStorage.getItem('hl-gender') || 'men';
+    switchGender('exercise', saved);
+  })();
+</script>
+<script>
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--green-light);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:'Cairo',sans-serif;">خروج</button>
+    </li>`);
+})();
+</script>
+</body>
+</html>

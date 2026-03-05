@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المقالات الصحية — حياة صحية</title>
+  <link rel="stylesheet" href="style-rtl.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Tajawal', 'Segoe UI', sans-serif; }
+
+    /* ─── Article page styles ─── */
+    .article-filter-bar {
+      background: var(--sand-light);
+      border-bottom: 2px solid var(--brown-light);
+      padding: 0.85rem 2rem;
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      position: sticky;
+      top: 64px;
+      z-index: 50;
+    }
+    .filter-label { font-weight: 700; color: var(--terra); font-size: 0.88rem; margin-left: 0.3rem; }
+    .filter-chip {
+      padding: 0.32rem 0.9rem;
+      border: 2px solid var(--sand);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-mid);
+      background: var(--cream);
+    }
+    .filter-chip:hover { border-color: var(--brown-light); background: var(--sand-light); color: var(--text-dark); }
+    .filter-chip.active { background: var(--terra-dark); color: #fff; border-color: var(--terra-dark); }
+
+    /* Grid */
+    .articles-main-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+      margin-top: 2rem;
+    }
+    .art-card {
+      background: var(--cream);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--sand);
+    }
+    .art-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--brown-light); cursor: pointer; }
+    .art-img {
+      width: 100%; height: 200px;
+      object-fit: cover; display: block;
+    }
+    .art-body { padding: 1.3rem 1.4rem 1.6rem; flex: 1; display: flex; flex-direction: column; text-align: right; }
+    .art-cat {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 0.22rem 0.75rem;
+      border-radius: 20px; margin-bottom: 0.7rem;
+      align-self: flex-start;
+    }
+    .c-nutrition { background: #fde8cc; color: #7a4400; }
+    .c-fitness   { background: #dceedd; color: #2d5c35; }
+    .c-mindset   { background: #f0ddd5; color: #7a3020; }
+    .c-science   { background: #d6e8f0; color: #2a5070; }
+    .c-habits    { background: #f5e6d0; color: #6b4a20; }
+    .c-sleep     { background: #dceedd; color: #3a6848; }
+
+    .art-title { font-size: 1rem; font-weight: 700; color: var(--terra-dark); line-height: 1.6; margin-bottom: 0.5rem; font-family: 'Amiri', Georgia, serif; }
+    .art-excerpt { font-size: 0.86rem; color: var(--text-mid); line-height: 1.75; flex: 1; }
+    .art-meta { margin-top: 0.9rem; padding-top: 0.85rem; border-top: 1px solid var(--sand); font-size: 0.78rem; color: var(--text-mid); display: flex; flex-direction: row-reverse; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .art-meta .read-time { color: var(--terra); font-weight: 600; }
+
+    /* Full article section */
+    .article-full {
+      background: var(--cream);
+      border-radius: 20px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--sand);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .article-full-hero {
+      width: 100%; height: 320px;
+      object-fit: cover; display: block;
+    }
+    .article-full-body { padding: 2.5rem 3rem; max-width: 780px; text-align: right; }
+    .article-full-body h1 { font-size: 1.7rem; color: var(--terra-dark); line-height: 1.5; margin-bottom: 0.7rem; font-family: 'Amiri', Georgia, serif; }
+    .article-full-body .art-meta { margin-bottom: 1.5rem; border: none; padding: 0; }
+    .article-full-body h2 { font-size: 1.15rem; color: var(--terra); margin: 1.6rem 0 0.5rem; font-family: 'Amiri', Georgia, serif; }
+    .article-full-body h3 { font-size: 1rem; color: var(--brown-warm); margin: 1.2rem 0 0.4rem; font-family: 'Amiri', Georgia, serif; }
+    .article-full-body p  { color: var(--text-mid); line-height: 1.85; margin-bottom: 0.9rem; font-size: 0.96rem; }
+    .article-full-body ul, .article-full-body ol { padding-right: 1.5rem; padding-left: 0; margin-bottom: 1rem; }
+    .article-full-body li { color: var(--text-mid); line-height: 1.8; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .key-stat {
+      background: linear-gradient(135deg, #5c3320, #7a4a30, var(--terra));
+      color: #fff;
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 1rem;
+      align-items: center;
+    }
+    .key-stat .ks-num { font-size: 2.2rem; font-weight: 700; color: var(--accent-light); line-height: 1; flex-shrink: 0; font-family: 'Amiri', Georgia, serif; }
+    .key-stat .ks-txt { font-size: 0.92rem; line-height: 1.6; opacity: 0.93; text-align: right; }
+    .art-callout {
+      border-right: 4px solid var(--terra);
+      border-left: none;
+      background: var(--sand-light);
+      padding: 1rem 1.4rem;
+      border-radius: var(--radius) 0 0 var(--radius);
+      margin: 1.5rem 0;
+      font-size: 0.94rem;
+      color: var(--terra-dark);
+      font-style: italic;
+    }
+    .hidden { display: none; }
+
+    @media (max-width: 900px) {
+      .articles-main-grid { grid-template-columns: 1fr 1fr; }
+      .article-full-body  { padding: 1.5rem; }
+      .article-full-hero  { height: 220px; }
+    }
+    @media (max-width: 600px) {
+      .articles-main-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN GATE: redirect guests to login ── -->
+<script>
+(function() {
+  if (!localStorage.getItem('hl-session')) {
+    sessionStorage.setItem('hl-redirect', 'articles.html');
+    window.location.replace('login.html?next=articles.html');
+  }
+})();
+</script>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">حياة <span>صحية</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">الرئيسية</a></li>
+      <li><a href="meal-plans.html">خطط الوجبات</a></li>
+      <li><a href="exercise.html">التمارين</a></li>
+      <li><a href="tips.html">النصائح</a></li>
+      <li><a href="calculator.html">الحاسبة</a></li>
+      <li><a href="articles.html" class="active">المقالات</a></li>
+      <li><a href="login.html">الدخول</a></li>
+      <li><a href="../articles.html" class="lang-switch">🌐 English</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:3rem 2rem 4rem;">
+  <h1 style="font-size:2.4rem;">المقالات الصحية</h1>
+  <p>مقالات مبنية على الأدلة العلمية حول التغذية واللياقة والنوم والعقلية والصحة — تُحدَّث بانتظام.</p>
+</section>
+
+<!-- FILTER BAR -->
+<div class="article-filter-bar">
+  <span class="filter-label">تصفية:</span>
+  <div class="filter-chip active" data-filter="all"       onclick="filterArticles('all')">الكل</div>
+  <div class="filter-chip" data-filter="nutrition"        onclick="filterArticles('nutrition')">🥗 تغذية</div>
+  <div class="filter-chip" data-filter="fitness"          onclick="filterArticles('fitness')">💪 لياقة</div>
+  <div class="filter-chip" data-filter="sleep"            onclick="filterArticles('sleep')">😴 نوم</div>
+  <div class="filter-chip" data-filter="mindset"          onclick="filterArticles('mindset')">🧠 عقلية</div>
+  <div class="filter-chip" data-filter="habits"           onclick="filterArticles('habits')">🔄 عادات</div>
+  <div class="filter-chip" data-filter="science"          onclick="filterArticles('science')">🔬 علوم</div>
+</div>
+
+<!-- ARTICLE GRID -->
+<section>
+  <div class="container">
+    <div class="articles-main-grid" id="articles-grid">
+
+      <!-- ═══ ARTICLE 1 ═══ -->
+      <article class="art-card" data-cat="nutrition" onclick="openArticle('mediterranean')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&fit=crop" alt="حمية البحر المتوسط" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-nutrition">تغذية</span>
+          <h3 class="art-title">لماذا يتصدر نظام البحر المتوسط الغذائي كل التصنيفات الصحية؟</h3>
+          <p class="art-excerpt">غني بزيت الزيتون والأسماك والبقوليات والخضروات، يقلل حمية البحر المتوسط خطر أمراض القلب بنسبة تصل إلى 30%. إليك العلم وراء نجاحه المستمر.</p>
+          <div class="art-meta">📅 فبراير 2025 · <span class="read-time">6 دقائق قراءة</span> · <span>تغذية</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 2 ═══ -->
+      <article class="art-card" data-cat="fitness" onclick="openArticle('strength')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&fit=crop" alt="تمارين القوة" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-fitness">لياقة</span>
+          <h3 class="art-title">تمارين القوة تحرق دهوناً أكثر من الكارديو — إليك السبب</h3>
+          <p class="art-excerpt">الأنسجة العضلية تحرق سعرات حرارية أثناء الراحة. بناء الكتلة العضلية هو الاستراتيجية الأكثر كفاءة لخسارة الدهون على المدى الطويل.</p>
+          <div class="art-meta">📅 يناير 2025 · <span class="read-time">5 دقائق قراءة</span> · <span>لياقة</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 3 ═══ -->
+      <article class="art-card" data-cat="sleep" onclick="openArticle('sleep')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&fit=crop" alt="النوم" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-sleep">نوم</span>
+          <h3 class="art-title">العلاقة بين النوم والوزن: كيف يجعلك النوم السيء سميناً</h3>
+          <p class="art-excerpt">أقل من 6 ساعات نوم يرفع هرمون الجوع (الجريلين) بنسبة 15% ويخفض هرمون الشبع (اللبتين) — مما يجعل الالتزام بالحمية أصعب بنسبة 40%.</p>
+          <div class="art-meta">📅 يناير 2025 · <span class="read-time">4 دقائق قراءة</span> · <span>نوم</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 4 ═══ -->
+      <article class="art-card" data-cat="mindset" onclick="openArticle('identity')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80&fit=crop" alt="العقلية" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-mindset">عقلية</span>
+          <h3 class="art-title">عادات مبنية على الهوية: لماذا "أنا شخص صحي" تتفوق على "أريد إنقاص وزني"</h3>
+          <p class="art-excerpt">الطريقة الأكثر فعالية لتغيير السلوك على المدى الطويل ليست وضع أهداف أقوى — بل تغيير هويتك. إليك كيف تصبح الشخص الذي لا يحتاج لقوة الإرادة.</p>
+          <div class="art-meta">📅 ديسمبر 2024 · <span class="read-time">5 دقائق قراءة</span> · <span>عقلية</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 5 ═══ -->
+      <article class="art-card" data-cat="science" onclick="openArticle('protein')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?w=600&q=80&fit=crop" alt="البروتين" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-science">علوم</span>
+          <h3 class="art-title">كم بروتين تحتاج فعلاً؟ الإجابة العلمية الشاملة</h3>
+          <p class="art-excerpt">من 0.8 غ/كغ إلى 2.2 غ/كغ — الأبحاث أوضح مما تتصور. تعرّف متى يهم البروتين أكثر، وما أفضل المصادر، وكيف يؤثر التوقيت.</p>
+          <div class="art-meta">📅 ديسمبر 2024 · <span class="read-time">7 دقائق قراءة</span> · <span>علوم</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 6 ═══ -->
+      <article class="art-card" data-cat="habits" onclick="openArticle('consistency')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80&fit=crop" alt="عادات صحية" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-habits">عادات</span>
+          <h3 class="art-title">10 عادات يتبعها الأشخاص الذين يحافظون على رشاقتهم مدى الحياة</h3>
+          <p class="art-excerpt">الرشاقة طويلة المدى ليست عن الحمية — بل عن بناء أسلوب حياة. هذه العادات العشر هي ما يميز من يبقى صحياً بلا جهد عمن يعاني باستمرار.</p>
+          <div class="art-meta">📅 نوفمبر 2024 · <span class="read-time">6 دقائق قراءة</span> · <span>عادات</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- FULL ARTICLE SECTIONS -->
+
+<!-- ═══════════ ARTICLE 1: البحر المتوسط ═══════════ -->
+<div id="full-mediterranean" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80&fit=crop" alt="حمية البحر المتوسط" />
+        <div class="article-full-body">
+          <span class="art-cat c-nutrition" style="margin-bottom:0.8rem;">تغذية</span>
+          <h1>لماذا يتصدر نظام البحر المتوسط الغذائي كل التصنيفات الصحية باستمرار؟</h1>
+          <div class="art-meta">📅 فبراير 2025 · <span class="read-time">6 دقائق قراءة</span></div>
+
+          <p>للسنة السابعة على التوالي، صنّفت مجلة U.S. News &amp; World Report نظام البحر المتوسط الغذائي كأفضل نظام غذائي في العالم. هذا ليس مصادفة. عقود من الأبحاث تُظهر باستمرار أن هذا النمط الغذائي — المولود على شواطئ اليونان وإيطاليا والشرق الأوسط — هو أحد أقوى الأدوات المتاحة لنا للوقاية من الأمراض المزمنة والعيش لفترة أطول.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">30%</div>
+            <div class="ks-txt">انخفاض في أحداث القلب والأوعية الدموية (النوبة القلبية، السكتة الدماغية) بين الأفراد ذوي المخاطر العالية الذين اتبعوا حمية البحر المتوسط — دراسة PREDIMED عام 2013، مجلة نيو إنجلاند الطبية.</div>
+          </div>
+
+          <h2>كيف يبدو نظام البحر المتوسط الغذائي فعلاً؟</h2>
+          <p>نظام البحر المتوسط ليس خطة وجبات صارمة — بل هو نمط أكل مبني على أطعمة كاملة قليلة المعالجة:</p>
+          <ul>
+            <li><strong>بكثرة:</strong> خضروات، فواكه، بقوليات، حبوب كاملة، مكسرات، بذور، زيت زيتون</li>
+            <li><strong>باعتدال:</strong> أسماك ومأكولات بحرية (2–3 مرات/أسبوع)، دواجن، بيض، ألبان (خاصة الزبادي والجبن)</li>
+            <li><strong>نادراً:</strong> لحوم حمراء، حلويات، أطعمة فائقة المعالجة</li>
+            <li><strong>يومياً:</strong> زيت الزيتون البكر الممتاز كمصدر دهون رئيسي</li>
+          </ul>
+
+          <h2>العلم: لماذا ينجح هذا النظام</h2>
+          <h3>1. مضاد للالتهابات بطبيعته</h3>
+          <p>الالتهاب المزمن منخفض الدرجة يقود تقريباً كل مرض مزمن رئيسي — أمراض القلب، السكري من النوع الثاني، الزهايمر، وبعض أنواع السرطان. نظام البحر المتوسط غني بالبوليفينولات (من زيت الزيتون والخضروات والتوت) وأحماض أوميغا-3 الدهنية (من الأسماك والجوز)، وكلاهما من أقوى المركبات الطبيعية المضادة للالتهابات.</p>
+
+          <h3>2. دعم ميكروبيوم الأمعاء</h3>
+          <p>تناول كمية عالية من الألياف من البقوليات والحبوب الكاملة والخضروات يغذي البكتيريا النافعة في الأمعاء. وجدت دراسة عام 2021 في مجلة Cell أن نظاماً غذائياً غنياً بالألياف على طريقة البحر المتوسط زاد تنوع الميكروبيوم — وهو مؤشر رئيسي للصحة الأيضية والمناعية.</p>
+
+          <div class="art-callout">
+            "البيانات متسقة بشكل ملحوظ: من مجتمع إلى آخر، ومن عقد إلى آخر، يأتي نظام البحر المتوسط في المقدمة لصحة القلب والأوعية الدموية والوظائف الإدراكية وطول العمر." — د. والتر ويليت، كلية هارفارد للصحة العامة
+          </div>
+
+          <h3>3. تنظيم سكر الدم</h3>
+          <p>على عكس الأنظمة الغذائية الغربية عالية مؤشر نسبة السكر في الدم، يحافظ نمط البحر المتوسط على استقرار سكر الدم من خلال: أطعمة منخفضة مؤشر نسبة السكر (بقوليات، خضروات)، ودهون صحية تبطئ امتصاص الجلوكوز، وألياف عالية تخفف ارتفاعات الأنسولين.</p>
+
+          <h3>4. صحة الدماغ وطول العمر</h3>
+          <p>نظام MIND الغذائي — وهو مزيج من نظام البحر المتوسط ونظام DASH — ارتبط بانخفاض بنسبة 53% في معدل الإصابة بالزهايمر لدى من التزموا به بصرامة. مركب الأوليوكانثال في زيت الزيتون له خصائص مضادة للالتهابات مشابهة للإيبوبروفين ويبدو أنه يعزز إزالة بروتينات الأميلويد المرتبطة بالزهايمر.</p>
+
+          <h2>كيف تبدأ اليوم</h2>
+          <ul>
+            <li>استبدل الزبدة بزيت الزيتون البكر الممتاز للطبخ</li>
+            <li>تناول السمك أو المأكولات البحرية مرتين على الأقل هذا الأسبوع</li>
+            <li>أضف حفنة من المكسرات (الجوز، اللوز) كوجبة خفيفة يومية</li>
+            <li>ابنِ كل وجبة حول الخضروات، وليس البروتين أو الكربوهيدرات</li>
+            <li>استبدل الخبز الأبيض والمعكرونة بنسخ من الحبوب الكاملة</li>
+            <li>استخدم الأعشاب والليمون بدلاً من الملح والصلصات</li>
+          </ul>
+
+          <p>تقدم <a href="meal-plans.html" style="color:var(--terra);font-weight:600;">خطة وجبات البحر المتوسط</a> لدينا خطة كاملة لمدة 7 أيام جاهزة للاتباع مع وصفات كاملة وسعرات حرارية ومغذيات كبرى.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 2: تمارين القوة ═══════════ -->
+<div id="full-strength" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&fit=crop" alt="تمارين القوة" />
+        <div class="article-full-body">
+          <span class="art-cat c-fitness">لياقة</span>
+          <h1>تمارين القوة تحرق دهوناً أكثر من الكارديو — إليك السبب</h1>
+          <div class="art-meta">📅 يناير 2025 · <span class="read-time">5 دقائق قراءة</span></div>
+
+          <p>لعقود، كانت الحكمة التقليدية بسيطة: إذا أردت حرق الدهون، اصعد على جهاز الجري. الكارديو يساوي خسارة الدهون. كلما تعرقت أكثر، خسرت أكثر. لكن الأبحاث تروي قصة أكثر دقة — وأكثر فائدة بكثير.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">~6×</div>
+            <div class="ks-txt">أكثر سعرات حرارية لكل كيلوغرام يحرقها النسيج العضلي أثناء الراحة مقارنة بالنسيج الدهني. كل كيلوغرام عضلات تضيفه يرفع معدل الأيض أثناء الراحة بحوالي 13 سعرة/يوم بشكل دائم.</div>
+          </div>
+
+          <h2>تأثير EPOC: حرق السعرات بعد التوقف</h2>
+          <p>الكارديو يحرق سعرات أثناء التمرين. تمارين القوة كذلك — لكنها أيضاً تحفز تأثير EPOC (استهلاك الأكسجين الزائد بعد التمرين)، المعروف أيضاً بـ"تأثير ما بعد الحرق". بعد جلسة تدريب مقاومة شاقة، يستمر جسمك في حرق سعرات مرتفعة لمدة تصل إلى 38 ساعة أثناء إصلاح ألياف العضلات واستعادة الجليكوجين وإعادة توازن الهرمونات.</p>
+
+          <h2>العضلات مكلفة أيضياً</h2>
+          <p>أهم شيء يمكنك فعله للتحكم في الدهون على المدى الطويل هو بناء الكتلة العضلية والحفاظ عليها. إليك السبب:</p>
+          <ul>
+            <li>النسيج العضلي لديه معدل أيض أثناء الراحة يبلغ ~13 سعرة/كغ/يوم</li>
+            <li>النسيج الدهني يحرق فقط ~4.5 سعرة/كغ/يوم أثناء الراحة</li>
+            <li>كل كيلوغرام عضلات مضاف يرفع حرقك لـ24 ساعة بشكل دائم</li>
+            <li>العضلات تحافظ على أيضك مع تقدم العمر</li>
+          </ul>
+
+          <div class="art-callout">
+            "إذا مارست الكارديو فقط، قد تفقد وزناً — لكن نسبة كبيرة ستكون من العضلات. تمارين القوة تضمن أن الوزن الذي تفقده هو دهون، وليس كتلة عضلية."
+          </div>
+
+          <h2>ماذا يقول البحث: التدريب المشترك يفوز</h2>
+          <p>تحليل تجميعي عام 2012 في مجلة Obesity Reviews قارن بين التدريب الهوائي وتدريب المقاومة والتدريب المشترك لخسارة الدهون في 700 شخص. النتائج:</p>
+          <ul>
+            <li>كارديو فقط: الأفضل لحرق السعرات الفوري، لكن تأثير ضئيل على الأيض أثناء الراحة</li>
+            <li>قوة فقط: الأفضل للحفاظ على وبناء الكتلة العضلية، تأثير EPOC أعلى</li>
+            <li><strong>المشترك (أفضل نتيجة): خسارة دهون أكبر، تكوين جسم أفضل، معدل أيض أعلى على المدى الطويل</strong></li>
+          </ul>
+
+          <h2>النتيجة العملية</h2>
+          <p>البرنامج الأمثل لخسارة الدهون يجمع بين 3 أيام تدريب قوة و2–3 أيام كارديو (أو HIIT). <a href="exercise.html" style="color:var(--terra);font-weight:600;">خطط التمارين</a> لدينا مصممة بهذه الطريقة تماماً — مع مسارات للمبتدئين والمتقدمين للرجال والنساء.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 3: النوم ═══════════ -->
+<div id="full-sleep" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&q=80&fit=crop" alt="النوم" />
+        <div class="article-full-body">
+          <span class="art-cat c-sleep">نوم</span>
+          <h1>العلاقة بين النوم والوزن: كيف يجعلك النوم السيء سميناً</h1>
+          <div class="art-meta">📅 يناير 2025 · <span class="read-time">4 دقائق قراءة</span></div>
+
+          <p>معظم الناس يعرفون أن النوم مهم للطاقة والمزاج. لكن القليل يدركون أنه أحد أقوى الأدوات للتحكم في وزن الجسم والالتزام بالحمية. إذا كنت تكافح لإنقاص الوزن رغم فعلك "كل شيء صحيح"، فقد يكون نومك يقوّض كل جهودك بصمت.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">+15%</div>
+            <div class="ks-txt">زيادة في هرمون الجريلين (هرمون الجوع) بعد ليلتين فقط من النوم السيء — دراسة جامعة شيكاغو. في نفس الوقت، ينخفض اللبتين (هرمون الشبع) بنسبة 15%، مما يجعلك أكثر جوعاً وأقل شبعاً.</div>
+          </div>
+
+          <h2>الفوضى الهرمونية لقلة النوم</h2>
+          <p>النوم السيء يعطل هرمونين رئيسيين للشهية في آن واحد:</p>
+          <ul>
+            <li><strong>الجريلين (↑)</strong> — يشير بالجوع لدماغك. بعد قلة النوم، يرتفع الجريلين، مما يجعلك تشعر بالجوع حتى عندما تأكل كفاية.</li>
+            <li><strong>اللبتين (↓)</strong> — يشير بالشبع. مع لبتين أقل، لا يسجل دماغك الشعور بالشبع، مما يؤدي للإفراط المزمن في الأكل.</li>
+          </ul>
+          <p>وجدت دراسة عام 2004 في PLOS Medicine أن الأشخاص الذين ينامون ≤5 ساعات في الليلة لديهم جريلين أعلى بنسبة 15% ولبتين أقل بنسبة 15% مقارنة بمن ينامون 8 ساعات — أي ما يعادل زيادة 355 سعرة/يوم في الشهية.</p>
+
+          <h2>النوم واختيارات الطعام</h2>
+          <p>الأمر يزداد سوءاً. قلة النوم لا تجعلك أكثر جوعاً فحسب — بل تجعلك تشتهي أسوأ الأطعمة. أظهرت دراسة عام 2013 من جامعة كاليفورنيا بيركلي باستخدام تصوير fMRI للدماغ أن الأشخاص المحرومين من النوم لديهم نشاط متزايد بشكل ملحوظ في مناطق المكافأة عند رؤية صور الأطعمة غير الصحية.</p>
+
+          <div class="art-callout">
+            الحرمان من النوم يشبه الذهاب للسوبرماركت وأنت ثمل: تعرف ما يجب شراؤه، لكن دماغك يوجهك مباشرة نحو رف البسكويت.
+          </div>
+
+          <h2>الكورتيزول: هرمون دهون البطن</h2>
+          <p>النوم السيء يرفع أيضاً الكورتيزول — هرمون التوتر الرئيسي. الكورتيزول المرتفع بشكل مزمن يعزز تخزين الدهون الحشوية (الدهون حول البطن — النوع الأخطر أيضياً)، ويكسر الأنسجة العضلية للحصول على الطاقة، ويحفز الرغبة في الأطعمة عالية السعرات والسكر.</p>
+
+          <h2>تحسين النوم عملياً</h2>
+          <ul>
+            <li><strong>استهدف 7–9 ساعات</strong> — غير قابل للتفاوض لمعظم البالغين</li>
+            <li><strong>جدول ثابت</strong> — نفس وقت النوم والاستيقاظ، حتى في عطلة نهاية الأسبوع</li>
+            <li><strong>غرفة باردة ومظلمة</strong> — 17–19°م هي درجة حرارة النوم المثالية</li>
+            <li><strong>بدون شاشات 60 دقيقة قبل النوم</strong> — الضوء الأزرق يثبط الميلاتونين بنسبة تصل إلى 50%</li>
+            <li><strong>تجنب الكافيين بعد الثانية ظهراً</strong> — عمر النصف للكافيين 5–6 ساعات</li>
+            <li><strong>آخر وجبة 2–3 ساعات قبل النوم</strong> — الأكل المتأخر يعطل بنية النوم ويرفع الأنسولين</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 4: الهوية ═══════════ -->
+<div id="full-identity" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80&fit=crop" alt="العقلية" />
+        <div class="article-full-body">
+          <span class="art-cat c-mindset">عقلية</span>
+          <h1>عادات مبنية على الهوية: لماذا "أنا شخص صحي" تتفوق على "أريد إنقاص وزني"</h1>
+          <div class="art-meta">📅 ديسمبر 2024 · <span class="read-time">5 دقائق قراءة</span></div>
+
+          <p>معظم الناس يتعاملون مع تغيير السلوك بشكل معكوس. يبدؤون بهدف نتيجة ("أريد خسارة 10 كغ")، ويضعون عملية للوصول ("سأذهب للنادي 5 أيام في الأسبوع")، ويأملون أن الدافع يحملهم. لكنه لا يفعل أبداً — ليس على المدى الطويل. الفكرة الرئيسية من علم النفس السلوكي أبسط وأقوى: <strong>غيّر هويتك، لا أهدافك.</strong></p>
+
+          <h2>الطبقات الثلاث لتغيير السلوك</h2>
+          <p>يصف جيمس كلير في كتاب "العادات الذرية" ثلاث دوائر متحدة المركز لتغيير السلوك:</p>
+          <ol>
+            <li><strong>النتائج</strong> (الطبقة الخارجية) — ما تريد تحقيقه</li>
+            <li><strong>العمليات</strong> — ما العادات التي تبنيها</li>
+            <li><strong>الهوية</strong> (الطبقة الداخلية) — من تعتقد أنك عليه</li>
+          </ol>
+          <p>معظم الناس يركزون على النتائج. أكثر المغيّرين فعالية يعملون من الداخل للخارج — بدءاً من الهوية.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">2×</div>
+            <div class="ks-txt">أكثر احتمالاً للحفاظ على تغيير السلوك عندما يكون مرتبطاً بالهوية مقابل وضع الأهداف فقط — بحث جامعة باث حول تكوين العادات ومفهوم الذات.</div>
+          </div>
+
+          <div class="art-callout">
+            "كل فعل تقوم به هو تصويت لنوع الشخص الذي ترغب في أن تصبحه." — جيمس كلير، العادات الذرية
+          </div>
+
+          <h2>من "أحاول الأكل الصحي" إلى "أنا آكل صحي"</h2>
+          <p>الفرق عميق. "أحاول" تعني صراعاً وإرادة وتضحية. "أنا" تعني هوية — سلوكك الافتراضي الطبيعي. عندما يعرض عليك أحدهم حلوى:</p>
+          <ul>
+            <li><strong>قائم على الهدف:</strong> "لا أستطيع، أنا على حمية." (قيد خارجي، سهل الكسر)</li>
+            <li><strong>قائم على الهوية:</strong> "لا شكراً، أنا لا آكل هذه الأشياء عادة." (حقيقة داخلية)</li>
+          </ul>
+
+          <h2>كيف تبني هوية من خلال أدلة صغيرة</h2>
+          <p>لا تعلن عن هوية وتصبحها فجأة. تبنيها من خلال أفعال صغيرة تعمل كأدلة. في كل مرة:</p>
+          <ul>
+            <li>تختار الماء بدلاً من المشروب الغازي</li>
+            <li>تذهب لمشي 10 دقائق</li>
+            <li>تحضّر وجباتك يوم الأحد</li>
+            <li>تنام قبل منتصف الليل</li>
+          </ul>
+          <p>... تدلي بـ"صوت" لكونك شخصاً يعتني بصحته. مع الوقت، تتراكم هذه الأصوات لتشكل قناعة راسخة عن هويتك. عندها يصبح السلوك الصحي تلقائياً بدلاً من منضبط.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 5: البروتين ═══════════ -->
+<div id="full-protein" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?w=1200&q=80&fit=crop" alt="البروتين" />
+        <div class="article-full-body">
+          <span class="art-cat c-science">علوم</span>
+          <h1>كم بروتين تحتاج فعلاً؟ الإجابة العلمية الشاملة</h1>
+          <div class="art-meta">📅 ديسمبر 2024 · <span class="read-time">7 دقائق قراءة</span></div>
+
+          <p>البروتين هو على الأرجح أكثر المغذيات الكبرى مناقشةً وسوء فهم. التوصيات الحكومية تقول 0.8 غ لكل كيلوغرام من وزن الجسم. لاعبو كمال الأجسام يوصون بـ3–4 غ/كغ. الحقيقة، بناءً على أفضل الأدلة المتاحة، تقع في مكان أكثر تحديداً — وتعتمد على أهدافك.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">1.6–2.2غ</div>
+            <div class="ks-txt">غرام بروتين لكل كيلوغرام من وزن الجسم يومياً — النطاق الأمثل المدعوم بالأبحاث لبناء العضلات وخسارة الدهون، وفقاً لتحليل تجميعي عام 2018 لـ49 دراسة في المجلة البريطانية للطب الرياضي.</div>
+          </div>
+
+          <h2>التوصيات حسب الهدف</h2>
+          <ul>
+            <li><strong>خامل / صحة عامة:</strong> 0.8–1.0 غ/كغ — يمنع النقص، يحافظ على العضلات الموجودة</li>
+            <li><strong>نشيط، خسارة دهون:</strong> 1.6–2.0 غ/كغ — يحافظ على العضلات أثناء عجز السعرات، شبع عالٍ</li>
+            <li><strong>بناء عضلات:</strong> 1.8–2.2 غ/كغ — يحقق أقصى تخليق بروتين عضلي</li>
+            <li><strong>كبار السن (65+):</strong> 1.2–1.6 غ/كغ — يقاوم فقدان العضلات المرتبط بالعمر</li>
+          </ul>
+
+          <h2>جودة البروتين لا تقل أهمية عن الكمية</h2>
+          <p>ليس كل بروتين متساوياً. المقياس الرئيسي هو <strong>محتوى اللوسين</strong> — اللوسين هو الحمض الأميني الذي يحفز بقوة تخليق بروتين العضلات (MPS). البروتينات الحيوانية (لحم، سمك، بيض، ألبان) لديها محتوى لوسين أعلى وقابلية هضم أفضل من معظم البروتينات النباتية.</p>
+          <p>إذا كنت نباتياً، الحل ليس التخلي عن أهداف البروتين — بل التركيز على بروتينات نباتية غنية باللوسين (الصويا، العدس، الإدامامي) والجمع بين أحماض أمينية متكاملة (أرز + فاصوليا مثلاً) على مدار اليوم.</p>
+
+          <h2>توقيت البروتين: هل يهم؟</h2>
+          <p>نعم — لكن أقل من إجمالي المتناول اليومي. الأدلة الحالية تقترح:</p>
+          <ul>
+            <li>وزّع البروتين على 3–5 وجبات بدلاً من تحميل وجبة واحدة (العضلات تستخدم فقط ~25–40 غ لكل جلسة للـMPS)</li>
+            <li>بروتين بعد التمرين (خلال ساعتين) مفيد لإصلاح العضلات</li>
+            <li>وجبة خفيفة غنية بالكازين قبل النوم (جبن قريش، زبادي يوناني) تمدد تخليق العضلات الليلي</li>
+          </ul>
+
+          <div class="art-callout">
+            البروتين هو أكثر المغذيات الكبرى إشباعاً — غرام بغرام، يكبت الجوع أكثر من الكربوهيدرات أو الدهون. الأنظمة عالية البروتين تقلل باستمرار إجمالي السعرات المتناولة دون الحاجة لتقييد واعٍ.
+          </div>
+
+          <p>استخدم <a href="calculator.html" style="color:var(--terra);font-weight:600;">حاسبة الجسم</a> لدينا للحصول على هدف بروتين يومي مخصص بناءً على وزنك وهدفك ومستوى نشاطك.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 6: الاتساق ═══════════ -->
+<div id="full-consistency" class="hidden">
+  <section style="background:var(--sand-light);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--cream);color:var(--terra);border:1px solid var(--brown-light);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Tajawal',sans-serif;">→ العودة للمقالات</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=1200&q=80&fit=crop" alt="عادات صحية" />
+        <div class="article-full-body">
+          <span class="art-cat c-habits">عادات</span>
+          <h1>10 عادات يتبعها الأشخاص الذين يحافظون على رشاقتهم مدى الحياة</h1>
+          <div class="art-meta">📅 نوفمبر 2024 · <span class="read-time">6 دقائق قراءة</span></div>
+
+          <p>إنقاص الوزن هو الجزء السهل فعلاً. الحفاظ عليه هو حيث يفشل معظم الناس — وليس بسبب الإرادة أو الجينات. السبب أنهم تعاملوا مع الحمية كحدث مؤقت بدلاً من بناء سلوكيات دائمة. هذه العادات العشر يتشاركها من يبقون رشيقين طبيعياً لعقود.</p>
+
+          <h2>1. يأكلون بروتيناً في كل وجبة</h2>
+          <p>البروتين يبقيك ممتلئاً، يحمي العضلات، وله أعلى تأثير حراري بين أي مغذٍّ كبير (جسمك يحرق 20–30% من سعراته فقط لهضمه). الأشخاص الرشيقون طبيعياً لا يفكرون في هذا بوعي — إنه ببساطة طريقتهم في الأكل.</p>
+
+          <h2>2. لا يشربون سعراتهم الحرارية</h2>
+          <p>السعرات السائلة لا تحفز نفس إشارات الشبع كالطعام الصلب. الأشخاص الرشيقون طبيعياً يشربون بشكل أساسي الماء والقهوة السوداء والشاي بدون سكر. نادراً ما يشربون العصير أو العصائر المحلاة أو الكحول بانتظام.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">+450</div>
+            <div class="ks-txt">متوسط السعرات الإضافية يومياً التي يستهلكها من يشربون المشروبات السكرية بانتظام — أي ما يعادل وجبة كاملة إضافية يومياً، بدون شعور بالشبع.</div>
+          </div>
+
+          <h2>3. يتحركون عرضياً، ليس فقط "في النادي"</h2>
+          <p>التوليد الحراري للنشاط غير الرياضي (NEAT) — السعرات المحروقة من الحركة اليومية كالمشي والوقوف — يمكن أن يختلف حتى 2,000 سعرة/يوم بين الأشخاص. الأشخاص الرشيقون طبيعياً يميلون لأن يكونوا "متحركين" طوال اليوم، وليس فقط أثناء التمارين المجدولة.</p>
+
+          <h2>4. ينامون 7–9 ساعات بانتظام</h2>
+          <p>كما تناولنا في مقال النوم، قلة النوم تخرب كل جهد حمية. الأشخاص الرشيقون بشكل مزمن يعاملون النوم كركيزة صحية غير قابلة للتفاوض — وليس ترفاً.</p>
+
+          <h2>5. لديهم علاقة مريحة مع الطعام</h2>
+          <p>بشكل متناقض، الأشخاص الأقل هوساً بالطعام غالباً يأكلون بشكل أفضل. ليس لديهم أطعمة محظورة، ولا دورات ذنب، ولا أنماط إفراط-تقييد. كل شيء مسموح باعتدال — مما يزيل المحفز النفسي الذي يجعل الأطعمة "المحظورة" لا تقاوم.</p>
+
+          <h2>6. يطبخون معظم طعامهم</h2>
+          <p>طعام المطاعم والتوصيل يحتوي في المتوسط على 2–3 أضعاف الصوديوم والدهون والسعرات مقارنة بالمطبوخ منزلياً. الأشخاص الرشيقون طبيعياً يطبخون بشكل اعتيادي — ليس لأنهم مهووسون بالصحة، بل لأنه أسلوبهم الافتراضي.</p>
+
+          <h2>7. يأكلون ببطء ويتوقفون عند 80% امتلاء</h2>
+          <p>يستغرق 15–20 دقيقة لإشارات الشبع من أمعائك للوصول لدماغك. الأكل ببطء يسمح لهذه الإشارة بالوصول قبل أن تفرط في الأكل. كثير من الثقافات التقليدية لديها أسماء لهذا — اليابانيون في أوكيناوا يسمونه "هارا هاتشي بو" — التوقف عند 80% امتلاء.</p>
+
+          <h2>8. لا يأكلون من الملل أو العاطفة</h2>
+          <p>طوّروا استجابات غير غذائية للتوتر والملل والعاطفة — المشي، الاتصال بصديق، الكتابة. الأكل العاطفي هو نمط مكتسب يمكن التخلص منه بالممارسة والوعي.</p>
+
+          <h2>9. لديهم عدة وجبات "مرساة" يتناوبون عليها</h2>
+          <p>إرهاق القرارات حقيقي. الأشخاص الذين يبقون رشيقين لا يعيدون اختراع نظامهم الغذائي كل يوم — لديهم 5–8 وجبات صحية يحبونها ويتناوبون عليها. هذا يزيل الاحتكاك ويمنع اللجوء للوجبات السريعة عند التعب.</p>
+
+          <h2>10. لا يفوّتون مرتين متتاليتين</h2>
+          <p>يخطئون — الكل يخطئ. لكنهم استوعبوا القاعدة الذهبية: لا تفوّت نفس السلوك الصحي يومين متتاليين أبداً. خطأ واحد مجرد عثرة. اثنان متتاليان هما بداية تراجع.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>حياة صحية</strong> — كُل بذكاء، تحرّك أكثر، عِش أطول.</p>
+  <p style="margin-top:0.5rem;">للأغراض التعليمية فقط. استشر أخصائي الرعاية الصحية قبل إجراء تغييرات غذائية كبيرة.</p>
+</footer>
+
+<script>
+/* ── Filter articles ── */
+function filterArticles(cat) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === cat));
+  document.querySelectorAll('.art-card').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+/* ── Open / close full article ── */
+const grid    = document.querySelector('.articles-main-grid').closest('section');
+const filterBar = document.querySelector('.article-filter-bar');
+
+function openArticle(id) {
+  grid.style.display = 'none';
+  filterBar.style.display = 'none';
+  document.querySelectorAll('[id^="full-"]').forEach(el => el.classList.add('hidden'));
+  const target = document.getElementById('full-' + id);
+  if (target) {
+    target.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function closeArticle() {
+  document.querySelectorAll('[id^="full-"]').forEach(el => el.classList.add('hidden'));
+  grid.style.display = '';
+  filterBar.style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Hash routing: articles.html#mediterranean ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#','');
+  if (hash) openArticle(hash);
+});
+
+/* ── Nav session ── */
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--terra-dark);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:var(--sand);border:1px solid var(--brown-light);color:var(--terra-dark);padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:'Tajawal',sans-serif;">خروج</button>
+    </li>`);
+})();
+</script>
+
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  var d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+</body>
+</html>

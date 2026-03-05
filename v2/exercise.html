@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise Plans — HealthyLife</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .exercise-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .exercise-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--dark-card);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.2rem;
+      transition: var(--transition);
+    }
+    .exercise-item:hover { border-color: var(--orange); background: var(--dark-surface); }
+    .ex-name { font-weight: 600; color: var(--text); font-size: 0.92rem; }
+    .ex-detail { font-weight: 800; color: var(--orange); font-size: 0.85rem; font-family: 'Montserrat', sans-serif; }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+    @media (max-width: 700px) { .schedule-grid { grid-template-columns: repeat(4, 1fr); } }
+    .schedule-card {
+      background: var(--dark-card);
+      border-radius: var(--radius);
+      padding: 1rem 0.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(16,185,129,0.25);
+      transition: var(--transition);
+    }
+    .schedule-card:hover { border-color: var(--orange); }
+    .schedule-card.cardio   { border-top: 3px solid var(--orange); }
+    .schedule-card.strength { border-top: 3px solid var(--purple); }
+    .schedule-card.rest     { border-top: 3px solid rgba(255,255,255,0.20); }
+    .schedule-day  { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--text); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .schedule-type { font-size: 0.75rem; color: var(--gray-mid); line-height: 1.4; }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN GATE: redirect guests to login ── -->
+<script>
+(function() {
+  if (!localStorage.getItem('hl-session')) {
+    sessionStorage.setItem('hl-redirect', 'exercise.html');
+    window.location.replace('login.html?next=exercise.html');
+  }
+})();
+</script>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Healthy <span>Life</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="meal-plans.html">Meal Plans</a></li>
+      <li><a href="exercise.html" class="active">Exercise</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="ar/exercise.html" class="lang-switch">🌐 العربية</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<!-- HERO WITH GENDER TOGGLE -->
+<section class="hero hero-exercise" style="padding: 3.5rem 2rem 4.5rem;">
+  <h1 style="font-size: 2.5rem;">Workout Plans</h1>
+  <p>Science-backed training programmes designed specifically for your body and goals.</p>
+  <div class="gender-toggle-wrap">
+    <div class="gender-toggle">
+      <button class="gender-btn active" id="btn-men-exercise" onclick="switchGender('exercise','men')">&#9794; Men</button>
+      <button class="gender-btn" id="btn-women-exercise" onclick="switchGender('exercise','women')">&#9792; Women</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MEN'S WORKOUT ===== -->
+<div class="gender-panel active" id="panel-men-exercise">
+
+  <!-- Intro cards -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Men's Training Overview</h2>
+        <p>Build strength, burn fat and boost testosterone with compound lifts and high-intensity cardio.</p>
+      </div>
+      <div class="photo-cards">
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Strength</div>
+            <h3>Compound Lifts First</h3>
+            <p>Squats, deadlifts, bench press and rows form the backbone of every session — maximum muscle, maximum burn.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Cardio</div>
+            <h3>HIIT for Fat Loss</h3>
+            <p>2–3 HIIT sessions per week elevate your metabolism for up to 24 hours after training ends.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Recovery</div>
+            <h3>Rest &amp; Grow</h3>
+            <p>Muscle is built during recovery. Sleep 7–9 hours and take active rest days to prevent overtraining.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly Schedule -->
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>Men's Weekly Schedule</h2>
+        <p>4 training days, strategic rest — built for strength and fat loss.</p>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-card cardio"><div class="schedule-day">Mon</div><div class="schedule-type">Upper Body Strength</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Tue</div><div class="schedule-type">HIIT Cardio (30 min)</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">Wed</div><div class="schedule-type">Lower Body Strength</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Thu</div><div class="schedule-type">Active Rest / Walk</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">Fri</div><div class="schedule-type">Full Body + Core</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">Sat</div><div class="schedule-type">Sports / Outdoor Activity</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Sun</div><div class="schedule-type">Rest &amp; Recovery</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beginner Program -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Men's Beginner Program</h2>
+        <p>Master the fundamentals. Build real strength from the ground up.</p>
+      </div>
+
+      <h3 style="color:var(--orange); margin-bottom:1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🔥 Warm-Up (10 min)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Jumping Jacks</div><div class="ex-detail">3 × 30 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Arm Circles + Hip Rotations</div><div class="ex-detail">2 × 20 reps each</div></div>
+        <div class="exercise-item"><div class="ex-name">Bodyweight Squats</div><div class="ex-detail">2 × 15 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Inchworms</div><div class="ex-detail">2 × 8 reps</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">💪 Upper Body (Mon)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Push-Ups</div><div class="ex-detail">3 × 12–15 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Rows</div><div class="ex-detail">3 × 12 reps each arm</div></div>
+        <div class="exercise-item"><div class="ex-name">Overhead Dumbbell Press</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Bicep Curls</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Tricep Dips (chair)</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Plank</div><div class="ex-detail">3 × 30–45 sec</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🦵 Lower Body (Wed)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Goblet Squat</div><div class="ex-detail">4 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Romanian Deadlift (dumbbells)</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Reverse Lunges</div><div class="ex-detail">3 × 10 reps each leg</div></div>
+        <div class="exercise-item"><div class="ex-name">Calf Raises</div><div class="ex-detail">3 × 20 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Glute Bridge</div><div class="ex-detail">3 × 15 reps</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🏋️ Full Body + Core (Fri)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Burpees</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Mountain Climbers</div><div class="ex-detail">3 × 30 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Thrusters</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Russian Twists</div><div class="ex-detail">3 × 20 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dead Bug</div><div class="ex-detail">3 × 10 reps each side</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">⚡ HIIT Cardio (Tue) — 30 min</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Sprint Intervals (40 sec on / 20 sec off)</div><div class="ex-detail">8 rounds</div></div>
+        <div class="exercise-item"><div class="ex-name">Jump Squats</div><div class="ex-detail">3 × 15 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">High Knees</div><div class="ex-detail">3 × 40 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Box Jumps or Step-Ups</div><div class="ex-detail">3 × 10 reps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intermediate Program -->
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>Men's Intermediate Program</h2>
+        <p>Progressive overload, heavier weights, and advanced techniques for serious results.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Barbell Back Squat</div><div class="ex-detail">4 × 8 reps @ 75% 1RM</div></div>
+        <div class="exercise-item"><div class="ex-name">Deadlift</div><div class="ex-detail">4 × 6 reps @ 80% 1RM</div></div>
+        <div class="exercise-item"><div class="ex-name">Barbell Bench Press</div><div class="ex-detail">4 × 8 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Weighted Pull-Ups</div><div class="ex-detail">4 × 6–8 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Arnold Press</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Bulgarian Split Squats</div><div class="ex-detail">3 × 10 reps each</div></div>
+        <div class="exercise-item"><div class="ex-name">Cable Rows</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Farmer's Carry</div><div class="ex-detail">3 × 40 metres</div></div>
+        <div class="exercise-item"><div class="ex-name">Ab Wheel Rollout</div><div class="ex-detail">3 × 10 reps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <div class="container" style="padding: 0 2rem 1rem;">
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80&fit=crop" alt="Weight training" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80&fit=crop" alt="Gym workout" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80&fit=crop" alt="Strength training" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80&fit=crop" alt="Running" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80&fit=crop" alt="Bench press" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80&fit=crop" alt="Push-ups" loading="lazy"/></div>
+    </div>
+  </div>
+
+  <!-- Cool Down -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Cool-Down &amp; Stretch (10 min)</h2>
+        <p>Always finish with a proper cool-down to accelerate recovery and improve flexibility.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Standing Quad Stretch</div><div class="ex-detail">30 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Seated Hamstring Stretch</div><div class="ex-detail">45 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Chest Opener (doorway)</div><div class="ex-detail">30 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Child's Pose</div><div class="ex-detail">60 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Diaphragmatic Breathing</div><div class="ex-detail">5 slow deep breaths</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /panel-men-exercise -->
+
+<!-- ===== WOMEN'S WORKOUT ===== -->
+<div class="gender-panel" id="panel-women-exercise">
+
+  <!-- Intro cards -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Women's Training Overview</h2>
+        <p>Tone, sculpt and strengthen with programmes designed to work with your hormones and energy levels.</p>
+      </div>
+      <div class="photo-cards">
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Sculpt</div>
+            <h3>Lower Body &amp; Glutes Focus</h3>
+            <p>Hip thrusts, squats and lunges activate the glutes and build lean muscle where women see the most impact.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Cardio</div>
+            <h3>Low-Impact Fat Burn</h3>
+            <p>Cycling, swimming and dance cardio protect your joints while torching calories — perfect for all levels.</p>
+          </div>
+        </div>
+        <div class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&q=80&fit=crop'); min-height:240px;">
+          <div class="photo-card-overlay">
+            <div class="photo-card-tag">Mind &amp; Body</div>
+            <h3>Yoga &amp; Flexibility</h3>
+            <p>Weekly yoga improves posture, reduces cortisol, and complements strength training for a balanced body.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly Schedule -->
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>Women's Weekly Schedule</h2>
+        <p>Balanced between strength, cardio and recovery — sustainable and enjoyable.</p>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-card strength"><div class="schedule-day">Mon</div><div class="schedule-type">Lower Body &amp; Glutes</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">Tue</div><div class="schedule-type">Low-Impact Cardio (35 min)</div></div>
+        <div class="schedule-card strength"><div class="schedule-day">Wed</div><div class="schedule-type">Upper Body &amp; Core</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Thu</div><div class="schedule-type">Active Rest / Gentle Walk</div></div>
+        <div class="schedule-card cardio"><div class="schedule-day">Fri</div><div class="schedule-type">Full Body Sculpt Circuit</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Sat</div><div class="schedule-type">Yoga &amp; Stretching</div></div>
+        <div class="schedule-card rest"><div class="schedule-day">Sun</div><div class="schedule-type">Rest &amp; Recovery</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Beginner Program -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Women's Beginner Program</h2>
+        <p>Build confidence, tone your body and develop a love for movement — no experience needed.</p>
+      </div>
+
+      <h3 style="color:var(--orange); margin-bottom:1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🌸 Warm-Up (8 min)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">March on the Spot</div><div class="ex-detail">2 × 60 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Hip Circles</div><div class="ex-detail">2 × 10 each direction</div></div>
+        <div class="exercise-item"><div class="ex-name">Bodyweight Squats</div><div class="ex-detail">2 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Cat-Cow Stretch</div><div class="ex-detail">2 × 10 reps</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🍑 Lower Body &amp; Glutes (Mon)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Sumo Squats (dumbbell)</div><div class="ex-detail">3 × 15 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Glute Bridge</div><div class="ex-detail">3 × 20 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Side-Lying Clamshell</div><div class="ex-detail">3 × 15 reps each</div></div>
+        <div class="exercise-item"><div class="ex-name">Donkey Kicks</div><div class="ex-detail">3 × 15 reps each leg</div></div>
+        <div class="exercise-item"><div class="ex-name">Reverse Lunges</div><div class="ex-detail">3 × 10 reps each leg</div></div>
+        <div class="exercise-item"><div class="ex-name">Standing Kickbacks (band)</div><div class="ex-detail">3 × 15 reps each</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">💪 Upper Body &amp; Core (Wed)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Knee Push-Ups</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Resistance Band Rows</div><div class="ex-detail">3 × 15 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Lateral Raise</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Overhead Tricep Extension</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Bicycle Crunches</div><div class="ex-detail">3 × 20 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Plank Hold</div><div class="ex-detail">3 × 25–40 sec</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">✨ Full Body Sculpt Circuit (Fri)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Step-Ups (with dumbbell)</div><div class="ex-detail">3 × 12 reps each</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Romanian Deadlift</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Chest Press (floor)</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Lateral Band Walk</div><div class="ex-detail">3 × 15 steps each way</div></div>
+        <div class="exercise-item"><div class="ex-name">Leg Raises</div><div class="ex-detail">3 × 12 reps</div></div>
+      </div>
+
+      <h3 style="color:var(--orange); margin:2rem 0 1rem; font-family:'Montserrat',sans-serif; text-transform:uppercase;">🧘 Yoga &amp; Stretch (Sat — 40 min)</h3>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Sun Salutations</div><div class="ex-detail">5 rounds (flow)</div></div>
+        <div class="exercise-item"><div class="ex-name">Warrior I &amp; II</div><div class="ex-detail">45 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Pigeon Pose</div><div class="ex-detail">60 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Seated Forward Fold</div><div class="ex-detail">60 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Supine Spinal Twist</div><div class="ex-detail">45 sec each side</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intermediate Program -->
+  <section class="bg-pale">
+    <div class="container">
+      <div class="section-title">
+        <h2>Women's Intermediate Program</h2>
+        <p>Add resistance, increase intensity and continue sculpting a stronger, leaner physique.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Barbell Hip Thrust</div><div class="ex-detail">4 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Bulgarian Split Squat</div><div class="ex-detail">3 × 10 reps each</div></div>
+        <div class="exercise-item"><div class="ex-name">Cable Kickbacks</div><div class="ex-detail">3 × 15 reps each leg</div></div>
+        <div class="exercise-item"><div class="ex-name">Assisted Pull-Ups or Lat Pulldown</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Dumbbell Arnold Press</div><div class="ex-detail">3 × 10 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Incline Dumbbell Press</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Hanging Leg Raises</div><div class="ex-detail">3 × 12 reps</div></div>
+        <div class="exercise-item"><div class="ex-name">Battle Rope Slams</div><div class="ex-detail">3 × 30 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Metabolic Finisher: 10-8-6 Circuit</div><div class="ex-detail">Squat + Push-Up + Row</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <div class="container" style="padding: 0 2rem 1rem;">
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&q=80&fit=crop" alt="Women fitness" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=400&q=80&fit=crop" alt="Yoga" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=400&q=80&fit=crop" alt="Stretching" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80&fit=crop" alt="Cardio" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80&fit=crop" alt="Workout" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=400&q=80&fit=crop" alt="Strength" loading="lazy"/></div>
+    </div>
+  </div>
+
+  <!-- Cool Down -->
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <h2>Cool-Down &amp; Stretch (10 min)</h2>
+        <p>Give your body the recovery time it deserves — you earned it.</p>
+      </div>
+      <div class="exercise-list">
+        <div class="exercise-item"><div class="ex-name">Figure-4 Glute Stretch</div><div class="ex-detail">45 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Low Lunge Hip Flexor Stretch</div><div class="ex-detail">45 sec each side</div></div>
+        <div class="exercise-item"><div class="ex-name">Seated Butterfly Stretch</div><div class="ex-detail">60 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Child's Pose</div><div class="ex-detail">60 sec</div></div>
+        <div class="exercise-item"><div class="ex-name">Legs Up the Wall</div><div class="ex-detail">2 min (recovery)</div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /panel-women-exercise -->
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>HealthyLife</strong> — Eat Smart, Move More, Live Longer.</p>
+  <p style="margin-top:0.5rem;">For educational purposes only. Consult a healthcare professional before starting any exercise programme.</p>
+</footer>
+
+<script>
+  function switchGender(page, gender) {
+    localStorage.setItem('hl-gender', gender);
+    if (page === 'exercise') {
+      document.getElementById('panel-men-exercise').classList.toggle('active', gender === 'men');
+      document.getElementById('panel-women-exercise').classList.toggle('active', gender === 'women');
+      document.getElementById('btn-men-exercise').classList.toggle('active', gender === 'men');
+      document.getElementById('btn-women-exercise').classList.toggle('active', gender === 'women');
+    }
+  }
+  (function() {
+    var saved = localStorage.getItem('hl-gender') || 'men';
+    switchGender('exercise', saved);
+  })();
+</script>
+<script>
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--orange);font-weight:700;font-size:0.9rem;font-family:'Montserrat',sans-serif;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:rgba(16,185,129,0.25);border:1px solid rgba(16,185,129,0.50);color:#fff;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;">Logout</button>
+    </li>`);
+})();
+</script>
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+</body>
+</html>

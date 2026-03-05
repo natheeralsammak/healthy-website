@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meal Plans — HealthyLife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── Personalised banner ─── */
+    .profile-banner {
+      background: linear-gradient(135deg, var(--purple-deep), var(--purple-dark), var(--purple));
+      color: #fff;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    .profile-banner h3 { font-size: 1.1rem; margin: 0; font-family: 'Montserrat', sans-serif; }
+    .profile-banner p  { font-size: 0.88rem; opacity: 0.88; margin: 0.15rem 0 0; }
+    .profile-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .btn-change-plan {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-change-plan:hover { opacity: 0.88; }
+
+    /* Guest CTA */
+    .guest-cta {
+      background: linear-gradient(135deg, rgba(15,10,30,0.88), rgba(45,22,96,0.82)),
+        url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80&fit=crop') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+    .guest-cta h2 { font-size: 1.7rem; margin-bottom: 0.6rem; font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
+    .guest-cta p  { opacity: 0.9; margin-bottom: 1.2rem; }
+    .btn-login-cta {
+      background: var(--orange);
+      color: #fff;
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-block;
+      text-decoration: none;
+      transition: var(--transition);
+      font-family: 'Montserrat', sans-serif;
+    }
+    .btn-login-cta:hover { background: var(--orange-dark); }
+
+    /* Diet type selector */
+    .diet-selector-bar {
+      background: var(--dark-mid);
+      border-bottom: 2px solid var(--purple);
+      padding: 0.9rem 2rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .diet-selector-bar span { font-weight: 700; color: var(--orange); font-size: 0.9rem; margin-right: 0.3rem; font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
+    .diet-chip {
+      padding: 0.35rem 0.9rem;
+      border: 2px solid rgba(16,185,129,0.35);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--gray-light);
+      background: var(--dark-surface);
+    }
+    .diet-chip:hover  { border-color: var(--purple-mid); background: var(--dark-card); color: var(--text); }
+    .diet-chip.active { background: linear-gradient(135deg, var(--purple-dark), var(--purple)); color: #fff; border-color: var(--purple); }
+
+    /* Plan panels */
+    .plan-panel { display: none; }
+    .plan-panel.active { display: block; }
+
+    /* Meal tag colours */
+    .diet-badge {
+      display: inline-block;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .badge-med   { background: rgba(16,185,129,0.25); color: var(--purple-light); }
+    .badge-keto  { background: rgba(255,107,43,0.20); color: var(--orange-light); }
+    .badge-lc    { background: rgba(138,92,216,0.20); color: var(--purple-mid); }
+    .badge-hp    { background: rgba(255,107,43,0.25); color: var(--orange); }
+    .badge-vegan { background: rgba(74,196,157,0.15); color: #059669; }
+    .badge-paleo { background: rgba(244,162,97,0.20); color: #d97706; }
+    .badge-if    { background: rgba(74,158,202,0.20); color: #2563eb; }
+    .badge-bal   { background: rgba(16,185,129,0.20); color: var(--purple-light); }
+
+    /* Tailored plan info box */
+    .plan-info-box {
+      border-left: 4px solid var(--orange);
+      background: var(--dark-card);
+      padding: 1rem 1.4rem;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 1.5rem;
+    }
+    .plan-info-box h3 { color: var(--orange); font-size: 1.05rem; margin-bottom: 0.3rem; font-family: 'Montserrat', sans-serif; }
+    .plan-info-box p  { font-size: 0.9rem; color: var(--gray-light); margin: 0; }
+
+    /* Logged-in nav */
+    .nav-user { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-user-name { color: var(--orange); font-weight: 700; font-size: 0.9rem; }
+    .nav-logout {
+      background: rgba(16,185,129,0.25);
+      border: 1px solid rgba(16,185,129,0.50);
+      color: #fff;
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .nav-logout:hover { background: rgba(16,185,129,0.45); }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN GATE: redirect guests to login ── -->
+<script>
+(function() {
+  if (!localStorage.getItem('hl-session')) {
+    sessionStorage.setItem('hl-redirect', 'meal-plans.html');
+    window.location.replace('login.html?next=meal-plans.html');
+  }
+})();
+</script>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Healthy<span>Life</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="meal-plans.html" class="active">Meal Plans</a></li>
+      <li><a href="exercise.html">Exercise</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="ar/meal-plans.html" class="lang-switch">🌐 العربية</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero hero-meals" style="padding:3.5rem 2rem 4.5rem;">
+  <h1 style="font-size:2.5rem;">Your Personalised Meal Plan</h1>
+  <p id="hero-sub">Science-backed, diet-specific meal plans tailored to your goals and body.</p>
+</section>
+
+<!-- PERSONALISED BANNER (shown when logged in) -->
+<div id="profile-banner" class="profile-banner" style="display:none;">
+  <div>
+    <h3 id="banner-greeting">Welcome back!</h3>
+    <p id="banner-detail">Your personalised plan is loaded below.</p>
+  </div>
+  <div class="profile-pills" id="banner-pills"></div>
+  <button class="btn-change-plan" onclick="window.location.href='login.html'">⚙️ Update Profile</button>
+</div>
+
+<!-- GUEST CTA (shown when NOT logged in) -->
+<div id="guest-cta" class="guest-cta" style="display:none;">
+  <h2>🎯 Get a Personalised Meal Plan</h2>
+  <p>Create a free account and tell us your diet type &amp; goal — we'll tailor every meal just for you.</p>
+  <a href="login.html" class="btn-login-cta">Create My Free Plan →</a>
+</div>
+
+<!-- DIET CHIP SELECTOR (always visible, updates plan view) -->
+<div class="diet-selector-bar" id="diet-selector-bar">
+  <span>Diet:</span>
+  <div class="diet-chip active" data-diet="balanced"      onclick="switchDiet('balanced')">⚖️ Balanced</div>
+  <div class="diet-chip" data-diet="mediterranean"        onclick="switchDiet('mediterranean')">🫒 Mediterranean</div>
+  <div class="diet-chip" data-diet="keto"                 onclick="switchDiet('keto')">🥓 Keto</div>
+  <div class="diet-chip" data-diet="low-carb"             onclick="switchDiet('low-carb')">🥦 Low-Carb</div>
+  <div class="diet-chip" data-diet="high-protein"         onclick="switchDiet('high-protein')">🥩 High-Protein</div>
+  <div class="diet-chip" data-diet="vegan"                onclick="switchDiet('vegan')">🌱 Vegan</div>
+  <div class="diet-chip" data-diet="paleo"                onclick="switchDiet('paleo')">🦴 Paleo</div>
+  <div class="diet-chip" data-diet="intermittent"         onclick="switchDiet('intermittent')">⏱️ Intermittent</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     PLAN PANELS — one per diet type
+═══════════════════════════════════════════════════════════ -->
+
+<!-- ── BALANCED ── -->
+<div class="plan-panel active" id="plan-balanced">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>⚖️ Balanced Diet — <span id="balanced-goal-label">Healthy Maintenance</span></h3>
+        <p id="balanced-goal-desc">A well-rounded plan with all macronutrients in healthy proportions: ~50% carbs, ~25% protein, ~25% fat. Ideal for overall wellness and sustainable weight management.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Balanced Meal Plan</h2>
+        <p>~<span id="balanced-kcal">1,800–2,000</span> kcal/day · Whole foods · Easy to prepare</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Mon</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Oatmeal with banana, honey &amp; walnuts<br><small>~420 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled chicken salad with olive oil &amp; lemon<br><small>~500 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Baked salmon with brown rice &amp; broccoli<br><small>~580 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Greek yogurt + mixed berries<br><small>~200 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Tue</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Scrambled eggs (2) + whole-grain toast + orange<br><small>~410 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Lentil soup + whole-grain bread + side salad<br><small>~490 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Turkey stir-fry with mixed veg &amp; quinoa<br><small>~570 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Apple + 12 almonds<br><small>~190 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Wed</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Yogurt parfait: Greek yogurt, granola, blueberries<br><small>~400 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Tuna whole-wheat wrap + cherry tomatoes<br><small>~480 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Chicken breast + sweet potato + green beans<br><small>~560 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Hummus + carrot sticks<br><small>~150 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Thu</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Banana protein smoothie (whey, oats, milk)<br><small>~430 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Chickpea &amp; spinach curry with basmati rice<br><small>~510 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Baked cod with roasted veg &amp; herbed couscous<br><small>~540 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Pear + cottage cheese<br><small>~180 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Fri</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Whole-grain pancakes + fresh fruit + maple syrup<br><small>~440 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled shrimp grain bowl with avocado &amp; salsa<br><small>~520 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Lean beef steak + roasted potatoes + asparagus<br><small>~600 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Rice cakes + almond butter<br><small>~200 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Sat</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>Veggie omelette (spinach, tomato, bell pepper)<br><small>~380 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Caesar salad with grilled chicken &amp; whole-grain croutons<br><small>~500 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Salmon pasta with cherry tomatoes &amp; basil<br><small>~580 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Orange + walnuts<br><small>~195 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Sun</strong></td>
+              <td><span class="meal-tag tag-breakfast">Breakfast</span><br>French toast (whole-grain) + berries + low-fat ricotta<br><small>~420 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Minestrone soup + crusty whole-grain bread<br><small>~460 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Roast chicken + root veg + light gravy<br><small>~570 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Banana + 1 tbsp peanut butter<br><small>~210 kcal</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── MEDITERRANEAN ── -->
+<div class="plan-panel" id="plan-mediterranean">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🫒 Mediterranean Diet — <span id="med-goal-label">Heart-Healthy Living</span></h3>
+        <p id="med-goal-desc">Rich in olive oil, fish, legumes, vegetables and whole grains. Proven to reduce heart disease risk and promote longevity. ~40% carbs, ~20% protein, ~40% healthy fat.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Mediterranean Meal Plan</h2>
+        <p>~<span id="med-kcal">1,700–2,000</span> kcal/day · Olive oil · Fresh herbs · Seasonal produce</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Mon</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Greek yogurt + honey + crushed walnuts + whole-grain pita<br><small>~380 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Fattoush salad with grilled halloumi &amp; lemon-olive oil dressing<br><small>~480 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Grilled sea bass with herbed couscous &amp; roasted veg<br><small>~570 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Hummus + cucumber + olives<br><small>~190 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Tue</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Whole-grain bread + avocado + 2 poached eggs + za'atar<br><small>~420 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Lentil &amp; vegetable soup with crusty sourdough bread<br><small>~450 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Baked stuffed peppers (rice, pine nuts, herbs) + Greek salad<br><small>~560 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Fresh figs + handful of almonds<br><small>~175 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Wed</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Shakshuka (eggs in spiced tomato sauce) + whole-grain bread<br><small>~410 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled chicken shawarma wrap with tahini &amp; tabbouleh<br><small>~510 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Slow-cooked lamb with orzo &amp; tomato sauce<br><small>~600 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Orange + dark chocolate (2 squares)<br><small>~165 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Thu</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Smoothie: spinach, banana, Greek yogurt, honey, lemon<br><small>~360 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Falafel platter with hummus, pita, salad &amp; pickles<br><small>~530 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Baked salmon with lemon-herb quinoa &amp; asparagus<br><small>~580 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Tzatziki + whole-grain crackers<br><small>~160 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Fri</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Labneh on whole-grain toast + cherry tomatoes + mint<br><small>~390 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Niçoise salad: tuna, olives, green beans, eggs, potatoes<br><small>~500 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Grilled octopus with roasted potatoes &amp; chimichurri<br><small>~550 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Handful mixed nuts + dried apricots<br><small>~200 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Sat</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Ful medames (fava beans) with olive oil &amp; pita bread<br><small>~430 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled vegetable &amp; goat cheese tart with side salad<br><small>~490 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Moussaka (lean beef + aubergine + béchamel) + Greek salad<br><small>~610 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Pomegranate seeds + pistachios<br><small>~185 kcal</small></td>
+            </tr>
+            <tr>
+              <td><strong>Sun</strong></td>
+              <td><span class="diet-badge badge-med">🫒 Med</span><br>Manakish (za'atar flatbread) + labneh + cucumber + tomato<br><small>~400 kcal</small></td>
+              <td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled sardines with tomato salad &amp; warm bread<br><small>~460 kcal</small></td>
+              <td><span class="meal-tag tag-dinner">Dinner</span><br>Whole roast chicken with roasted root veg &amp; lemon herbs<br><small>~580 kcal</small></td>
+              <td><span class="meal-tag tag-snack">Snack</span><br>Fresh melon + mint tea<br><small>~100 kcal</small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── KETO ── -->
+<div class="plan-panel" id="plan-keto">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🥓 Ketogenic Diet — <span id="keto-goal-label">Fat-Burning Mode</span></h3>
+        <p id="keto-goal-desc">Very low carb (&lt;50g/day), high fat (~70%), moderate protein (~25%). Forces your body into ketosis for efficient fat burning. No sugar, no grains.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Keto Meal Plan</h2>
+        <p>~<span id="keto-kcal">1,600–1,900</span> kcal/day · &lt;50g carbs · High fat · No sugar/grains</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Bacon &amp; cheese omelette (3 eggs) + bulletproof coffee<br><small>~480 kcal | 2g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Tuna stuffed avocado halves with mayo &amp; celery<br><small>~520 kcal | 8g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Grilled ribeye steak with garlic butter &amp; sautéed spinach<br><small>~680 kcal | 3g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Brie cheese + salami + cucumber slices<br><small>~220 kcal | 2g carbs</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Keto eggs benedict (poached egg + hollandaise) on zucchini<br><small>~460 kcal | 4g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Chicken Caesar salad (no croutons) with bacon &amp; parmesan<br><small>~540 kcal | 6g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Salmon with cream cheese sauce &amp; asparagus<br><small>~640 kcal | 5g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Macadamia nuts + hard-boiled egg<br><small>~230 kcal | 3g carbs</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Coconut milk chia pudding + crushed macadamias<br><small>~420 kcal | 8g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Lettuce-wrapped beef burger with cheese, bacon &amp; avocado<br><small>~580 kcal | 7g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Baked cod with cauliflower mash &amp; broccoli in butter<br><small>~590 kcal | 12g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Cream cheese + smoked salmon on cucumber rounds<br><small>~210 kcal | 3g carbs</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Avocado &amp; chorizo scramble (3 eggs)<br><small>~500 kcal | 5g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Greek salad + grilled lamb chop + tzatziki<br><small>~560 kcal | 10g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Chicken thighs (skin-on) with roasted bell peppers &amp; pesto<br><small>~650 kcal | 8g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Walnuts + cheddar cube<br><small>~215 kcal | 3g carbs</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Keto pancakes (almond flour, eggs, cream cheese) + butter<br><small>~440 kcal | 6g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Zucchini noodles with beef bolognese &amp; parmesan<br><small>~550 kcal | 11g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Pan-seared duck breast with braised cabbage &amp; Dijon sauce<br><small>~670 kcal | 7g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Pork rinds + guacamole<br><small>~200 kcal | 4g carbs</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Full keto breakfast: bacon, eggs, sausage, avocado<br><small>~560 kcal | 4g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Prawn &amp; avocado salad with lemon-olive oil dressing<br><small>~500 kcal | 8g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Rack of lamb with herb crust + sautéed mushrooms<br><small>~700 kcal | 6g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Almonds + dark chocolate (90%, 2 squares)<br><small>~225 kcal | 5g carbs</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-keto">🥓 Keto</span><br>Smoked salmon frittata with cream cheese &amp; chives<br><small>~470 kcal | 3g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>BLT salad (bacon, lettuce, tomato, mayo, avocado)<br><small>~530 kcal | 7g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Pork belly with bok choy &amp; sesame-ginger sauce<br><small>~660 kcal | 9g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Devilled eggs (2) + celery sticks<br><small>~190 kcal | 2g carbs</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── LOW-CARB ── -->
+<div class="plan-panel" id="plan-low-carb">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🥦 Low-Carb Diet — <span id="lc-goal-label">Steady Weight Loss</span></h3>
+        <p id="lc-goal-desc">Moderate carb restriction (100–150g/day). Focuses on lean proteins, healthy fats and non-starchy veg. Keeps insulin low for fat burning without the strict keto limits.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Low-Carb Meal Plan</h2>
+        <p>~<span id="lc-kcal">1,600–1,850</span> kcal/day · 100–150g carbs · High protein · Low sugar</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Eggs with avocado &amp; smoked salmon on 1 slice rye bread<br><small>~410 kcal | 18g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled chicken salad with nuts, goat cheese &amp; balsamic<br><small>~490 kcal | 15g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Beef stir-fry with broccoli, peppers &amp; cauliflower rice<br><small>~560 kcal | 22g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>String cheese + cucumber sticks<br><small>~130 kcal | 4g carbs</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Greek yogurt (full fat) + berries + chia seeds + flaxseed<br><small>~370 kcal | 22g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Turkey lettuce wraps with avocado, tomato &amp; dijon<br><small>~430 kcal | 14g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Grilled salmon with roasted asparagus &amp; wild rice<br><small>~570 kcal | 28g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Hard-boiled egg + celery sticks<br><small>~120 kcal | 3g carbs</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Low-carb smoothie: spinach, almond milk, protein powder, nut butter<br><small>~380 kcal | 18g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Tuna &amp; white bean salad with lemon, capers &amp; parsley<br><small>~460 kcal | 20g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Chicken thighs with roasted courgette &amp; herbed yogurt<br><small>~540 kcal | 12g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Almonds + cherry tomatoes<br><small>~150 kcal | 7g carbs</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Veggie omelette with feta &amp; cherry tomatoes + side salad<br><small>~390 kcal | 12g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Shrimp &amp; avocado bowl with mixed greens &amp; lemon-tahini<br><small>~480 kcal | 18g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Pork tenderloin with roasted Brussels sprouts &amp; mushrooms<br><small>~560 kcal | 16g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Edamame (lightly salted, 1 cup)<br><small>~160 kcal | 12g carbs</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Cottage cheese (1 cup) + berries + chopped walnuts<br><small>~360 kcal | 20g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Egg salad on 1 slice rye + mixed greens &amp; radishes<br><small>~430 kcal | 16g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Baked sea bass with cauliflower &amp; caper sauce<br><small>~520 kcal | 14g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Sliced turkey + cheese roll-ups<br><small>~140 kcal | 2g carbs</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>Almond flour waffles + whipped cream + strawberries<br><small>~420 kcal | 18g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled lamb kofta with tzatziki + cucumber salad<br><small>~510 kcal | 10g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Chicken &amp; broccoli stir-fry with coconut aminos &amp; sesame<br><small>~540 kcal | 18g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Pumpkin seeds + 1 square dark chocolate<br><small>~165 kcal | 8g carbs</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-lc">🥦 Low-Carb</span><br>2-egg breakfast muffins (spinach, bacon, cheese)<br><small>~380 kcal | 6g carbs</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Niçoise salad with tuna, eggs, olives &amp; green beans<br><small>~470 kcal | 18g carbs</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Slow-roast beef with roasted root veg (limited potato)<br><small>~580 kcal | 24g carbs</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Greek yogurt + flaxseeds + cinnamon<br><small>~170 kcal | 10g carbs</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── HIGH-PROTEIN ── -->
+<div class="plan-panel" id="plan-high-protein">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🥩 High-Protein Diet — <span id="hp-goal-label">Muscle Building &amp; Fat Loss</span></h3>
+        <p id="hp-goal-desc">~35–40% protein (180–220g for 80kg person), ~35% carbs, ~25% fat. Maximises muscle protein synthesis, preserves lean mass in a deficit, and keeps hunger at bay.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day High-Protein Meal Plan</h2>
+        <p>~<span id="hp-kcal">1,800–2,200</span> kcal/day · 180–220g protein/day · Lean meats &amp; dairy</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>4-egg white omelette + 1 whole egg + cottage cheese + spinach<br><small>~420 kcal | 45g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>200g grilled chicken breast + 150g brown rice + broccoli<br><small>~550 kcal | 52g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>200g lean beef mince bolognese on protein pasta<br><small>~640 kcal | 58g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Whey protein shake + banana<br><small>~280 kcal | 28g protein</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>Greek yogurt (500g) + whey protein + berries + oats<br><small>~480 kcal | 50g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Tuna salad (200g) with mixed greens, eggs &amp; light mayo<br><small>~520 kcal | 55g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Grilled salmon (200g) + sweet potato + green beans<br><small>~610 kcal | 48g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Cottage cheese (250g) + pineapple<br><small>~240 kcal | 30g protein</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>High-protein smoothie: 2 scoops whey, oats, almond milk, PB<br><small>~460 kcal | 55g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Turkey mince tacos (corn shells) with salsa, avocado, cheese<br><small>~560 kcal | 50g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Chicken stir-fry with edamame, cashews &amp; brown rice<br><small>~590 kcal | 52g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>2 hard-boiled eggs + string cheese<br><small>~210 kcal | 22g protein</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>Protein pancakes (whey + oats + egg) + Greek yogurt topping<br><small>~490 kcal | 48g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Beef &amp; lentil bowl with cauliflower rice &amp; tahini<br><small>~570 kcal | 54g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Lean pork tenderloin with asparagus &amp; quinoa<br><small>~600 kcal | 50g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Edamame + protein bar (20g+ protein)<br><small>~290 kcal | 28g protein</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>Scrambled eggs (4) with smoked salmon, spinach &amp; rye toast<br><small>~500 kcal | 46g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Shrimp &amp; quinoa power bowl with feta &amp; roasted veg<br><small>~540 kcal | 50g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Lean sirloin steak (200g) with baked potato &amp; salad<br><small>~650 kcal | 55g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Skyr yogurt + mixed seeds<br><small>~200 kcal | 22g protein</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>Omelette (4 eggs) + smoked turkey + avocado + salsa<br><small>~480 kcal | 44g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Chicken Caesar wrap (whole-grain) + extra chicken<br><small>~560 kcal | 52g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>BBQ chicken thighs + sweet potato wedges + coleslaw<br><small>~620 kcal | 54g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Tuna (small can) + whole-grain rice cakes<br><small>~230 kcal | 26g protein</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-hp">🥩 High-P</span><br>High-protein overnight oats: oats, whey, Greek yogurt, banana<br><small>~510 kcal | 50g protein</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Lamb kofta (200g) with Greek salad &amp; tzatziki<br><small>~580 kcal | 48g protein</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Baked cod (200g) with lentils &amp; roasted tomatoes<br><small>~570 kcal | 52g protein</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Casein protein shake + 1 tbsp almond butter<br><small>~270 kcal | 30g protein</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── VEGAN ── -->
+<div class="plan-panel" id="plan-vegan">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🌱 Vegan Diet — <span id="vegan-goal-label">Plant-Powered Health</span></h3>
+        <p id="vegan-goal-desc">100% plant-based: no meat, dairy or eggs. Rich in legumes, whole grains, nuts, seeds and a rainbow of vegetables. Supplement B12, vitamin D and omega-3s (algae oil).</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Vegan Meal Plan</h2>
+        <p>~<span id="vegan-kcal">1,700–2,000</span> kcal/day · 100% plant-based · High fibre · Iron &amp; B12 focus</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Oat porridge with almond milk, banana, chia seeds &amp; PB<br><small>~450 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Chickpea &amp; roasted veg buddha bowl with tahini dressing<br><small>~530 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Lentil bolognese on whole-wheat spaghetti + nutritional yeast<br><small>~580 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Apple + almond butter (2 tbsp)<br><small>~200 kcal</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Smoothie: spinach, mango, banana, oats, flaxseed, oat milk<br><small>~400 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Tofu scramble with turmeric, peppers &amp; whole-grain toast<br><small>~490 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Black bean &amp; sweet potato tacos with guacamole &amp; salsa<br><small>~560 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Mixed nuts + dried cranberries<br><small>~210 kcal</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Chia pudding (coconut milk) + mango + kiwi + hemp seeds<br><small>~410 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Falafel wrap with hummus, tabbouleh &amp; pickled veg<br><small>~520 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Thai green curry (tofu &amp; veg) with jasmine rice<br><small>~590 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Hummus + carrot &amp; celery sticks<br><small>~160 kcal</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Whole-grain toast + avocado + cherry tomatoes + nutritional yeast<br><small>~390 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Lentil soup + whole-grain pita + green salad with tahini<br><small>~480 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Tempeh stir-fry with bok choy, edamame &amp; brown rice<br><small>~570 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Pear + cashews<br><small>~185 kcal</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Vegan protein smoothie: pea protein, banana, oat milk, PB, dates<br><small>~440 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Roasted veg &amp; quinoa salad with pumpkin seeds &amp; lemon<br><small>~500 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Chickpea &amp; spinach dahl with basmati rice &amp; mango chutney<br><small>~580 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Roasted edamame (1 cup)<br><small>~190 kcal</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Vegan banana oat pancakes with maple syrup &amp; fresh berries<br><small>~460 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Rainbow sushi bowl (brown rice, avocado, cucumber, nori, tofu)<br><small>~520 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Mushroom &amp; lentil shepherd's pie with sweet potato topping<br><small>~590 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Mango slices + coconut yogurt<br><small>~170 kcal</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-vegan">🌱 Vegan</span><br>Granola (no honey) with oat milk + blueberries + walnuts<br><small>~430 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Minestrone soup (vegan) with whole-grain focaccia<br><small>~480 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Vegan chilli (kidney beans, corn, peppers) with brown rice &amp; avocado<br><small>~570 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Orange + sunflower seeds<br><small>~160 kcal</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── PALEO ── -->
+<div class="plan-panel" id="plan-paleo">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>🦴 Paleo Diet — <span id="paleo-goal-label">Back to Basics</span></h3>
+        <p id="paleo-goal-desc">Whole unprocessed foods only: meat, fish, eggs, veg, fruit, nuts, seeds. No grains, legumes, dairy or processed sugar. Mimics ancestral eating for metabolic health.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Paleo Meal Plan</h2>
+        <p>~<span id="paleo-kcal">1,700–2,100</span> kcal/day · No grains, legumes or dairy · Whole foods only</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Snack</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Sweet potato hash with eggs, peppers &amp; onions<br><small>~440 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Large tuna &amp; avocado salad with lemon, olive oil, cucumber<br><small>~500 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Grass-fed beef burger (no bun) with sweet potato fries &amp; salad<br><small>~620 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Handful mixed nuts + apple<br><small>~230 kcal</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>3-egg omelette with mushrooms, onion &amp; spinach (cooked in coconut oil)<br><small>~420 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled chicken thighs with roasted veg &amp; guacamole<br><small>~530 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Baked salmon with roasted broccoli, lemon &amp; dill<br><small>~580 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Banana + almond butter (2 tbsp)<br><small>~215 kcal</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Coconut yogurt with berries, walnuts &amp; pumpkin seeds<br><small>~390 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Turkey &amp; veg lettuce wraps with mustard &amp; avocado<br><small>~480 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Slow-roasted pork with root veg &amp; herb sauce<br><small>~640 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Beef jerky + orange segments<br><small>~200 kcal</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Paleo smoothie: banana, berries, almond milk, almond butter, spinach<br><small>~400 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Shrimp &amp; mango salad with lime dressing &amp; fresh herbs<br><small>~490 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Lamb chops with roasted cauliflower &amp; salsa verde<br><small>~650 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Cashews + dried mango (no sugar)<br><small>~220 kcal</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Bacon &amp; eggs with sautéed kale &amp; sweet potato<br><small>~470 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Big salad: grilled chicken, avocado, beet, walnuts, balsamic<br><small>~510 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Steak &amp; veg skewers with chimichurri sauce<br><small>~620 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Macadamia nuts + fresh pineapple<br><small>~215 kcal</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Egg &amp; veg breakfast bowl with avocado &amp; roasted tomatoes<br><small>~440 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Canned sardines + veg sticks + guacamole + cherry tomatoes<br><small>~460 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Whole grilled chicken with roasted root veg &amp; herb oil<br><small>~650 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Peach + almonds<br><small>~190 kcal</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-paleo">🦴 Paleo</span><br>Wild blueberry almond flour pancakes + maple syrup (pure)<br><small>~430 kcal</small></td><td><span class="meal-tag tag-lunch">Lunch</span><br>Grilled swordfish with mango salsa &amp; roasted peppers<br><small>~530 kcal</small></td><td><span class="meal-tag tag-dinner">Dinner</span><br>Braised short ribs with cauli-mash &amp; roasted asparagus<br><small>~680 kcal</small></td><td><span class="meal-tag tag-snack">Snack</span><br>Celery + sunflower seed butter<br><small>~170 kcal</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── INTERMITTENT FASTING ── -->
+<div class="plan-panel" id="plan-intermittent">
+  <section class="bg-pale">
+    <div class="container">
+      <div class="plan-info-box">
+        <h3>⏱️ Intermittent Fasting (16:8) — <span id="if-goal-label">Metabolic Reset</span></h3>
+        <p id="if-goal-desc">Fast for 16 hours, eat within an 8-hour window (e.g. 12pm–8pm). No breakfast — calorie budget compressed into 2–3 larger, nutrient-dense meals. Any food quality diet works within the window.</p>
+      </div>
+      <div class="section-title">
+        <h2>7-Day Intermittent Fasting Meal Plan</h2>
+        <p>~<span id="if-kcal">1,600–1,900</span> kcal/day · Eating window: 12pm–8pm · No breakfast</p>
+      </div>
+      <div class="meal-table-wrapper">
+        <table class="meal-table">
+          <thead><tr><th>Day</th><th>⏰ Break-Fast (12pm)</th><th>Meal 2 (3pm)</th><th>Last Meal (7pm)</th><th>Fast (8pm–12pm)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mon</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Grilled chicken bowl: rice, avocado, black beans, salsa<br><small>~650 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Greek yogurt + mixed nuts + blueberries<br><small>~310 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Salmon with roasted veg &amp; quinoa<br><small>~590 kcal</small></td><td><small>☕ Black coffee/tea allowed · Water · No calories</small></td></tr>
+            <tr><td><strong>Tue</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Large tuna salad with eggs, avocado &amp; whole-grain bread<br><small>~620 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Protein shake + banana + 12 almonds<br><small>~320 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Beef stir-fry with broccoli &amp; brown rice<br><small>~600 kcal</small></td><td><small>💧 Stay hydrated · Sparkling water OK</small></td></tr>
+            <tr><td><strong>Wed</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Omelette (3 eggs) + cheese + veg + 2 slices rye toast<br><small>~560 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Cottage cheese + apple + walnuts<br><small>~290 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Chicken thighs + sweet potato + broccoli<br><small>~610 kcal</small></td><td><small>🍵 Herbal tea during fast is fine</small></td></tr>
+            <tr><td><strong>Thu</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Mediterranean platter: hummus, pita, falafel, salad, labneh<br><small>~670 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Cheese + whole-grain crackers + cherry tomatoes<br><small>~280 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Baked cod with lemon, capers + wild rice + asparagus<br><small>~560 kcal</small></td><td><small>No calories until 12pm tomorrow</small></td></tr>
+            <tr><td><strong>Fri</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Beef burger (lettuce wrap or bun) + sweet potato fries + salad<br><small>~680 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Protein bar + pear<br><small>~270 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Grilled shrimp with garlic butter, zucchini &amp; quinoa<br><small>~580 kcal</small></td><td><small>Weekend easier — stay busy in AM</small></td></tr>
+            <tr><td><strong>Sat</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Shakshuka (3 eggs) + whole-grain bread + side salad<br><small>~590 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Greek yogurt + granola + berries<br><small>~300 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Steak + roasted potato + green beans<br><small>~650 kcal</small></td><td><small>Social brunch? Delay — have black coffee</small></td></tr>
+            <tr><td><strong>Sun</strong></td><td><span class="diet-badge badge-if">⏱️ 12pm</span><br>Large chicken &amp; veg grain bowl with tahini dressing<br><small>~640 kcal</small></td><td><span class="meal-tag tag-lunch">3pm</span><br>Mixed nuts + dark chocolate (2 squares) + orange<br><small>~280 kcal</small></td><td><span class="meal-tag tag-dinner">7pm</span><br>Baked salmon + sweet potato mash + spinach salad<br><small>~600 kcal</small></td><td><small>Prepare meals for next week</small></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── TIPS SECTION (shared) ── -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>🔑 Keys to Meal Plan Success</h2>
+      <p>Whichever diet you follow, these principles maximise results.</p>
+    </div>
+    <div class="photo-cards">
+      <div class="photo-card" style="background-image:url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&q=80&fit=crop');min-height:220px;">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">Prep</div>
+          <h3>Batch Cook Weekly</h3>
+          <p>Cook proteins, grains and veg in bulk on Sundays so healthy meals take under 5 minutes to assemble.</p>
+        </div>
+      </div>
+      <div class="photo-card" style="background-image:url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80&fit=crop');min-height:220px;">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">Hydration</div>
+          <h3>Drink 2–3L Water Daily</h3>
+          <p>Hunger is often thirst. Start every meal with a full glass of water to reduce overeating.</p>
+        </div>
+      </div>
+      <div class="photo-card" style="background-image:url('https://images.unsplash.com/photo-1600618528240-fb9fc964b853?w=800&q=80&fit=crop');min-height:220px;">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">Consistency</div>
+          <h3>80/20 Rule</h3>
+          <p>Eat on-plan 80% of the time and allow flexibility for 20%. Perfection is the enemy of progress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Healthy Life</strong> — Eat Smart, Move More, Live Longer.</p>
+  <p style="margin-top:0.5rem;">For educational purposes only. Consult a healthcare professional before starting any diet.</p>
+</footer>
+
+<script>
+/* ── User session ── */
+const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+const user    = localStorage.getItem('hl-user')    ? JSON.parse(localStorage.getItem('hl-user'))    : null;
+
+/* ── Nav: show logged-in state ── */
+(function() {
+  const nav = document.getElementById('main-nav');
+  if (session) {
+    // Replace Login link with user name + logout
+    const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+    if (loginLi) loginLi.remove();
+    nav.insertAdjacentHTML('beforeend',
+      `<li class="nav-user"><span class="nav-user-name">👤 ${session.name}</span>
+       <button class="nav-logout" onclick="logout()">Logout</button></li>`);
+  }
+})();
+
+function logout() {
+  localStorage.removeItem('hl-session');
+  window.location.reload();
+}
+
+/* ── Goal label helpers ── */
+const GOAL_LABELS = {
+  lose:     'Weight Loss',
+  maintain: 'Healthy Maintenance',
+  gain:     'Muscle Building'
+};
+const GOAL_KCAL = {
+  balanced:      { lose:'1,400–1,700', maintain:'1,800–2,000', gain:'2,200–2,600' },
+  mediterranean: { lose:'1,400–1,650', maintain:'1,700–2,000', gain:'2,100–2,500' },
+  keto:          { lose:'1,400–1,600', maintain:'1,700–1,900', gain:'2,000–2,400' },
+  'low-carb':    { lose:'1,300–1,600', maintain:'1,600–1,850', gain:'1,900–2,200' },
+  'high-protein':{ lose:'1,600–1,900', maintain:'1,900–2,200', gain:'2,300–2,700' },
+  vegan:         { lose:'1,400–1,650', maintain:'1,700–2,000', gain:'2,100–2,500' },
+  paleo:         { lose:'1,500–1,700', maintain:'1,800–2,100', gain:'2,200–2,600' },
+  intermittent:  { lose:'1,300–1,600', maintain:'1,600–1,900', gain:'2,000–2,300' }
+};
+const GOAL_DESCS = {
+  balanced: {
+    lose:     'Calorie-reduced balanced eating for sustainable fat loss — ~300–500 kcal deficit.',
+    maintain: 'A well-rounded plan with all macros in healthy proportions for overall wellness.',
+    gain:     'Calorie surplus balanced plan with extra carbs and protein to fuel muscle growth.'
+  },
+  mediterranean: {
+    lose:     'Heart-healthy Mediterranean eating in a moderate calorie deficit for fat loss.',
+    maintain: 'Classic Mediterranean pattern for longevity, heart health and metabolic wellbeing.',
+    gain:     'Mediterranean eating with extra olive oil, nuts, legumes and protein for lean muscle gain.'
+  },
+  keto: {
+    lose:     'Ketogenic fat-burning at a calorie deficit — maximise fat loss while preserving muscle.',
+    maintain: 'Ketosis maintenance: keep carbs under 50g to stay in fat-burning mode.',
+    gain:     'Dirty or cyclical keto with higher calories and targeted carbs around workouts for muscle growth.'
+  },
+  'low-carb': {
+    lose:     'Low-carb deficit eating to suppress insulin, burn stored fat and reduce appetite.',
+    maintain: 'Moderate carb restriction for stable blood sugar and sustained energy.',
+    gain:     'Low-carb higher-calorie plan with more protein and strategic carbs post-workout.'
+  },
+  'high-protein': {
+    lose:     'High protein in a deficit preserves muscle while burning fat — most effective for body recomposition.',
+    maintain: 'High protein at maintenance to sustain lean mass, performance and recovery.',
+    gain:     'Maximum protein with calorie surplus to drive aggressive muscle hypertrophy.'
+  },
+  vegan: {
+    lose:     'Plant-based calorie deficit — high fibre keeps you full while shedding fat.',
+    maintain: 'Balanced plant-based eating at maintenance for long-term health and sustainability.',
+    gain:     'High-calorie plant-based plan with legumes, tofu, tempeh and whole grains for muscle building.'
+  },
+  paleo: {
+    lose:     'Whole-food ancestral eating in a natural calorie deficit — eliminate processed foods for fat loss.',
+    maintain: 'Paleo at maintenance: clean whole foods, no grains or dairy, for metabolic health.',
+    gain:     'Paleo surplus eating with extra sweet potato, fruit, and high-quality proteins for muscle gain.'
+  },
+  intermittent: {
+    lose:     'IF 16:8 in a calorie deficit — compressed eating window naturally reduces total intake.',
+    maintain: 'IF 16:8 at maintenance for metabolic health, autophagy and stable body composition.',
+    gain:     'IF 16:8 with calorie surplus in the window — larger meals to support muscle growth.'
+  }
+};
+
+/* ── Apply personalisation ── */
+function applyPersonalisation(diet, goal) {
+  const labelMap = {
+    balanced:'balanced', mediterranean:'med', keto:'keto',
+    'low-carb':'lc', 'high-protein':'hp', vegan:'vegan',
+    paleo:'paleo', intermittent:'if'
+  };
+  const prefix = labelMap[diet] || diet;
+  const gl = document.getElementById(prefix + '-goal-label');
+  const gd = document.getElementById(prefix + '-goal-desc');
+  const gk = document.getElementById(prefix + '-kcal');
+  if (gl) gl.textContent = GOAL_LABELS[goal] || '';
+  if (gd) gd.textContent = (GOAL_DESCS[diet] && GOAL_DESCS[diet][goal]) ? GOAL_DESCS[diet][goal] : '';
+  if (gk && GOAL_KCAL[diet]) gk.textContent = GOAL_KCAL[diet][goal] || '';
+
+  switchDiet(diet);
+}
+
+/* ── Switch diet panel ── */
+let activeDiet = 'balanced';
+function switchDiet(diet) {
+  activeDiet = diet;
+  document.querySelectorAll('.plan-panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('plan-' + diet);
+  if (target) target.classList.add('active');
+  document.querySelectorAll('.diet-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.diet === diet);
+  });
+  localStorage.setItem('hl-diet-view', diet);
+}
+
+/* ── Initialise ── */
+(function init() {
+  if (session && user) {
+    document.getElementById('profile-banner').style.display = 'flex';
+    document.getElementById('guest-cta').style.display = 'none';
+
+    const greeting = document.getElementById('banner-greeting');
+    const detail   = document.getElementById('banner-detail');
+    const pills    = document.getElementById('banner-pills');
+    greeting.textContent = '👋 Welcome back, ' + user.name + '!';
+    detail.textContent   = 'Your plan is personalised for ' + user.diet + ' · ' + user.goal + ' goal.';
+
+    const dietEmojis = {
+      balanced:'⚖️', mediterranean:'🫒', keto:'🥓', 'low-carb':'🥦',
+      'high-protein':'🥩', vegan:'🌱', paleo:'🦴', intermittent:'⏱️'
+    };
+    const goalEmojis = { lose:'🔥', maintain:'⚖️', gain:'💪' };
+    pills.innerHTML =
+      `<span class="pill">${dietEmojis[user.diet]||''} ${user.diet}</span>` +
+      `<span class="pill">${goalEmojis[user.goal]||''} ${user.goal}</span>` +
+      `<span class="pill">👤 ${user.gender}</span>`;
+
+    applyPersonalisation(user.diet, user.goal);
+    document.getElementById('hero-sub').textContent =
+      'Personalised for your ' + user.diet + ' diet and ' + user.goal + ' goal, ' + user.name + '.';
+
+  } else {
+    document.getElementById('guest-cta').style.display = 'block';
+    document.getElementById('profile-banner').style.display = 'none';
+
+    const saved = localStorage.getItem('hl-diet-view') || 'balanced';
+    switchDiet(saved);
+  }
+})();
+</script>
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+
+</body>
+</html>

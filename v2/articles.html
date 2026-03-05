@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Articles — HealthyLife</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── Article page styles ─── */
+    .article-filter-bar {
+      background: var(--dark-mid);
+      border-bottom: 2px solid var(--purple);
+      padding: 0.85rem 2rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+      position: sticky;
+      top: 64px;
+      z-index: 50;
+    }
+    .filter-label { font-weight: 700; color: var(--orange); font-size: 0.88rem; margin-right: 0.3rem; font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
+    .filter-chip {
+      padding: 0.32rem 0.9rem;
+      border: 2px solid rgba(16,185,129,0.35);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--gray-light);
+      background: var(--dark-surface);
+    }
+    .filter-chip:hover  { border-color: var(--purple-mid); background: var(--dark-card); color: var(--text); }
+    .filter-chip.active { background: linear-gradient(135deg, var(--purple-dark), var(--purple)); color: #fff; border-color: var(--purple); }
+
+    /* Grid */
+    .articles-main-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+      margin-top: 2rem;
+    }
+    .art-card {
+      background: var(--dark-card);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(16,185,129,0.20);
+    }
+    .art-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.50); cursor: pointer; }
+    .art-img {
+      width: 100%; height: 200px;
+      object-fit: cover; display: block;
+    }
+    .art-body { padding: 1.3rem 1.4rem 1.6rem; flex: 1; display: flex; flex-direction: column; }
+    .art-cat {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.9px;
+      padding: 0.22rem 0.75rem;
+      border-radius: 20px; margin-bottom: 0.7rem;
+    }
+    .c-nutrition  { background: rgba(255,107,43,0.20); color: var(--orange-light); }
+    .c-fitness    { background: rgba(16,185,129,0.25); color: var(--purple-light); }
+    .c-mindset    { background: rgba(138,92,216,0.20); color: var(--purple-mid); }
+    .c-science    { background: rgba(74,158,202,0.20); color: #2563eb; }
+    .c-habits     { background: rgba(244,162,97,0.20); color: #d97706; }
+    .c-sleep      { background: rgba(74,196,157,0.15); color: #059669; }
+
+    .art-title { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.45; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; }
+    .art-excerpt { font-size: 0.86rem; color: var(--gray-mid); line-height: 1.6; flex: 1; }
+    .art-meta { margin-top: 0.9rem; padding-top: 0.85rem; border-top: 1px solid rgba(16,185,129,0.20); font-size: 0.78rem; color: var(--gray-mid); display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .art-meta .read-time { color: var(--orange); font-weight: 600; }
+
+    /* Full article section */
+    .article-full {
+      background: var(--dark-card);
+      border-radius: 20px;
+      box-shadow: 0 6px 28px rgba(0,0,0,0.30);
+      border: 1px solid rgba(16,185,129,0.25);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .article-full-hero {
+      width: 100%; height: 320px;
+      object-fit: cover; display: block;
+    }
+    .article-full-body { padding: 2.5rem 3rem; max-width: 780px; }
+    .article-full-body h1 { font-size: 1.7rem; color: var(--text); line-height: 1.35; margin-bottom: 0.7rem; font-family: 'Montserrat', sans-serif; }
+    .article-full-body .art-meta { margin-bottom: 1.5rem; border: none; padding: 0; }
+    .article-full-body h2 { font-size: 1.15rem; color: var(--orange); margin: 1.6rem 0 0.5rem; font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
+    .article-full-body h3 { font-size: 1rem; color: var(--purple-light); margin: 1.2rem 0 0.4rem; font-family: 'Montserrat', sans-serif; }
+    .article-full-body p  { color: var(--gray-light); line-height: 1.75; margin-bottom: 0.9rem; font-size: 0.96rem; }
+    .article-full-body ul, .article-full-body ol { padding-right: 0; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .article-full-body li { color: var(--gray-light); line-height: 1.7; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .key-stat {
+      background: linear-gradient(135deg, var(--purple-deep), var(--purple-dark), var(--purple));
+      color: #fff;
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      box-shadow: 0 0 20px rgba(16,185,129,0.30);
+    }
+    .key-stat .ks-num { font-size: 2.2rem; font-weight: 800; color: var(--orange); line-height: 1; flex-shrink: 0; font-family: 'Montserrat', sans-serif; }
+    .key-stat .ks-txt { font-size: 0.92rem; line-height: 1.5; opacity: 0.93; }
+    .art-callout {
+      border-left: 4px solid var(--orange);
+      background: var(--dark-surface);
+      padding: 1rem 1.4rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+      font-size: 0.94rem;
+      color: var(--orange-light);
+      font-style: italic;
+    }
+    .hidden { display: none; }
+
+    /* Add article guide */
+    .add-article-guide {
+      background: var(--dark-surface);
+      border: 2px dashed var(--purple-mid);
+      border-radius: 16px;
+      padding: 1.8rem 2rem;
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .add-article-guide h3 { color: var(--orange); margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; }
+    .add-article-guide p  { color: var(--gray-mid); font-size: 0.9rem; margin-bottom: 1rem; }
+    .add-article-guide code {
+      background: var(--dark-card);
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--orange-light);
+      border: 1px solid rgba(255,107,43,0.30);
+    }
+
+    /* Logged-in nav */
+    .nav-user { display:flex; align-items:center; gap:0.5rem; }
+
+    @media (max-width: 900px) {
+      .articles-main-grid { grid-template-columns: 1fr 1fr; }
+      .article-full-body  { padding: 1.5rem; }
+      .article-full-hero  { height: 220px; }
+    }
+    @media (max-width: 600px) {
+      .articles-main-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN GATE: redirect guests to login ── -->
+<script>
+(function() {
+  if (!localStorage.getItem('hl-session')) {
+    sessionStorage.setItem('hl-redirect', 'articles.html');
+    window.location.replace('login.html?next=articles.html');
+  }
+})();
+</script>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Healthy<span>Life</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="meal-plans.html">Meal Plans</a></li>
+      <li><a href="exercise.html">Exercise</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="articles.html" class="active">Articles</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="ar/index.html" class="lang-switch">🌐 العربية</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:3rem 2rem 4rem;">
+  <h1 style="font-size:2.4rem;">Health Articles</h1>
+  <p>Evidence-based reads on nutrition, fitness, sleep, mindset and metabolic health — updated regularly.</p>
+</section>
+
+<!-- FILTER BAR -->
+<div class="article-filter-bar">
+  <span class="filter-label">Filter:</span>
+  <div class="filter-chip active" data-filter="all"       onclick="filterArticles('all')">All</div>
+  <div class="filter-chip" data-filter="nutrition"        onclick="filterArticles('nutrition')">🥗 Nutrition</div>
+  <div class="filter-chip" data-filter="fitness"          onclick="filterArticles('fitness')">💪 Fitness</div>
+  <div class="filter-chip" data-filter="sleep"            onclick="filterArticles('sleep')">😴 Sleep</div>
+  <div class="filter-chip" data-filter="mindset"          onclick="filterArticles('mindset')">🧠 Mindset</div>
+  <div class="filter-chip" data-filter="habits"           onclick="filterArticles('habits')">🔄 Habits</div>
+  <div class="filter-chip" data-filter="science"          onclick="filterArticles('science')">🔬 Science</div>
+</div>
+
+<!-- ARTICLE GRID -->
+<section>
+  <div class="container">
+    <div class="articles-main-grid" id="articles-grid">
+
+      <!-- ═══ ARTICLE 1 ═══ -->
+      <article class="art-card" data-cat="nutrition" onclick="openArticle('mediterranean')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&fit=crop" alt="Mediterranean diet" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-nutrition">Nutrition</span>
+          <h3 class="art-title">Why the Mediterranean Diet Consistently Tops Every Health Ranking</h3>
+          <p class="art-excerpt">Rich in olive oil, fish, legumes and vegetables, the Med diet reduces heart disease risk by up to 30%. Here's the science behind why it keeps winning.</p>
+          <div class="art-meta">📅 Feb 2025 · <span class="read-time">6 min read</span> · <span style="color:var(--gray-mid);">Nutrition</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 2 ═══ -->
+      <article class="art-card" data-cat="fitness" onclick="openArticle('strength')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&fit=crop" alt="Strength training" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-fitness">Fitness</span>
+          <h3 class="art-title">Strength Training Burns More Fat Than Cardio — Here's Why</h3>
+          <p class="art-excerpt">Muscle tissue burns calories at rest. Building lean mass through resistance training is the most efficient long-term strategy for fat loss and metabolic health.</p>
+          <div class="art-meta">📅 Jan 2025 · <span class="read-time">5 min read</span> · <span style="color:var(--gray-mid);">Fitness</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 3 ═══ -->
+      <article class="art-card" data-cat="sleep" onclick="openArticle('sleep')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&fit=crop" alt="Sleep" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-sleep">Sleep</span>
+          <h3 class="art-title">The Sleep-Weight Connection: How Poor Sleep Makes You Fat</h3>
+          <p class="art-excerpt">Less than 6 hours raises ghrelin (hunger hormone) by 15% and tanks leptin (fullness). Poor sleep makes your diet 40% harder to stick to.</p>
+          <div class="art-meta">📅 Jan 2025 · <span class="read-time">4 min read</span> · <span style="color:var(--gray-mid);">Sleep</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 4 ═══ -->
+      <article class="art-card" data-cat="mindset" onclick="openArticle('identity')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=600&q=80&fit=crop" alt="Mindset" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-mindset">Mindset</span>
+          <h3 class="art-title">Identity-Based Habits: Why "I Am Healthy" Beats "I Want to Lose Weight"</h3>
+          <p class="art-excerpt">The most effective way to change long-term behaviour isn't to set stronger goals — it's to shift your identity. Here's how to become the person who doesn't need willpower.</p>
+          <div class="art-meta">📅 Dec 2024 · <span class="read-time">5 min read</span> · <span style="color:var(--gray-mid);">Mindset</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 5 ═══ -->
+      <article class="art-card" data-cat="science" onclick="openArticle('protein')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?w=600&q=80&fit=crop" alt="Protein" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-science">Science</span>
+          <h3 class="art-title">How Much Protein Do You Actually Need? The Science Explained</h3>
+          <p class="art-excerpt">From 0.8g/kg to 2.2g/kg — the research is clearer than you think. Learn when protein matters most, what sources are best, and how timing affects muscle synthesis.</p>
+          <div class="art-meta">📅 Dec 2024 · <span class="read-time">7 min read</span> · <span style="color:var(--gray-mid);">Science</span></div>
+        </div>
+      </article>
+
+      <!-- ═══ ARTICLE 6 ═══ -->
+      <article class="art-card" data-cat="habits" onclick="openArticle('consistency')">
+        <img class="art-img" src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=600&q=80&fit=crop" alt="Consistency habits" loading="lazy" />
+        <div class="art-body">
+          <span class="art-cat c-habits">Habits</span>
+          <h3 class="art-title">The 10 Habits of People Who Stay Lean for Life</h3>
+          <p class="art-excerpt">Long-term leanness isn't about dieting — it's about building a lifestyle. These are the 10 behaviours that separate people who stay healthy effortlessly from those who constantly struggle.</p>
+          <div class="art-meta">📅 Nov 2024 · <span class="read-time">6 min read</span> · <span style="color:var(--gray-mid);">Habits</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- HOW TO ADD MORE ARTICLES -->
+    <div class="add-article-guide">
+      <h3>📝 Adding New Articles</h3>
+      <p>To add a new article, open <code>articles.html</code> in any text editor. Copy any <code>&lt;article class="art-card"&gt;</code> block, update the content, then add a matching full-article section below. That's it — no database needed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FULL ARTICLE SECTIONS -->
+
+<!-- ═══════════ ARTICLE 1 FULL: Mediterranean ═══════════ -->
+<div id="full-mediterranean" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80&fit=crop" alt="Mediterranean diet" />
+        <div class="article-full-body">
+          <span class="art-cat c-nutrition" style="margin-bottom:0.8rem;">Nutrition</span>
+          <h1>Why the Mediterranean Diet Consistently Tops Every Health Ranking</h1>
+          <div class="art-meta">📅 February 2025 · <span class="read-time">6 min read</span></div>
+
+          <p>For the seventh consecutive year, U.S. News &amp; World Report ranked the Mediterranean diet as the #1 overall diet in the world. It's not a coincidence. Decades of research consistently show that this dietary pattern — born on the shores of Greece, Italy, and the Middle East — is one of the most powerful tools we have for preventing chronic disease and living longer.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">30%</div>
+            <div class="ks-txt">Reduction in cardiovascular events (heart attack, stroke) among high-risk individuals who followed a Mediterranean diet — PREDIMED Trial, 2013, New England Journal of Medicine.</div>
+          </div>
+
+          <h2>What Does the Mediterranean Diet Actually Look Like?</h2>
+          <p>The Mediterranean diet isn't a strict meal plan — it's a pattern of eating built around whole, minimally processed foods:</p>
+          <ul>
+            <li><strong>Abundant:</strong> Vegetables, fruits, legumes, whole grains, nuts, seeds, olive oil</li>
+            <li><strong>Moderate:</strong> Fish and seafood (2–3x/week), poultry, eggs, dairy (especially yogurt and cheese)</li>
+            <li><strong>Rare:</strong> Red meat, sweets, ultra-processed foods</li>
+            <li><strong>Daily:</strong> Extra virgin olive oil as the primary fat source</li>
+          </ul>
+
+          <h2>The Science: Why It Works</h2>
+          <h3>1. Anti-Inflammatory by Design</h3>
+          <p>Chronic low-grade inflammation drives almost every major chronic disease — heart disease, type 2 diabetes, Alzheimer's, and certain cancers. The Mediterranean diet is rich in polyphenols (from olive oil, vegetables and berries) and omega-3 fatty acids (from fish and walnuts), both of which are among the most potent natural anti-inflammatory compounds we know of.</p>
+
+          <h3>2. Gut Microbiome Support</h3>
+          <p>High fibre intake from legumes, whole grains and vegetables feeds beneficial gut bacteria. A 2021 study in <em>Cell</em> found that a high-fibre Mediterranean-style diet increased microbiome diversity — a key marker of metabolic and immune health — more effectively than a high-fermented-food diet.</p>
+
+          <div class="art-callout">
+            "The data are remarkably consistent: population after population, decade after decade, the Mediterranean diet comes out on top for cardiovascular health, cognitive function, and longevity." — Dr. Walter Willett, Harvard T.H. Chan School of Public Health
+          </div>
+
+          <h3>3. Blood Sugar Regulation</h3>
+          <p>Unlike high-glycaemic Western diets, the Mediterranean pattern keeps blood sugar stable through: low-GI foods (legumes, vegetables), healthy fats that slow glucose absorption, and high fibre that blunts insulin spikes. A 2019 meta-analysis of 29 trials found it reduced HbA1c (long-term blood sugar) by 0.32% on average.</p>
+
+          <h3>4. Brain Health and Longevity</h3>
+          <p>The MIND diet — a Mediterranean-DASH hybrid — was associated with a 53% lower rate of Alzheimer's disease in those who followed it strictly. Olive oil's oleocanthal compound has similar anti-inflammatory properties to ibuprofen and appears to promote the clearance of amyloid proteins linked to Alzheimer's.</p>
+
+          <h2>How to Start Today</h2>
+          <ul>
+            <li>Replace butter with extra virgin olive oil for cooking and dipping</li>
+            <li>Eat fish or seafood at least twice this week</li>
+            <li>Add a handful of nuts (walnuts, almonds) as your daily snack</li>
+            <li>Build every meal around vegetables, not protein or carbs</li>
+            <li>Swap white bread and pasta for whole-grain versions</li>
+            <li>Use herbs and lemon instead of salt and sauces</li>
+          </ul>
+
+          <p>Our <a href="meal-plans.html" style="color:var(--orange);font-weight:600;">Mediterranean Meal Plan</a> gives you a complete, ready-to-follow 7-day plan with full recipes, calories and macros.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 2 FULL: Strength ═══════════ -->
+<div id="full-strength" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&fit=crop" alt="Strength training" />
+        <div class="article-full-body">
+          <span class="art-cat c-fitness">Fitness</span>
+          <h1>Strength Training Burns More Fat Than Cardio — Here's Why</h1>
+          <div class="art-meta">📅 January 2025 · <span class="read-time">5 min read</span></div>
+
+          <p>For decades, the conventional wisdom was simple: if you want to burn fat, get on the treadmill. Cardio equals fat loss. The more you sweat, the more you lose. But the research tells a more nuanced — and far more useful — story.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">~6×</div>
+            <div class="ks-txt">More calories per kg burned at rest by muscle tissue compared to fat tissue. Every 1kg of muscle you add raises your resting metabolic rate by approximately 13 kcal/day permanently.</div>
+          </div>
+
+          <h2>The EPOC Effect: Burning Calories After You Stop</h2>
+          <p>Cardio burns calories during exercise. Strength training does too — but it also triggers EPOC (Excess Post-exercise Oxygen Consumption), also known as the "afterburn effect." After a hard resistance training session, your body continues burning elevated calories for up to 38 hours as it repairs muscle fibres, restores glycogen, and rebalances hormones.</p>
+          <p>A 2012 study in <em>Medicine &amp; Science in Sports &amp; Exercise</em> found that EPOC after circuit-style strength training was significantly greater and lasted longer than after continuous cardio at matched effort levels.</p>
+
+          <h2>Muscle Is Metabolically Expensive</h2>
+          <p>The single most important thing you can do for long-term fat control is to build and maintain muscle mass. Here's why:</p>
+          <ul>
+            <li>Muscle tissue has a resting metabolic rate of ~13 kcal/kg/day</li>
+            <li>Fat tissue burns only ~4.5 kcal/kg/day at rest</li>
+            <li>Every kg of muscle added raises your 24-hour calorie burn permanently</li>
+            <li>Muscle preserves your metabolism as you age — sarcopenia (muscle loss) is a major driver of age-related metabolic slowdown</li>
+          </ul>
+
+          <div class="art-callout">
+            "If you only do cardio, you may lose weight — but a large proportion will be muscle. Strength training ensures the weight you lose is fat, not lean mass."
+          </div>
+
+          <h2>What the Research Says: Combined Training Wins</h2>
+          <p>A 2012 meta-analysis in <em>Obesity Reviews</em> compared aerobic training, resistance training, and combined training for fat loss in 700 subjects. Findings:</p>
+          <ul>
+            <li>Cardio only: best for immediate calorie burn, but minimal effect on resting metabolism</li>
+            <li>Strength only: best for preserving and building lean mass, higher EPOC</li>
+            <li><strong>Combined (best outcome): greater fat loss, better body composition, higher long-term metabolic rate</strong></li>
+          </ul>
+
+          <h2>Practical Takeaway</h2>
+          <p>The optimal fat-loss programme combines 3 days of strength training with 2–3 days of cardio (or HIIT). Our <a href="exercise.html" style="color:var(--orange);font-weight:600;">Exercise Plans</a> are structured exactly this way — with beginner and intermediate tracks for both men and women.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 3 FULL: Sleep ═══════════ -->
+<div id="full-sleep" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&q=80&fit=crop" alt="Sleep" />
+        <div class="article-full-body">
+          <span class="art-cat c-sleep">Sleep</span>
+          <h1>The Sleep-Weight Connection: How Poor Sleep Makes You Fat</h1>
+          <div class="art-meta">📅 January 2025 · <span class="read-time">4 min read</span></div>
+
+          <p>Most people know sleep matters for energy and mood. Fewer realise it's one of the most powerful levers for body weight and diet adherence. If you're struggling to lose weight despite doing "everything right," your sleep may be quietly undermining every effort.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">+15%</div>
+            <div class="ks-txt">Increase in ghrelin (the hunger hormone) after just two nights of poor sleep — University of Chicago study. At the same time, leptin (the fullness hormone) drops by 15%, leaving you hungrier and less satisfied.</div>
+          </div>
+
+          <h2>The Hormonal Chaos of Sleep Deprivation</h2>
+          <p>Poor sleep disrupts two key appetite hormones simultaneously:</p>
+          <ul>
+            <li><strong>Ghrelin (↑)</strong> — signals hunger to your brain. After sleep deprivation, ghrelin spikes, making you feel hungry even when you've eaten enough.</li>
+            <li><strong>Leptin (↓)</strong> — signals fullness. With less leptin, your brain doesn't register when you're satisfied, leading to chronic overeating.</li>
+          </ul>
+          <p>A 2004 study in <em>PLOS Medicine</em> found that people sleeping ≤5 hours per night had 15% higher ghrelin and 15% lower leptin than those sleeping 8 hours — corresponding to a 355 kcal/day increase in appetite. Over a year, that's a potential 15kg weight gain from hormones alone.</p>
+
+          <h2>Sleep and Food Choices</h2>
+          <p>It gets worse. Sleep deprivation doesn't just make you hungrier — it makes you crave the worst foods. A 2013 UC Berkeley study using fMRI brain scans showed that sleep-deprived subjects had significantly increased activation in the reward regions when shown images of junk food (cookies, pizza, chips) versus healthy food. The prefrontal cortex — responsible for rational decision-making — was simultaneously less active.</p>
+
+          <div class="art-callout">
+            Sleep deprivation is like being drunk at the supermarket: you know what you should buy, but your brain steers you straight to the biscuit aisle.
+          </div>
+
+          <h2>Cortisol: The Belly-Fat Hormone</h2>
+          <p>Poor sleep also raises cortisol — the primary stress hormone. Chronically elevated cortisol promotes visceral fat storage (fat around the abdomen — the most metabolically dangerous type), breaks down muscle tissue for energy, and drives cravings for high-calorie, high-sugar foods.</p>
+
+          <h2>Practical Sleep Optimisation</h2>
+          <ul>
+            <li><strong>Target 7–9 hours</strong> — non-negotiable for most adults</li>
+            <li><strong>Consistent schedule</strong> — same bedtime and wake time, even on weekends</li>
+            <li><strong>Cool, dark room</strong> — 17–19°C is the optimal sleep temperature</li>
+            <li><strong>No screens 60 min before bed</strong> — blue light suppresses melatonin by up to 50%</li>
+            <li><strong>Avoid caffeine after 2pm</strong> — caffeine has a 5–6 hour half-life</li>
+            <li><strong>Last meal 2–3 hours before bed</strong> — eating late disrupts sleep architecture and raises insulin</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 4 FULL: Identity ═══════════ -->
+<div id="full-identity" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=80&fit=crop" alt="Mindset" />
+        <div class="article-full-body">
+          <span class="art-cat c-mindset">Mindset</span>
+          <h1>Identity-Based Habits: Why "I Am Healthy" Beats "I Want to Lose Weight"</h1>
+          <div class="art-meta">📅 December 2024 · <span class="read-time">5 min read</span></div>
+
+          <p>Most people approach behaviour change backwards. They start with an outcome goal ("I want to lose 10kg"), work out a process to get there ("I'll go to the gym 5 days a week"), and hope motivation carries them. It almost never does — not long-term. The key insight from behavioural psychology is simpler and more powerful: <strong>change your identity, not your goals.</strong></p>
+
+          <h2>The Three Layers of Behaviour Change</h2>
+          <p>James Clear, in <em>Atomic Habits</em>, describes three concentric circles of behaviour change:</p>
+          <ol>
+            <li><strong>Outcomes</strong> (outermost) — what you want to achieve</li>
+            <li><strong>Processes</strong> — what habits you build</li>
+            <li><strong>Identity</strong> (innermost) — who you believe you are</li>
+          </ol>
+          <p>Most people focus on outcomes. The most effective changers work from the inside out — starting with identity.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">2×</div>
+            <div class="ks-txt">More likely to maintain a behaviour change when it's tied to identity versus goal-setting alone — University of Bath research on habit formation and self-concept.</div>
+          </div>
+
+          <div class="art-callout">
+            "Every action you take is a vote for the type of person you wish to become." — James Clear, Atomic Habits
+          </div>
+
+          <h2>From "I'm Trying to Eat Healthily" to "I'm a Healthy Eater"</h2>
+          <p>The difference is profound. "I'm trying" implies struggle, willpower, sacrifice. "I am" implies identity — your natural default behaviour. When someone offers you dessert:</p>
+          <ul>
+            <li><strong>Goal-based:</strong> "I can't, I'm on a diet." (external restriction, easily broken)</li>
+            <li><strong>Identity-based:</strong> "No thanks, I don't really eat that stuff." (internal truth)</li>
+          </ul>
+
+          <h2>How to Build an Identity Through Small Evidence</h2>
+          <p>You don't declare an identity and suddenly become it. You build it through small actions that serve as evidence. Each time you:</p>
+          <ul>
+            <li>Choose water over a fizzy drink</li>
+            <li>Go for a 10-minute walk</li>
+            <li>Meal prep on Sunday</li>
+            <li>Sleep before midnight</li>
+          </ul>
+          <p>... you cast a "vote" for being the type of person who takes care of their health. Over time, these votes accumulate into an unshakeable belief about who you are. That's when healthy behaviour becomes effortless rather than disciplined.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 5 FULL: Protein ═══════════ -->
+<div id="full-protein" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?w=1200&q=80&fit=crop" alt="Protein" />
+        <div class="article-full-body">
+          <span class="art-cat c-science">Science</span>
+          <h1>How Much Protein Do You Actually Need? The Science Explained</h1>
+          <div class="art-meta">📅 December 2024 · <span class="read-time">7 min read</span></div>
+
+          <p>Protein is probably the most discussed and most misunderstood macronutrient. Government guidelines say 0.8g per kg of bodyweight. Bodybuilders recommend 3–4g/kg. The truth, based on the best available evidence, sits somewhere far more specific — and depends on your goals.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">1.6–2.2g</div>
+            <div class="ks-txt">Grams of protein per kg of bodyweight per day — the research-supported optimal range for muscle building and fat loss, per a 2018 meta-analysis of 49 studies in the British Journal of Sports Medicine.</div>
+          </div>
+
+          <h2>The Recommendations by Goal</h2>
+          <ul>
+            <li><strong>Sedentary/General health:</strong> 0.8–1.0g/kg — prevents deficiency, maintains existing muscle</li>
+            <li><strong>Active, fat loss:</strong> 1.6–2.0g/kg — preserves muscle during calorie deficit, high satiety</li>
+            <li><strong>Building muscle:</strong> 1.8–2.2g/kg — maximises muscle protein synthesis</li>
+            <li><strong>Elderly (65+):</strong> 1.2–1.6g/kg — counteracts age-related muscle loss (sarcopenia)</li>
+          </ul>
+
+          <h2>Protein Quality Matters as Much as Quantity</h2>
+          <p>Not all protein is equal. The key measure is <strong>leucine content</strong> — leucine is the amino acid that most powerfully triggers muscle protein synthesis (MPS). Animal proteins (meat, fish, eggs, dairy) have higher leucine content and better digestibility than most plant proteins.</p>
+          <p>If you're plant-based, the solution isn't to give up protein goals — it's to prioritise leucine-rich plant proteins (soy, lentils, edamame) and combine complementary amino acid profiles (rice + beans, for example) throughout the day.</p>
+
+          <h2>Protein Timing: Does It Matter?</h2>
+          <p>Yes — but less than total daily intake. Current evidence suggests:</p>
+          <ul>
+            <li>Distribute protein across 3–5 meals rather than front-loading (muscle can only use ~25–40g per sitting for MPS)</li>
+            <li>Post-workout protein (within 2 hours) is beneficial for muscle repair</li>
+            <li>A casein-rich snack before bed (cottage cheese, Greek yogurt) prolongs overnight muscle synthesis</li>
+          </ul>
+
+          <div class="art-callout">
+            Protein is the most satiating macronutrient — gram for gram, it suppresses hunger more than carbohydrates or fat. High-protein diets consistently reduce total calorie intake without requiring conscious restriction.
+          </div>
+
+          <p>Use our <a href="calculator.html" style="color:var(--orange);font-weight:600;">Body Calculator</a> to get a personalised daily protein target based on your weight, goal, and activity level.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ ARTICLE 6 FULL: Consistency ═══════════ -->
+<div id="full-consistency" class="hidden">
+  <section style="background:var(--dark-mid);padding:3rem 2rem;">
+    <div class="container">
+      <button onclick="closeArticle()" style="background:var(--dark-surface);color:var(--orange);border:1px solid rgba(255,107,43,0.40);border-radius:10px;padding:0.5rem 1.2rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;font-family:'Montserrat',sans-serif;">← Back to Articles</button>
+      <div class="article-full">
+        <img class="article-full-hero" src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=1200&q=80&fit=crop" alt="Healthy habits" />
+        <div class="article-full-body">
+          <span class="art-cat c-habits">Habits</span>
+          <h1>The 10 Habits of People Who Stay Lean for Life</h1>
+          <div class="art-meta">📅 November 2024 · <span class="read-time">6 min read</span></div>
+
+          <p>Weight loss is actually the easy part. Keeping it off is where most people fail — and not because of willpower or genes. It's because they treated the diet as a temporary event rather than building permanent behaviours. These are the 10 habits shared by people who stay naturally lean for decades.</p>
+
+          <h2>1. They Eat Protein at Every Meal</h2>
+          <p>Protein keeps you full, protects muscle, and has the highest thermic effect of any macronutrient (your body burns 20–30% of its calories just digesting it). Naturally lean people don't think about this consciously — it's just how they eat.</p>
+
+          <h2>2. They Don't Drink Their Calories</h2>
+          <p>Liquid calories don't trigger the same satiety signals as solid food. Naturally lean people predominantly drink water, black coffee, and unsweetened tea. They rarely drink juice, smoothies, or alcohol regularly.</p>
+
+          <div class="key-stat">
+            <div class="ks-num">450+</div>
+            <div class="ks-txt">Average extra calories per day consumed by people who regularly drink sugary beverages — equivalent to a full extra meal daily, without the satiety.</div>
+          </div>
+
+          <h2>3. They Move Incidentally, Not Just "at the Gym"</h2>
+          <p>Non-Exercise Activity Thermogenesis (NEAT) — the calories burned through daily movement like walking, fidgeting, and standing — can vary by up to 2,000 kcal/day between people. Naturally lean people tend to be "movers" throughout the day, not just during scheduled workouts.</p>
+
+          <h2>4. They Sleep 7–9 Hours Consistently</h2>
+          <p>As covered in our sleep article, poor sleep sabotages every diet effort. Chronically lean people treat sleep as a non-negotiable health pillar — not a luxury.</p>
+
+          <h2>5. They Have a Relaxed Relationship with Food</h2>
+          <p>Paradoxically, people who obsess least about food often eat the best. They have no forbidden foods, no guilt cycles, and no binge-restriction patterns. Everything is allowed in moderation — which removes the psychological trigger that makes "forbidden" foods irresistible.</p>
+
+          <h2>6. They Cook Most of Their Food</h2>
+          <p>Restaurant and takeaway food has 2–3× more sodium, fat, and calories than home-cooked equivalents on average. Naturally lean people cook habitually — not because they're health freaks, but because it's their default.</p>
+
+          <h2>7. They Eat Slowly and Stop at 80% Full</h2>
+          <p>It takes 15–20 minutes for satiety signals from your gut to reach your brain. Eating slowly allows this signal to arrive before you've overeaten. Many traditional cultures have names for this — the Okinawans call it "Hara Hachi Bu" — stopping at 80% full.</p>
+
+          <h2>8. They Don't Eat out of Boredom or Emotion</h2>
+          <p>They've developed non-food responses to stress, boredom, or emotion — a walk, calling a friend, journaling. Emotional eating is a learned pattern that can be unlearned with practice and awareness.</p>
+
+          <h2>9. They Have a Few "Anchor" Meals They Rotate</h2>
+          <p>Decision fatigue is real. People who stay lean don't reinvent their diet every day — they have 5–8 healthy meals they love and rotate through them. This removes friction and prevents defaulting to fast food when tired.</p>
+
+          <h2>10. They Never Miss Twice</h2>
+          <p>They slip up — everyone does. But they've internalised the golden rule: never miss the same healthy behaviour two days in a row. One slip is human. Two in a row is the start of a backslide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>HealthyLife</strong> &mdash; Eat Well, Move More, Live Longer.</p>
+  <p style="margin-top:0.5rem;">For informational purposes only. Consult a healthcare professional before making significant dietary changes.</p>
+</footer>
+
+<script>
+/* ── Filter articles ── */
+function filterArticles(cat) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === cat));
+  document.querySelectorAll('.art-card').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+/* ── Open / close full article ── */
+const grid    = document.querySelector('.articles-main-grid').closest('section');
+const filterBar = document.querySelector('.article-filter-bar');
+
+function openArticle(id) {
+  grid.style.display = 'none';
+  filterBar.style.display = 'none';
+  document.querySelectorAll('[id^="full-"]').forEach(el => el.classList.add('hidden'));
+  const target = document.getElementById('full-' + id);
+  if (target) {
+    target.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function closeArticle() {
+  document.querySelectorAll('[id^="full-"]').forEach(el => el.classList.add('hidden'));
+  grid.style.display = '';
+  filterBar.style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Hash routing: articles.html#mediterranean ── */
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#','');
+  if (hash) openArticle(hash);
+});
+
+/* ── Nav session ── */
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--orange);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:rgba(16,185,129,0.25);border:1px solid rgba(16,185,129,0.50);color:#fff;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;">Logout</button>
+    </li>`);
+})();
+</script>
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+
+</body>
+</html>

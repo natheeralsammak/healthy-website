@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حياة صحية — كُل بذكاء، تحرّك أكثر</title>
+  <link rel="stylesheet" href="style-rtl.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>body { font-family: 'Tajawal', 'Segoe UI', sans-serif; }</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">حياة <span>صحية</span></div>
+    <button class="nav-hamburger" onclick="this.classList.toggle('active');document.getElementById('main-nav').classList.toggle('nav-open')"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html" class="active">الرئيسية</a></li>
+      <li><a href="meal-plans.html">خطط الوجبات</a></li>
+      <li><a href="exercise.html">التمارين</a></li>
+      <li><a href="tips.html">النصائح</a></li>
+      <li><a href="calculator.html">الحاسبة</a></li>
+      <li><a href="articles.html">المقالات</a></li>
+      <li><a href="login.html">الدخول</a></li>
+      <li><a href="../index.html" class="lang-switch">🌐 English</a></li>
+    </ul>
+    <button class="mode-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">☀️</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>كُل بذكاء. تحرّك أكثر.<br>عِش أطول.</h1>
+  <p>دليلك الشامل للتغذية الصحية وفقدان الوزن وبناء روتين رياضي يناسبك فعلاً.</p>
+  <div class="btn-group">
+    <a href="meal-plans.html" class="btn btn-primary">عرض خطط الوجبات</a>
+    <a href="exercise.html" class="btn btn-outline">ابدأ التمرين الآن</a>
+  </div>
+</section>
+
+<section class="overview">
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-icon">🥗</div>
+      <div class="number">7</div>
+      <div class="label">خطط وجبات أسبوعية</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">💪</div>
+      <div class="number">2</div>
+      <div class="label">مستويات لياقة بدنية</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">🥑</div>
+      <div class="number">+20</div>
+      <div class="label">طعام صحي مفيد</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">💡</div>
+      <div class="number">+15</div>
+      <div class="label">نصيحة صحية خبيرة</div>
+    </div>
+  </div>
+</section>
+
+<!-- بطاقات صور المميزات -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>كل ما تحتاجه للبدء</h2>
+      <p>نهج بسيط مدعوم علمياً لفقدان الوزن والحفاظ على الصحة.</p>
+    </div>
+    <div class="photo-cards">
+      <a href="meal-plans.html" class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=80&fit=crop')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">تغذية</div>
+          <h3>خطط وجبات أسبوعية</h3>
+          <p>وجبات متوازنة لكل يوم — فطور وغداء وعشاء ووجبات خفيفة.</p>
+        </div>
+      </a>
+      <a href="exercise.html" class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&fit=crop')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">لياقة</div>
+          <h3>برامج التمرين</h3>
+          <p>روتين للمبتدئين والمتوسطين لحرق الدهون وبناء القوة.</p>
+        </div>
+      </a>
+      <a href="tips.html" class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=800&q=80&fit=crop')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">صحة</div>
+          <h3>نصائح صحية</h3>
+          <p>تعرف على أفضل الأطعمة وكيفية البقاء رطباً وتحسين النوم.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- معرض صور الطعام -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>اغذِّ جسمك بالصح</h2>
+      <p>طعام حقيقي. نتائج حقيقية. بلا أنظمة وهمية.</p>
+    </div>
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80&fit=crop" alt="طبق صحي" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=400&q=80&fit=crop" alt="خضروات طازجة" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop" alt="فطور" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&q=80&fit=crop" alt="عصير صحي" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=400&q=80&fit=crop" alt="سمك سلمون" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=400&q=80&fit=crop" alt="توست الأفوكادو" loading="lazy"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- كيف يعمل — أقسام مقسمة مع صور -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>كيف يعمل البرنامج؟</h2>
+      <p>ثلاثة محاور بسيطة نحو حياة أكثر صحة.</p>
+    </div>
+
+    <div class="split-section" style="margin-bottom: 1.5rem;">
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-end;">الخطوة الأولى</div>
+        <h3>اتبع خطة الوجبات</h3>
+        <p>اختر خطة الوجبات التي تناسب أهدافك والتزم بها. الاستمرارية أهم من الكمال — وجبة صحية في كل مرة.</p>
+        <a href="meal-plans.html" class="btn" style="align-self:flex-end; background:var(--sand-light); color:var(--terra-dark);">اكتشف الخطط</a>
+      </div>
+      <div class="split-photo" style="background-image: url('https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80&fit=crop');"></div>
+    </div>
+
+    <div class="split-section" style="margin-bottom: 1.5rem;">
+      <div class="split-photo" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop');"></div>
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-end;">الخطوة الثانية</div>
+        <h3>مارس التمارين</h3>
+        <p>ابدأ ببرنامج المبتدئين. 3–4 جلسات أسبوعية من الكارديو والقوة تبني أساساً راسخاً لحرق الدهون.</p>
+        <a href="exercise.html" class="btn" style="align-self:flex-end; background:var(--sand-light); color:var(--terra-dark);">ابدأ التدريب</a>
+      </div>
+    </div>
+
+    <div class="split-section">
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-end;">الخطوة الثالثة</div>
+        <h3>طبّق النصائح يومياً</h3>
+        <p>العادات الصغيرة — شرب المزيد من الماء، والنوم 7–8 ساعات، والأكل بوعي — تتراكم لتعطي نتائج رائعة.</p>
+        <a href="tips.html" class="btn" style="align-self:flex-end; background:var(--sand-light); color:var(--terra-dark);">اقرأ النصائح</a>
+      </div>
+      <div class="split-photo" style="background-image: url('https://images.unsplash.com/photo-1515023115689-589c33041d3c?w=800&q=80&fit=crop');"></div>
+    </div>
+  </div>
+</section>
+
+<!-- بطاقات اختيار الجنس -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>خطط مصمّمة لك</h2>
+      <p>اختر مسارك — كل خطة وجبات وبرنامج تمرين مصمم خصيصاً لاحتياجات جسمك.</p>
+    </div>
+    <div class="gender-cards">
+      <a href="meal-plans.html" class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop'); min-height:300px;" onclick="localStorage.setItem('hl-gender','men')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">للرجال</div>
+          <h3>&#9794; برنامج الرجال</h3>
+          <p>1,800–2,200 سعرة · تمارين قوة مركبة · وجبات غنية بالبروتين · كارديو عالي الكثافة</p>
+          <span class="btn" style="align-self:flex-end; background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.6); margin-top:0.75rem;">استعرض خطط الرجال</span>
+        </div>
+      </a>
+      <a href="meal-plans.html" class="photo-card" style="background-image: url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&fit=crop'); min-height:300px;" onclick="localStorage.setItem('hl-gender','women')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">للنساء</div>
+          <h3>&#9792; برنامج النساء</h3>
+          <p>1,400–1,600 سعرة · تركيز على نحت الجسم والأرداف · وجبات صديقة للهرمونات · يوغا وكارديو لطيف</p>
+          <span class="btn" style="align-self:flex-end; background:rgba(255,255,255,0.2); color:#fff; border:2px solid rgba(255,255,255,0.6); margin-top:0.75rem;">استعرض خطط النساء</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="hero hero-cta">
+  <h1 style="font-size: 1.8rem;">رحلتك نحو حياة أكثر صحة تبدأ اليوم.</h1>
+  <p>كل خطوة صغيرة تُحدث فرقاً. ابدأ بوجبة واحدة، أو نزهة واحدة، أو ليلة نوم واحدة جيدة.</p>
+  <div class="btn-group">
+    <a href="meal-plans.html" class="btn btn-primary">اكتشف خطط الوجبات</a>
+    <a href="tips.html" class="btn btn-outline">اقرأ النصائح الصحية</a>
+  </div>
+</section>
+
+<footer>
+  <p><strong>حياة صحية</strong> — كُل بذكاء، تحرّك أكثر، عِش أطول.</p>
+  <p style="margin-top:0.5rem;">للأغراض التعليمية فقط. استشر أخصائي الرعاية الصحية قبل البدء بأي نظام غذائي أو رياضي.</p>
+</footer>
+
+<script>
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--terra-dark);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:var(--sand);border:1px solid var(--brown-light);color:var(--terra-dark);padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;font-family:'Tajawal',sans-serif;">خروج</button>
+    </li>`);
+})();
+</script>
+<script>
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  var d=document.body.classList.contains('dark');
+  localStorage.setItem('hl-dark',d?'1':'0');
+  document.querySelector('.mode-toggle').textContent=d?'☀️':'🌙';
+}
+(function(){
+  if(localStorage.getItem('hl-dark')==='1'){
+    document.body.classList.add('dark');
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='☀️';
+  } else {
+    var b=document.querySelector('.mode-toggle');if(b)b.textContent='🌙';
+  }
+})();
+</script>
+</body>
+</html>

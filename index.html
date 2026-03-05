@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealthyLife — Eat Well, Move More</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Objectives section ── */
+    .objectives-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+      margin-top: 2rem;
+    }
+    .obj-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      border-top: 4px solid var(--green-mid);
+      transition: var(--transition);
+    }
+    .obj-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,0.12); }
+    .obj-icon { font-size: 2.4rem; margin-bottom: 0.8rem; display: block; }
+    .obj-card h3 { color: var(--green-dark); font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .obj-card p  { color: var(--gray-mid); font-size: 0.88rem; line-height: 1.6; }
+
+    /* ── Features section ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .feature-card {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.4rem 1.5rem;
+      box-shadow: 0 3px 18px rgba(0,0,0,0.07);
+      border: 1.5px solid #e9f5ee;
+      transition: var(--transition);
+      text-decoration: none;
+      color: inherit;
+    }
+    .feature-card:hover { border-color: var(--green-mid); box-shadow: 0 8px 28px rgba(0,0,0,0.11); transform: translateY(-2px); }
+    .feature-icon-wrap {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .feature-text h3 { color: var(--green-dark); font-size: 1rem; margin-bottom: 0.3rem; }
+    .feature-text p  { color: var(--gray-mid); font-size: 0.86rem; line-height: 1.55; margin-bottom: 0.5rem; }
+    .feature-badge {
+      display: inline-block;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.65rem;
+      border-radius: 20px;
+    }
+    .feature-badge.free { background: #d8f3dc; color: #1b4332; }
+    .feature-badge.personalised { background: #fff0e0; color: #7a4100; }
+
+    /* ── Articles section ── */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+      margin-top: 2rem;
+    }
+    .article-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .article-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,0.13); }
+    .article-img {
+      width: 100%; height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+    .article-body { padding: 1.2rem 1.3rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+    .article-cat {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      margin-bottom: 0.6rem;
+    }
+    .cat-nutrition  { background: #d4edda; color: #155724; }
+    .cat-fitness    { background: #fce4b3; color: #7a4100; }
+    .cat-mindset    { background: #e2d9f3; color: #432874; }
+    .cat-science    { background: #d0eaff; color: #0a3d6b; }
+    .cat-habits     { background: #f5e6d0; color: #6e3a05; }
+    .cat-sleep      { background: #d1f0e3; color: #0a4a2e; }
+    .article-body h3 { font-size: 0.97rem; color: var(--gray-dark); line-height: 1.4; margin-bottom: 0.4rem; }
+    .article-body p  { font-size: 0.84rem; color: var(--gray-mid); line-height: 1.55; flex: 1; }
+    .article-meta { margin-top: 0.9rem; font-size: 0.78rem; color: #aaa; display: flex; gap: 0.5rem; align-items: center; }
+    .article-meta span { color: var(--green-mid); font-weight: 600; }
+    .article-read-more {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      border-bottom: 1.5px solid var(--green-light);
+      padding-bottom: 1px;
+      transition: var(--transition);
+    }
+    .article-read-more:hover { color: var(--green-mid); }
+
+    /* ── Consistency / Commitment section ── */
+    .consistency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+      margin-top: 2rem;
+    }
+    .tip-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.2rem 1.3rem;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.07);
+      border-right: 4px solid var(--green-light);
+    }
+    .tip-number {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .tip-row h4 { color: var(--green-dark); font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .tip-row p  { color: var(--gray-mid); font-size: 0.85rem; line-height: 1.55; }
+
+    /* ── Science banner ── */
+    .science-banner {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #40916c 100%);
+      color: #fff;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      margin: 2.5rem 0;
+    }
+    .science-banner h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .science-banner p  { opacity: 0.9; font-size: 0.95rem; max-width: 560px; }
+    .science-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .sci-stat { text-align: center; }
+    .sci-stat .big { font-size: 2rem; font-weight: 800; color: var(--green-light); line-height: 1; }
+    .sci-stat .sm  { font-size: 0.75rem; opacity: 0.85; margin-top: 0.2rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .objectives-grid { grid-template-columns: 1fr 1fr; }
+      .features-grid   { grid-template-columns: 1fr; }
+      .articles-grid   { grid-template-columns: 1fr; }
+      .consistency-grid{ grid-template-columns: 1fr; }
+      .science-banner  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .objectives-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Logged-in nav ── */
+    .nav-user { display:flex; align-items:center; gap:0.5rem; }
+    .nav-user-name { color:var(--green-light); font-weight:700; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Healthy<span>Life</span></div>
+    <ul class="nav-links" id="main-nav">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="meal-plans.html">Meal Plans</a></li>
+      <li><a href="exercise.html">Exercise</a></li>
+      <li><a href="tips.html">Tips</a></li>
+      <li><a href="calculator.html">Calculator</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="ar/index.html" class="lang-switch">🌐 العربية</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section class="hero">
+  <h1>Eat Well. Move More.<br>Live Longer.</h1>
+  <p>Your free, science-backed guide to healthy eating, weight loss, and a fitness routine that actually sticks — for both men and women.</p>
+  <div class="btn-group">
+    <a href="login.html" class="btn btn-primary">🚀 Create Free Account</a>
+    <a href="calculator.html" class="btn btn-outline">🧮 Try Calculator Free</a>
+    <a href="login.html" class="btn btn-outline" style="background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.7);">🔑 Login</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     STATS STRIP
+══════════════════════════════ -->
+<section class="overview">
+  <div class="stats">
+    <div class="stat-box">
+      <div class="stat-icon">🍽️</div>
+      <div class="number">8</div>
+      <div class="label">Diet Types</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">💪</div>
+      <div class="number">7</div>
+      <div class="label">Day Meal Plans</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">🧮</div>
+      <div class="number">3</div>
+      <div class="label">Body Fat Methods</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">📰</div>
+      <div class="number">6+</div>
+      <div class="label">Health Articles</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">🆓</div>
+      <div class="number">100%</div>
+      <div class="label">Free to Use</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     WHAT IS THIS WEBSITE?
+══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>What Is HealthyLife?</h2>
+      <p>A free, all-in-one healthy living platform designed to help you lose weight, build strength, and develop lasting habits — with no fads and no subscriptions.</p>
+    </div>
+
+    <div class="science-banner">
+      <div>
+        <h2>Built on Science, Not Hype</h2>
+        <p>Every meal plan, workout, and recommendation on this site is grounded in peer-reviewed research — from the Mifflin-St Jeor BMR formula to the Mediterranean diet studies. No detoxes, no magic pills, just evidence-based nutrition and fitness.</p>
+      </div>
+      <div class="science-stats">
+        <div class="sci-stat">
+          <div class="big">8</div>
+          <div class="sm">Diet<br>Styles</div>
+        </div>
+        <div class="sci-stat">
+          <div class="big">3</div>
+          <div class="sm">Body Fat<br>Methods</div>
+        </div>
+        <div class="sci-stat">
+          <div class="big">12</div>
+          <div class="sm">Micronutrient<br>Targets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     OBJECTIVES
+══════════════════════════════ -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>Our Objectives</h2>
+      <p>Three core goals guide everything on this platform.</p>
+    </div>
+    <div class="objectives-grid">
+      <div class="obj-card">
+        <span class="obj-icon">🎯</span>
+        <h3>Personalised Guidance</h3>
+        <p>We don't believe in one-size-fits-all. Create a free account and get a meal plan tuned to your diet type (Mediterranean, Keto, Vegan…) and your specific goal — lose fat, maintain, or build muscle.</p>
+      </div>
+      <div class="obj-card">
+        <span class="obj-icon">🧠</span>
+        <h3>Education First</h3>
+        <p>We help you understand <em>why</em> your body responds to food and exercise the way it does — so you make smarter choices for life, not just for the next 30 days.</p>
+      </div>
+      <div class="obj-card">
+        <span class="obj-icon">🔄</span>
+        <h3>Sustainable Habits</h3>
+        <p>Our focus is on small, consistent daily actions that compound over time — not crash diets or extreme workouts that leave you burned out after two weeks.</p>
+      </div>
+      <div class="obj-card">
+        <span class="obj-icon">⚖️</span>
+        <h3>Gender-Aware Plans</h3>
+        <p>Men and women have different caloric needs, hormonal profiles, and fitness goals. All our meal and workout plans have separate, scientifically calibrated tracks for both.</p>
+      </div>
+      <div class="obj-card">
+        <span class="obj-icon">🌍</span>
+        <h3>Bilingual Access</h3>
+        <p>The entire platform — every meal plan, article, calculator, and tip — is available in both English and Arabic (العربية) so more people can benefit regardless of language.</p>
+      </div>
+      <div class="obj-card">
+        <span class="obj-icon">💰</span>
+        <h3>Always Free</h3>
+        <p>No paywalls, no premium tiers, no subscriptions. Every calculator, article, and meal plan on this site is free to use, forever. Your health shouldn't cost a fortune.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     FEATURES
+══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>What You Get With a Free Account</h2>
+      <p>Create your free account in seconds and unlock everything — <strong>one feature is open to all</strong>, the rest unlock after you register.</p>
+    </div>
+
+    <!-- FREE FOR EVERYONE callout -->
+    <div style="background:linear-gradient(135deg,#d8f3dc,#b7e4c7);border-radius:18px;padding:1.4rem 1.8rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;">
+      <div style="font-size:2.2rem;">🧮</div>
+      <div style="flex:1;">
+        <h3 style="color:#1b4332;font-size:1.05rem;margin:0 0 0.25rem;">Advanced Body &amp; Nutrition Calculator — <em>Free, No Login Required</em></h3>
+        <p style="color:#2d6a4f;font-size:0.88rem;margin:0;">BMI · BMR · TDEE · Body Fat % (3 methods) · Ideal Weight · Macros · 12 Micronutrients · Metabolic Age. Use it before you even sign up!</p>
+      </div>
+      <a href="calculator.html" style="background:#1b4332;color:#fff;padding:0.65rem 1.4rem;border-radius:12px;font-weight:700;font-size:0.9rem;text-decoration:none;white-space:nowrap;">Try it Free →</a>
+    </div>
+
+    <div class="features-grid">
+
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon-wrap">🥗</div>
+        <div class="feature-text">
+          <h3>8 Diet-Specific Meal Plans</h3>
+          <p>Full 7-day plans for Balanced, Mediterranean, Keto, Low-Carb, High-Protein, Vegan, Paleo &amp; Intermittent Fasting — with calories and macros for every meal.</p>
+          <span class="feature-badge personalised">🔒 Free Account Required</span>
+        </div>
+      </a>
+
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon-wrap">🏋️</div>
+        <div class="feature-text">
+          <h3>Workout Programs</h3>
+          <p>Beginner and intermediate workout plans with separate men's and women's tracks. Includes cardio, strength, HIIT, yoga and recovery days.</p>
+          <span class="feature-badge personalised">🔒 Free Account Required</span>
+        </div>
+      </a>
+
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon-wrap">💡</div>
+        <div class="feature-text">
+          <h3>Health &amp; Nutrition Tips</h3>
+          <p>Top 20+ healthy foods with benefits, hydration guide, sleep optimisation, stress management and daily habit checklists.</p>
+          <span class="feature-badge personalised">🔒 Free Account Required</span>
+        </div>
+      </a>
+
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon-wrap">📰</div>
+        <div class="feature-text">
+          <h3>Health Articles</h3>
+          <p>In-depth, regularly updated articles on nutrition science, exercise research, mindset, sleep and metabolic health — written in plain language.</p>
+          <span class="feature-badge personalised">🔒 Free Account Required</span>
+        </div>
+      </a>
+
+      <a href="login.html" class="feature-card">
+        <div class="feature-icon-wrap">✨</div>
+        <div class="feature-text">
+          <h3>Personalised Meal Plans</h3>
+          <p>Set your diet type &amp; goal and we auto-load your perfect plan — Mediterranean for fat loss, Keto for muscle gain, and more.</p>
+          <span class="feature-badge personalised">🔒 Free Account Required</span>
+        </div>
+      </a>
+
+      <a href="login.html" class="feature-card" style="border:2px dashed var(--green-mid);background:#f8fff9;">
+        <div class="feature-icon-wrap" style="background:linear-gradient(135deg,#74c69d,#40916c);">🎯</div>
+        <div class="feature-text">
+          <h3>Ready to Start?</h3>
+          <p>Creating a free account takes 60 seconds. Tell us your diet preference, gender and goal — then everything unlocks instantly.</p>
+          <span class="feature-badge free">✓ Always Free · No Credit Card</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     HOW IT WORKS
+══════════════════════════════ -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>How It Works</h2>
+      <p>Three steps. That's all it takes to get started.</p>
+    </div>
+    <div class="split-section" style="margin-bottom:1.5rem;">
+      <div class="split-photo" style="background-image:url('https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80&fit=crop');"></div>
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-start;">Step 1</div>
+        <h3>Pick Your Diet &amp; Goal</h3>
+        <p>Browse 8 science-backed diet plans or create a free account to get one automatically matched to your objective — whether that's fat loss, muscle building, or simply eating better.</p>
+        <a href="meal-plans.html" class="btn" style="align-self:flex-start;background:var(--green-pale);color:var(--green-dark);">Browse Meal Plans</a>
+      </div>
+    </div>
+    <div class="split-section" style="margin-bottom:1.5rem;">
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-start;">Step 2</div>
+        <h3>Train Smarter</h3>
+        <p>Follow a structured weekly workout plan (3–5 days/week). Use our body calculator to track your real progress — body fat %, lean mass, metabolic age and health score.</p>
+        <a href="exercise.html" class="btn" style="align-self:flex-start;background:var(--green-pale);color:var(--green-dark);">Start Training</a>
+      </div>
+      <div class="split-photo" style="background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop');"></div>
+    </div>
+    <div class="split-section">
+      <div class="split-photo" style="background-image:url('https://images.unsplash.com/photo-1515023115689-589c33041d3c?w=800&q=80&fit=crop');"></div>
+      <div class="split-content">
+        <div class="photo-card-tag" style="align-self:flex-start;">Step 3</div>
+        <h3>Build Daily Habits</h3>
+        <p>Read our articles and tips to understand the science behind your choices. Small consistent habits — better sleep, more water, mindful eating — are what separate those who succeed long-term from those who don't.</p>
+        <a href="articles.html" class="btn" style="align-self:flex-start;background:var(--green-pale);color:var(--green-dark);">Read Articles</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     FEATURED ARTICLES
+══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>Latest Health Articles</h2>
+      <p>Evidence-based reads to keep you informed, motivated and on track.</p>
+    </div>
+    <div class="articles-grid">
+
+      <article class="article-card">
+        <img class="article-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&fit=crop" alt="Mediterranean diet" loading="lazy" />
+        <div class="article-body">
+          <span class="article-cat cat-nutrition">Nutrition</span>
+          <h3>Why the Mediterranean Diet Consistently Tops Every Health Ranking</h3>
+          <p>Rich in olive oil, fish, legumes and vegetables, the Med diet reduces heart disease risk by up to 30% — here's the science behind why it works.</p>
+          <div class="article-meta">📅 Feb 2025 · <span>6 min read</span></div>
+          <a href="articles.html#mediterranean" class="article-read-more">Read article →</a>
+        </div>
+      </article>
+
+      <article class="article-card">
+        <img class="article-img" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&fit=crop" alt="Strength training" loading="lazy" />
+        <div class="article-body">
+          <span class="article-cat cat-fitness">Fitness</span>
+          <h3>Strength Training Burns More Fat Than Cardio — Here's Why</h3>
+          <p>Muscle tissue burns calories at rest. Building lean mass through resistance training is the most efficient long-term strategy for fat loss and metabolic health.</p>
+          <div class="article-meta">📅 Jan 2025 · <span>5 min read</span></div>
+          <a href="articles.html#strength" class="article-read-more">Read article →</a>
+        </div>
+      </article>
+
+      <article class="article-card">
+        <img class="article-img" src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80&fit=crop" alt="Sleep and weight loss" loading="lazy" />
+        <div class="article-body">
+          <span class="article-cat cat-sleep">Sleep</span>
+          <h3>The Sleep-Weight Connection: How Poor Sleep Makes You Fat</h3>
+          <p>Less than 6 hours of sleep raises ghrelin (hunger hormone) by 15% and reduces leptin (fullness hormone) — making your diet 40% harder to stick to.</p>
+          <div class="article-meta">📅 Jan 2025 · <span>4 min read</span></div>
+          <a href="articles.html#sleep" class="article-read-more">Read article →</a>
+        </div>
+      </article>
+
+    </div>
+    <div style="text-align:center;margin-top:2rem;">
+      <a href="articles.html" class="btn btn-primary">View All Articles →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CONSISTENCY & COMMITMENT
+══════════════════════════════ -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>How to Stay Consistent &amp; Actually Commit to Your Diet</h2>
+      <p>The biggest challenge isn't starting — it's not stopping. Here are the proven strategies that work.</p>
+    </div>
+    <div class="consistency-grid">
+
+      <div class="tip-row">
+        <div class="tip-number">1</div>
+        <div>
+          <h4>Start Ridiculously Small</h4>
+          <p>Don't try to overhaul everything in week one. Pick one habit — drink one extra glass of water per day, or swap one meal. Small wins build the neural pathways that make healthy behaviour automatic.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">2</div>
+        <div>
+          <h4>Make It Identity-Based, Not Goal-Based</h4>
+          <p>"I am someone who eats well" is far more powerful than "I want to lose 5kg." Goals have an end; identity doesn't. Ask yourself: what would a healthy person do right now?</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">3</div>
+        <div>
+          <h4>Plan &amp; Prep on Sundays</h4>
+          <p>Decision fatigue is real. When food is already cooked and portioned, you'll make better choices 90% of the time. Spend 2 hours on Sunday cooking proteins, grains and chopping vegetables for the week.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">4</div>
+        <div>
+          <h4>Use the 80/20 Rule — Not Perfection</h4>
+          <p>Eat on-plan 80% of the time and enjoy 20% flexibility. Rigid "all-or-nothing" thinking is the #1 reason diets fail. Missing one meal doesn't ruin a week — giving up does.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">5</div>
+        <div>
+          <h4>Track Progress, Not Just Weight</h4>
+          <p>The scale lies. Use our Body Calculator to track body fat %, lean mass, and waist measurements weekly. Seeing real body composition change is far more motivating than a single number.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">6</div>
+        <div>
+          <h4>Anchor Habits to Existing Routines</h4>
+          <p>"After my morning coffee, I will prepare my lunch." Habit stacking — linking a new behaviour to an existing one — dramatically increases follow-through rate. Your brain loves patterns.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">7</div>
+        <div>
+          <h4>Protect Your Sleep Like Your Most Important Meal</h4>
+          <p>Sleep deprivation increases hunger hormones by 15–20%, tanks your motivation to exercise, and makes your brain crave high-calorie foods. 7–9 hours is not optional — it's the foundation.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">8</div>
+        <div>
+          <h4>Find Your "Why" and Write It Down</h4>
+          <p>Do you want to have energy to play with your kids? Live to 90 without disease? Fit into clothes confidently? Write it down, photograph it, and read it when motivation dips. Emotion beats willpower.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">9</div>
+        <div>
+          <h4>Remove Friction, Add Convenience</h4>
+          <p>Don't keep chips in the house. Do keep washed fruit at eye level. Put your gym bag by the door the night before. The easier healthy choices are, the more likely you are to make them without thinking.</p>
+        </div>
+      </div>
+
+      <div class="tip-row">
+        <div class="tip-number">10</div>
+        <div>
+          <h4>Never Miss Twice</h4>
+          <p>You will slip up. Everyone does. The golden rule: never miss the same healthy behaviour two days in a row. One miss is a blip. Two misses in a row starts becoming a new (bad) habit.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quote callout -->
+    <blockquote style="margin:2.5rem auto 0;max-width:680px;text-align:center;border-left:none;background:linear-gradient(135deg,#1b4332,#40916c);color:#fff;border-radius:16px;padding:2rem 2.5rem;">
+      <p style="font-size:1.2rem;font-style:italic;line-height:1.6;margin-bottom:0.8rem;">"We are what we repeatedly do. Excellence, then, is not an act but a habit."</p>
+      <footer style="font-size:0.9rem;opacity:0.85;font-weight:600;">— Aristotle</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     PHOTO INSPIRATION GRID
+══════════════════════════════ -->
+<section>
+  <div class="container">
+    <div class="section-title">
+      <h2>Real Food. Real Results.</h2>
+      <p>No fads, no gimmicks. Just whole foods and honest effort.</p>
+    </div>
+    <div class="img-row">
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80&fit=crop" alt="Healthy bowl" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=400&q=80&fit=crop" alt="Fresh vegetables" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80&fit=crop" alt="Healthy breakfast" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&q=80&fit=crop" alt="Smoothie" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?w=400&q=80&fit=crop" alt="Salmon" loading="lazy"/></div>
+      <div class="img-tile"><img src="https://images.unsplash.com/photo-1473093226795-af9932fe5856?w=400&q=80&fit=crop" alt="Avocado toast" loading="lazy"/></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     GENDER ENTRY CARDS
+══════════════════════════════ -->
+<section class="bg-pale">
+  <div class="container">
+    <div class="section-title">
+      <h2>Plans Built For You</h2>
+      <p>Every meal plan and workout is calibrated to your body's specific needs.</p>
+    </div>
+    <div class="gender-cards">
+      <a href="meal-plans.html" class="photo-card" style="background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop');min-height:300px;" onclick="localStorage.setItem('hl-gender','men')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">For Men</div>
+          <h3>&#9794; Men's Programme</h3>
+          <p>1,800–2,200 kcal/day · Compound strength training · High-protein meals · HIIT cardio</p>
+          <span class="btn" style="align-self:flex-start;background:rgba(255,255,255,0.2);color:#fff;border:2px solid rgba(255,255,255,0.6);margin-top:0.75rem;">Explore Men's Plans →</span>
+        </div>
+      </a>
+      <a href="meal-plans.html" class="photo-card" style="background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80&fit=crop');min-height:300px;" onclick="localStorage.setItem('hl-gender','women')">
+        <div class="photo-card-overlay">
+          <div class="photo-card-tag">For Women</div>
+          <h3>&#9792; Women's Programme</h3>
+          <p>1,400–1,600 kcal/day · Glute &amp; sculpt focus · Hormone-friendly meals · Yoga &amp; low-impact cardio</p>
+          <span class="btn" style="align-self:flex-start;background:rgba(255,255,255,0.2);color:#fff;border:2px solid rgba(255,255,255,0.6);margin-top:0.75rem;">Explore Women's Plans →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     CTA BANNER
+══════════════════════════════ -->
+<section class="hero hero-cta">
+  <h1 style="font-size:1.8rem;">Your journey to a healthier life starts today.</h1>
+  <p>Create your free account in 60 seconds and get a meal plan personalised to your diet and goals.</p>
+  <div class="btn-group">
+    <a href="login.html" class="btn btn-primary">Create Free Account →</a>
+    <a href="meal-plans.html" class="btn btn-outline">Browse Meal Plans</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>HealthyLife</strong> &mdash; Eat Well, Move More, Live Longer.</p>
+  <p style="margin-top:0.5rem;">For informational purposes only. Consult a healthcare professional before starting any diet or exercise programme.</p>
+</footer>
+
+<script>
+(function() {
+  const session = localStorage.getItem('hl-session') ? JSON.parse(localStorage.getItem('hl-session')) : null;
+  if (!session) return;
+  const nav = document.getElementById('main-nav');
+  const loginLi = nav.querySelector('a[href="login.html"]')?.parentElement;
+  if (loginLi) loginLi.remove();
+  nav.insertAdjacentHTML('beforeend',
+    `<li style="display:flex;align-items:center;gap:0.5rem;">
+      <span style="color:var(--green-light);font-weight:700;font-size:0.9rem;">👤 ${session.name}</span>
+      <button onclick="localStorage.removeItem('hl-session');location.reload();"
+        style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:0.3rem 0.8rem;border-radius:8px;font-size:0.82rem;cursor:pointer;">Logout</button>
+    </li>`);
+})();
+</script>
+</body>
+</html>
