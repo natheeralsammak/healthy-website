@@ -449,6 +449,31 @@
       margin-top: 1rem;
       line-height: 1.7;
     }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    @media(max-width:620px){ .form-grid-3 { grid-template-columns: 1fr; } }
+    .section-toggle { width:100%; text-align:right; background:var(--bg-surface,#f9fafb); border:none; border-radius:10px; padding:0.75rem 1rem; font-weight:700; font-size:0.9rem; color:var(--accent,#10b981); cursor:pointer; font-family:'Tajawal',sans-serif; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; direction:rtl; }
+    .section-toggle::after { content:'▼'; font-size:0.7rem; transition:transform 0.2s; }
+    .section-toggle.open::after { transform:rotate(180deg); }
+    .section-body { display:none; }
+    .section-body.open { display:block; }
+    .method-tabs { display:flex; gap:0.5rem; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .method-tab { padding:0.4rem 1rem; border-radius:20px; border:1.5px solid #e5e7eb; background:#f9fafb; font-size:0.8rem; font-weight:700; cursor:pointer; color:#6b7280; transition:all 0.2s; font-family:'Tajawal',sans-serif; }
+    .method-tab.active { background:rgba(16,185,129,0.15); border-color:#10b981; color:var(--text,#111827); }
+    .method-panel { display:none; }
+    .method-panel.active { display:block; }
+    .info-box-method { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:0.75rem 1rem; font-size:0.82rem; color:var(--text,#111827); margin-bottom:0.5rem; direction:rtl; }
+    .bf-result-card { background:#fff; border-radius:14px; padding:1.5rem; margin-bottom:1.5rem; border:1px solid #e5e7eb; text-align:center; }
+    .bf-val-big { font-size:2.5rem; font-weight:900; color:#10b981; }
+    .bf-cat-label { font-size:1rem; font-weight:700; margin-top:0.25rem; }
+    .bf-method-note { font-size:0.78rem; color:#6b7280; margin-top:0.25rem; }
+    .bf-compare-wrap { background:#fff; border-radius:14px; padding:1.5rem; margin-bottom:1.5rem; border:1px solid #e5e7eb; }
+    .bf-compare-table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:0.85rem; direction:rtl; }
+    .bf-compare-table th { text-align:right; padding:0.6rem 0.75rem; color:#10b981; font-size:0.75rem; font-weight:700; border-bottom:2px solid #e5e7eb; }
+    .bf-compare-table td { padding:0.6rem 0.75rem; border-bottom:1px solid #f3f4f6; }
+    .bf-compare-avg { margin-top:1rem; padding:1rem; background:rgba(16,185,129,0.08); border-radius:12px; text-align:center; }
+    .bf-compare-avg .avg-val { font-size:1.8rem; font-weight:900; color:#10b981; }
+    .bf-compare-avg .avg-label { font-size:0.82rem; color:#6b7280; margin-top:0.25rem; }
+    .hint-ar { font-size:0.72rem; color:#6b7280; line-height:1.4; }
   </style>
 </head>
 <body>
@@ -555,6 +580,76 @@
         </div>
       </div>
 
+      <!-- Body Fat Measurements -->
+      <div style="margin-top:1.5rem;">
+        <button class="section-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">📏 قياسات محيط الجسم (شريط قياس)</button>
+        <div class="section-body open">
+          <p style="font-size:0.78rem; color:#6b7280; margin-bottom:1rem;">قِس في الصباح قبل الأكل. خذ كل قياس 3 مرات واستخدم المتوسط.</p>
+          <div class="form-grid-3">
+            <div class="form-group"><label>محيط الخصر (سم)</label><input type="number" id="waist" step="0.5" placeholder="مثال: 85" /><span class="hint-ar">عند مستوى السرّة</span></div>
+            <div class="form-group"><label>محيط الرقبة (سم)</label><input type="number" id="neck" step="0.5" placeholder="مثال: 38" /><span class="hint-ar">أسفل الحنجرة</span></div>
+            <div class="form-group"><label>محيط الأرداف (سم)</label><input type="number" id="hip" step="0.5" placeholder="مثال: 95" /><span class="hint-ar">أعرض نقطة</span></div>
+            <div class="form-group"><label>محيط الساعد (سم)</label><input type="number" id="forearm" step="0.5" placeholder="مثال: 27" /><span class="hint-ar">أعرض جزء</span></div>
+            <div class="form-group"><label>محيط المعصم (سم)</label><input type="number" id="wrist" step="0.5" placeholder="مثال: 17" /><span class="hint-ar">فوق عظمة المعصم</span></div>
+            <div class="form-group"><label>محيط الفخذ (سم)</label><input type="number" id="thigh" step="0.5" placeholder="مثال: 55" /><span class="hint-ar">منتصف الفخذ واقفاً</span></div>
+            <div class="form-group"><label>محيط الساق (سم)</label><input type="number" id="calf" step="0.5" placeholder="مثال: 37" /><span class="hint-ar">أعرض جزء من الساق</span></div>
+          </div>
+        </div>
+
+        <button class="section-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">🤏 قياسات ثنيات الجلد (تحتاج مقياس ثنيات)</button>
+        <div class="section-body">
+          <p style="font-size:0.78rem; color:#6b7280; margin-bottom:1rem;">طريقة جاكسون-بولوك تحتاج مقياس ثنيات الجلد. تخطَّ هذا القسم إذا لم يكن لديك.</p>
+          <div id="skinfold-male">
+            <div class="form-grid-3">
+              <div class="form-group"><label>الصدر (مم)</label><input type="number" id="sf-chest" step="0.5" placeholder="مثال: 10" /><span class="hint-ar">ثنية مائلة، منتصف الصدر</span></div>
+              <div class="form-group"><label>البطن (مم)</label><input type="number" id="sf-abdomen" step="0.5" placeholder="مثال: 20" /><span class="hint-ar">ثنية عمودية، يمين السرّة</span></div>
+              <div class="form-group"><label>الفخذ (مم)</label><input type="number" id="sf-thigh-m" step="0.5" placeholder="مثال: 15" /><span class="hint-ar">ثنية عمودية، أمام الفخذ</span></div>
+            </div>
+          </div>
+          <div id="skinfold-female" style="display:none">
+            <div class="form-grid-3">
+              <div class="form-group"><label>العضد الخلفي (مم)</label><input type="number" id="sf-tricep" step="0.5" placeholder="مثال: 18" /><span class="hint-ar">ثنية عمودية، خلف الذراع</span></div>
+              <div class="form-group"><label>فوق الحرقفة (مم)</label><input type="number" id="sf-supra" step="0.5" placeholder="مثال: 15" /><span class="hint-ar">ثنية مائلة، فوق عظم الورك</span></div>
+              <div class="form-group"><label>الفخذ (مم)</label><input type="number" id="sf-thigh-f" step="0.5" placeholder="مثال: 25" /><span class="hint-ar">ثنية عمودية، أمام الفخذ</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem;">
+          <label style="font-size:0.82rem; font-weight:700; color:#10b981; margin-bottom:0.5rem; display:block;">طريقة حساب نسبة الدهون</label>
+          <div class="method-tabs">
+            <button class="method-tab active" onclick="setBFMethod('navy')">🪖 البحرية الأمريكية</button>
+            <button class="method-tab" onclick="setBFMethod('ymca')">🏋️ YMCA</button>
+            <button class="method-tab" onclick="setBFMethod('bailey')">📏 كوفرت بيلي</button>
+            <button class="method-tab" onclick="setBFMethod('cunbae')">🧮 CUN-BAE</button>
+            <button class="method-tab" onclick="setBFMethod('bmi')">📊 ديورنبرغ</button>
+            <button class="method-tab" onclick="setBFMethod('skinfold')">🤏 ثنيات الجلد</button>
+            <button class="method-tab" onclick="setBFMethod('compare')">🔬 مقارنة الكل</button>
+          </div>
+          <div class="method-panel active" id="panel-navy">
+            <div class="info-box-method">🪖 <strong>طريقة البحرية الأمريكية</strong> (هودجدون وبيكيت، 1984) — الخصر، الرقبة والأرداف(♀). الخطأ: ±3–4%</div>
+          </div>
+          <div class="method-panel" id="panel-ymca">
+            <div class="info-box-method">🏋️ <strong>طريقة YMCA</strong> — الرجال: الخصر + الوزن. النساء: الخصر، الأرداف، الساعد، المعصم. الخطأ: ±3.7–4%</div>
+          </div>
+          <div class="method-panel" id="panel-bailey">
+            <div class="info-box-method">📏 <strong>طريقة كوفرت بيلي</strong> — تراعي العمر مع 4 قياسات محيطية. الخطأ: ±3.5–5%</div>
+          </div>
+          <div class="method-panel" id="panel-cunbae">
+            <div class="info-box-method">🧮 <strong>CUN-BAE</strong> (غوميز-أمبروسي، 2012) — مُعتمدة مقابل DEXA. أدق من ديورنبرغ. الخطأ: ±3.5–4%</div>
+          </div>
+          <div class="method-panel" id="panel-bmi">
+            <div class="info-box-method">📊 <strong>معادلة ديورنبرغ</strong> (1991) — تقدير نسبة الدهون من مؤشر كتلة الجسم. الخطأ: ±4–5%</div>
+          </div>
+          <div class="method-panel" id="panel-skinfold">
+            <div class="info-box-method">🤏 <strong>جاكسون-بولوك 3 مواقع</strong> (1978/1980) — قياس ثنيات الجلد + معادلة سيري. الخطأ: ±3–4%</div>
+          </div>
+          <div class="method-panel" id="panel-compare">
+            <div class="info-box-method">🔬 <strong>مقارنة جميع الطرق</strong> — تشغيل كل المعادلات المتاحة وعرض النتائج جنباً إلى جنب. الوسيط عادةً هو الأدق.</div>
+          </div>
+        </div>
+      </div>
+
       <div class="info-box">
         <strong>العلم وراء الأرقام:</strong> يُحسب معدل الأيض الأساسي (BMR) باستخدام <em>معادلة ميفلين-سانت جيور (1990)</em> — الأكثر دقةً وتحققاً علمياً لكلا الجنسين. إجمالي السعرات (TDEE) = BMR × معامل النشاط. مؤشر كتلة الجسم وفق معايير منظمة الصحة العالمية. المغذيات الكبرى وفق إرشادات USDA / IOM.
       </div>
@@ -591,6 +686,24 @@
           <div class="rm-unit">كجم/م²</div>
           <div class="rm-label">مؤشر كتلة الجسم (BMI)</div>
         </div>
+      </div>
+
+      <!-- Body Fat Results -->
+      <div class="bf-result-card" id="bf-result-card" style="display:none;">
+        <h3>🏋️ نسبة الدهون في الجسم</h3>
+        <div class="bf-val-big" id="bf-val">—</div>
+        <div>% دهون الجسم</div>
+        <div class="bf-cat-label" id="bf-category">—</div>
+        <div class="bf-method-note" id="bf-method-label">—</div>
+      </div>
+
+      <div class="bf-compare-wrap" id="bf-compare-wrap" style="display:none;">
+        <h3>🔬 مقارنة الطرق</h3>
+        <table class="bf-compare-table">
+          <thead><tr><th>الطريقة</th><th>نسبة الدهون %</th><th>التصنيف</th><th>الدقة</th></tr></thead>
+          <tbody id="bf-compare-body"></tbody>
+        </table>
+        <div class="bf-compare-avg" id="bf-compare-avg"></div>
       </div>
 
       <!-- BMI scale -->
@@ -707,7 +820,7 @@
       </div>
 
       <p class="disclaimer">
-        النتائج تقديرية مبنية على معادلة ميفلين-سانت جيور (1990) وإرشادات USDA/IOM.
+        النتائج تقديرية مبنية على معادلة ميفلين-سانت جيور (1990) لحساب BMR، وطرق تقدير نسبة الدهون: البحرية الأمريكية (1984)، YMCA، كوفرت بيلي، CUN-BAE (2012)، ديورنبرغ (1991)، جاكسون-بولوك (1978/1980)، ومعادلة سيري (1956). إرشادات التغذية وفق USDA/IOM.
         تتفاوت النتائج من شخص لآخر. استشر أخصائي تغذية أو طبيباً قبل البدء بأي نظام غذائي أو رياضي.
       </p>
     </div>
@@ -723,11 +836,23 @@
 <script>
   let gender = 'male';
   let unit   = 'metric';
+  let bfMethod = 'navy';
 
   function selectGender(g) {
     gender = g;
     document.getElementById('btn-male').classList.toggle('selected', g === 'male');
     document.getElementById('btn-female').classList.toggle('selected', g === 'female');
+  }
+
+  function setBFMethod(m) {
+    bfMethod = m;
+    document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.method-panel').forEach(p => p.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('panel-' + m).classList.add('active');
+    // Show/hide skinfold inputs based on gender
+    document.getElementById('skinfold-male').style.display = gender === 'male' ? '' : 'none';
+    document.getElementById('skinfold-female').style.display = gender === 'female' ? '' : 'none';
   }
 
   function setUnit(u) {
@@ -816,6 +941,103 @@
     const diff     = target - tdee;
     const weeklyKg = ((diff * 7) / 7700).toFixed(2);
 
+    // ── Body Fat Calculation ──
+    const waist = parseFloat(document.getElementById('waist').value);
+    const neck  = parseFloat(document.getElementById('neck').value);
+    const hipV  = parseFloat(document.getElementById('hip').value);
+    const forearm = parseFloat(document.getElementById('forearm').value);
+    const wristV = parseFloat(document.getElementById('wrist').value);
+    const thighV = parseFloat(document.getElementById('thigh').value);
+    const calfV  = parseFloat(document.getElementById('calf').value);
+
+    function deurenbergBF(bmiV, ageV) {
+      const sexVal = gender === 'male' ? 1 : 0;
+      return (1.20 * bmiV) + (0.23 * ageV) - (10.8 * sexVal) - 5.4;
+    }
+    function tryNavy() {
+      if (gender === 'male' && waist && neck && !isNaN(waist) && !isNaN(neck) && waist > neck)
+        return 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(heightCm) + 36.76;
+      if (gender === 'female' && waist && neck && hipV && !isNaN(waist) && !isNaN(neck) && !isNaN(hipV) && (waist + hipV) > neck)
+        return 163.205 * Math.log10(waist + hipV - neck) - 97.684 * Math.log10(heightCm) - 78.387;
+      return null;
+    }
+    function tryYMCA() {
+      const weightLb = weightKg / 0.453592, waistIn = waist / 2.54;
+      if (gender === 'male' && waist && !isNaN(waist))
+        return ((-98.42 + (4.15 * waistIn) - (0.082 * weightLb)) / weightLb) * 100;
+      if (gender === 'female' && waist && hipV && forearm && wristV && !isNaN(waist) && !isNaN(hipV) && !isNaN(forearm) && !isNaN(wristV)) {
+        const hipIn=hipV/2.54, fIn=forearm/2.54, wrIn=wristV/2.54;
+        const lbm=(weightLb*0.732)+8.987+(wrIn/3.140)-(waistIn*0.157)-(hipIn*0.249)+(fIn*0.434);
+        return ((weightLb-lbm)/weightLb)*100;
+      }
+      return null;
+    }
+    function tryBailey() {
+      if (gender === 'male' && waist && hipV && forearm && wristV && !isNaN(waist) && !isNaN(hipV) && !isNaN(forearm) && !isNaN(wristV)) {
+        const wIn=waist/2.54, hIn=hipV/2.54, fIn=forearm/2.54, wrIn=wristV/2.54;
+        return age<=30 ? (wIn+0.5*hIn-3.0*fIn-wrIn)*0.53+11.2 : (wIn+0.5*hIn-3.0*fIn-wrIn)*0.54+11.5;
+      }
+      if (gender === 'female' && hipV && thighV && calfV && wristV && !isNaN(hipV) && !isNaN(thighV) && !isNaN(calfV) && !isNaN(wristV)) {
+        const hIn=hipV/2.54, tIn=thighV/2.54, cIn=calfV/2.54, wrIn=wristV/2.54;
+        return age<=30 ? (hIn+0.8*tIn-2.0*cIn-wrIn)*0.545+18.0 : (hIn+0.8*tIn-2.0*cIn-wrIn)*0.55+19.0;
+      }
+      return null;
+    }
+    function tryCUNBAE() {
+      const bmiV = parseFloat(bmi);
+      const sex = gender === 'female' ? 1 : 0;
+      return -44.988+(0.503*age)+(10.689*sex)+(3.172*bmiV)-(0.026*bmiV*bmiV)+(0.181*bmiV*sex)-(0.02*bmiV*age)-(0.005*bmiV*bmiV*sex)+(0.00021*bmiV*bmiV*age);
+    }
+    function trySkinfold() {
+      if (gender === 'male') {
+        const s1=parseFloat(document.getElementById('sf-chest').value), s2=parseFloat(document.getElementById('sf-abdomen').value), s3=parseFloat(document.getElementById('sf-thigh-m').value);
+        if (s1&&s2&&s3&&!isNaN(s1)&&!isNaN(s2)&&!isNaN(s3)) { const sum3=s1+s2+s3, d=1.10938-(0.0008267*sum3)+(0.0000016*sum3*sum3)-(0.0002574*age); return((4.95/d)-4.50)*100; }
+      } else {
+        const s1=parseFloat(document.getElementById('sf-tricep').value), s2=parseFloat(document.getElementById('sf-supra').value), s3=parseFloat(document.getElementById('sf-thigh-f').value);
+        if (s1&&s2&&s3&&!isNaN(s1)&&!isNaN(s2)&&!isNaN(s3)) { const sum3=s1+s2+s3, d=1.0994921-(0.0009929*sum3)+(0.0000023*sum3*sum3)-(0.0001392*age); return((4.95/d)-4.50)*100; }
+      }
+      return null;
+    }
+
+    const bmiFloat = parseFloat(bmi);
+    const allResults = [];
+    const navyRes = tryNavy(); if(navyRes!==null&&navyRes>2&&navyRes<60) allResults.push({name:'البحرية الأمريكية',val:navyRes,err:'±3–4%',ref:'Hodgdon & Beckett 1984'});
+    const ymcaRes = tryYMCA(); if(ymcaRes!==null&&ymcaRes>2&&ymcaRes<60) allResults.push({name:'YMCA',val:ymcaRes,err:'±3.7–4%',ref:'YMCA Formula'});
+    const baileyRes = tryBailey(); if(baileyRes!==null&&baileyRes>2&&baileyRes<60) allResults.push({name:'كوفرت بيلي',val:baileyRes,err:'±3.5–5%',ref:'Covert Bailey'});
+    const cunbaeRes = tryCUNBAE(); if(cunbaeRes>2&&cunbaeRes<60) allResults.push({name:'CUN-BAE',val:cunbaeRes,err:'±3.5–4%',ref:'Gómez-Ambrosi 2012'});
+    const deurRes = deurenbergBF(bmiFloat, age); if(deurRes>2&&deurRes<60) allResults.push({name:'ديورنبرغ',val:deurRes,err:'±4–5%',ref:'Deurenberg 1991'});
+    const sfRes = trySkinfold(); if(sfRes!==null&&sfRes>2&&sfRes<60) allResults.push({name:'ثنيات الجلد',val:sfRes,err:'±3–4%',ref:'Jackson-Pollock 1978/80'});
+
+    let bfPct = 0, bfMethodLabel = '';
+    if (bfMethod === 'compare') {
+      if (allResults.length > 0) {
+        const sorted=[...allResults].sort((a,b)=>a.val-b.val);
+        bfPct = sorted.length%2===1 ? sorted[Math.floor(sorted.length/2)].val : (sorted[sorted.length/2-1].val+sorted[sorted.length/2].val)/2;
+        bfMethodLabel = `وسيط ${allResults.length} طرق`;
+      } else { bfPct = deurRes; bfMethodLabel = 'ديورنبرغ (احتياطي)'; }
+    } else if (bfMethod==='navy') {
+      bfPct=navyRes!==null?navyRes:deurRes; bfMethodLabel=navyRes!==null?'البحرية الأمريكية (1984)':'ديورنبرغ (بيانات البحرية ناقصة)';
+    } else if (bfMethod==='ymca') {
+      bfPct=ymcaRes!==null?ymcaRes:deurRes; bfMethodLabel=ymcaRes!==null?'طريقة YMCA':'ديورنبرغ (بيانات YMCA ناقصة)';
+    } else if (bfMethod==='bailey') {
+      bfPct=baileyRes!==null?baileyRes:deurRes; bfMethodLabel=baileyRes!==null?'كوفرت بيلي':'ديورنبرغ (بيانات بيلي ناقصة)';
+    } else if (bfMethod==='cunbae') {
+      bfPct=cunbaeRes; bfMethodLabel='CUN-BAE (2012)';
+    } else if (bfMethod==='bmi') {
+      bfPct=deurRes; bfMethodLabel='معادلة ديورنبرغ (1991)';
+    } else if (bfMethod==='skinfold') {
+      bfPct=sfRes!==null?sfRes:deurRes; bfMethodLabel=sfRes!==null?'جاكسون-بولوك + سيري':'ديورنبرغ (بيانات ثنيات ناقصة)';
+    }
+    bfPct = Math.min(Math.max(bfPct, 3), 60);
+
+    // BF category
+    let bfCat, bfColor;
+    if (gender === 'male') {
+      if (bfPct<6) {bfCat='دهون أساسية';bfColor='#4a9eca';} else if(bfPct<14) {bfCat='رياضي';bfColor='#10b981';} else if(bfPct<18) {bfCat='لائق بدنياً';bfColor='#34d399';} else if(bfPct<25) {bfCat='متوسط';bfColor='#f4d03f';} else {bfCat='سمنة';bfColor='#e74c3c';}
+    } else {
+      if (bfPct<14) {bfCat='دهون أساسية';bfColor='#4a9eca';} else if(bfPct<21) {bfCat='رياضية';bfColor='#10b981';} else if(bfPct<25) {bfCat='لائقة بدنياً';bfColor='#34d399';} else if(bfPct<32) {bfCat='متوسط';bfColor='#f4d03f';} else {bfCat='سمنة';bfColor='#e74c3c';}
+    }
+
     // ── Display ──
     document.getElementById('res-bmr').textContent    = bmr.toLocaleString();
     document.getElementById('res-tdee').textContent   = tdee.toLocaleString();
@@ -824,6 +1046,34 @@
     document.getElementById('res-water').textContent  = waterL;
     document.getElementById('res-deficit').textContent = (diff >= 0 ? '+' : '') + diff;
     document.getElementById('res-weekly').textContent  = (parseFloat(weeklyKg) >= 0 ? '+' : '') + weeklyKg;
+
+    // ── Body Fat Display ──
+    const bfCard = document.getElementById('bf-result-card');
+    if (bfPct && bfPct > 2) {
+      bfCard.style.display = '';
+      document.getElementById('bf-val').textContent = bfPct.toFixed(1);
+      document.getElementById('bf-category').textContent = bfCat;
+      document.getElementById('bf-category').style.color = bfColor;
+      document.getElementById('bf-method-label').textContent = bfMethodLabel;
+    } else {
+      bfCard.style.display = 'none';
+    }
+
+    // Comparison table
+    const compareWrap = document.getElementById('bf-compare-wrap');
+    if (bfMethod === 'compare' && allResults.length > 1) {
+      compareWrap.style.display = '';
+      function getCatAr(bf) {
+        if (gender==='male') { if(bf<6)return'دهون أساسية';if(bf<14)return'رياضي';if(bf<18)return'لائق';if(bf<25)return'متوسط';return'سمنة'; }
+        else { if(bf<14)return'دهون أساسية';if(bf<21)return'رياضية';if(bf<25)return'لائقة';if(bf<32)return'متوسط';return'سمنة'; }
+      }
+      document.getElementById('bf-compare-body').innerHTML = allResults.map(r =>
+        `<tr><td><strong>${r.name}</strong><br><span style="font-size:0.72rem;color:#6b7280">${r.ref}</span></td><td style="font-weight:700;font-size:1.05rem;">${r.val.toFixed(1)}%</td><td>${getCatAr(r.val)}</td><td>${r.err}</td></tr>`
+      ).join('');
+      document.getElementById('bf-compare-avg').innerHTML = `<div class="avg-val">${bfPct.toFixed(1)}%</div><div class="avg-label">وسيط ${allResults.length} طرق — عادةً الأكثر دقة</div>`;
+    } else {
+      compareWrap.style.display = 'none';
+    }
 
     // ── BMI bar (RTL: use 'right') ──
     const bmiVal = parseFloat(bmi);
